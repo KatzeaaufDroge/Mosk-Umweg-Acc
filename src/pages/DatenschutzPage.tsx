@@ -21,7 +21,7 @@ const datenschutzData: DatenschutzData = {
     title: 'Datenschutzerklärung',
     description: 'Stand: Januar 2026',
     content: [
-      '1. Verantwortlicher: MOSK unlimited\nBahnhofstraße 16/1\n4780 St. Vith, Belgien\nE-Mail: d.mamon@moskunlimited.be\nTelefon: +49 176 4769 7299',
+      '1. Verantwortlicher: MOSK unlimited\nBahnhofstraße 16/1\n4780 St. Vith, Belgien\nE-Mail: d.mamon@moskunlimited.be\nTelefon: +32 472 80 44 61',
       '2. Allgemeine Hinweise zur Datenverarbeitung: Wir verarbeiten personenbezogene Daten ausschließlich im Einklang mit der Datenschutz-Grundverordnung (DSGVO) sowie den geltenden belgischen Datenschutzgesetzen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.',
       '3. Erhebung und Verarbeitung personenbezogener Daten: Wir erheben und verarbeiten personenbezogene Daten nur, wenn Sie uns diese freiwillig mitteilen, insbesondere durch: Nutzung des Kontaktformulars, Kontaktaufnahme per E-Mail oder Telefon. Verarbeitete Daten können sein: Vor- und Nachname, E-Mail-Adresse, Telefonnummer, Inhalt der Nachricht.',
       '4. Zweck der Verarbeitung: Die Verarbeitung der Daten erfolgt ausschließlich zum Zweck der: Bearbeitung Ihrer Anfrage, Kontaktaufnahme und Kommunikation, Angebotserstellung und Vertragsvorbereitung.',
@@ -38,7 +38,7 @@ const datenschutzData: DatenschutzData = {
     title: 'Privacy Policy',
     description: 'Valid from: January 2026',
     content: [
-      '1. Data controller: MOSK unlimited\nBahnhofstraße 16/1\n4780 St. Vith, Belgium\nE-mail: d.mamon@moskunlimited.be\nPhone: +49 176 4769 7299',
+      '1. Data controller: MOSK unlimited\nBahnhofstraße 16/1\n4780 St. Vith, Belgium\nE-mail: d.mamon@moskunlimited.be\nPhone: +32 472 80 44 61',
       '2. General information: We process personal data in accordance with the General Data Protection Regulation (GDPR) and applicable Belgian data protection laws.',
       '3. Data collection: Personal data is collected only when voluntarily provided, particularly via the contact form or direct communication.',
       '4. Purpose of processing: Data is processed solely for responding to inquiries and preparing contractual relationships.',
@@ -53,7 +53,7 @@ const datenschutzData: DatenschutzData = {
     title: 'Politique de Confidentialité',
     description: 'Valable à partir de: janvier 2026',
     content: [
-      '1. Responsable du traitement: MOSK unlimited\nBahnhofstraße 16/1\n4780 St. Vith, Belgique\nE-mail : d.mamon@moskunlimited.be\nTéléphone : +49 176 4769 7299',
+      '1. Responsable du traitement: MOSK unlimited\nBahnhofstraße 16/1\n4780 St. Vith, Belgique\nE-mail : d.mamon@moskunlimited.be\nTéléphone : +32 472 80 44 61',
       '2. Informations générales: Nous traitons les données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la législation belge applicable.',
       '3. Données collectées: Les données personnelles sont collectées uniquement lorsque vous nous les communiquez volontairement, notamment via le formulaire de contact ou par e-mail.',
       '4. Finalité du traitement: Les données sont utilisées exclusivement pour répondre à votre demande et établir une relation contractuelle.',
