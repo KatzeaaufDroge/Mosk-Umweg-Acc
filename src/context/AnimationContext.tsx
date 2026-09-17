@@ -7,7 +7,7 @@ interface AnimationContextType {
 const AnimationContext = createContext<AnimationContextType | undefined>(undefined);
 
 export function AnimationProvider({ children }: { children: ReactNode }) {
-  const [showInitialAnimation, setShowInitialAnimation] = useState(() => {
+  const [showInitialAnimation] = useState(() => {
     if (typeof window === 'undefined') return true;
     const hasShown = sessionStorage.getItem('initialAnimationShown') === 'true';
     if (!hasShown) {

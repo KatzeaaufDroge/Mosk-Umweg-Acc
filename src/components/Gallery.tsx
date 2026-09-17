@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, X, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Masonry from 'react-masonry-css';
 import { BlurFade } from './ui/blur-fade';
 import img1 from '../../assets/bunt.webp';
@@ -57,10 +56,17 @@ function Lightbox({ item, index, total, onClose, onNext, onPrev }: LightboxProps
     if (e.key === 'ArrowLeft') onPrev();
   };
 
-  const handleSwipe = (e: React.TouchEvent) => {
-    const touch = e.changedTouches[0];
-    const startX = touch.clientX;
-    const endX = touch.changedTouches[touch.length - 1].clientX;
+  const touchStartXRef = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const startX = touchStartXRef.current;
+    const endX = e.changedTouches[0]?.clientX;
+    touchStartXRef.current = null;
+    if (startX === null || endX === undefined) return;
     if (startX - endX > 50) onNext();
     if (endX - startX > 50) onPrev();
   };
@@ -70,7 +76,8 @@ function Lightbox({ item, index, total, onClose, onNext, onPrev }: LightboxProps
       className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
       onClick={onClose}
       onKeyDown={handleKeyDown}
-      onTouchEnd={handleSwipe}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       tabIndex={0}
     >
       <div
@@ -117,20 +124,6 @@ function Lightbox({ item, index, total, onClose, onNext, onPrev }: LightboxProps
 
 export default function Gallery() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const navigate = useNavigate();
-
-  const scrollToContact = () => {
-    navigate('/');
-    setTimeout(() => {
-      const element = document.getElementById('contact');
-      if (element) {
-        const navHeight = 120;
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - navHeight;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    }, 100);
-  };
 
   const handleNext = () => {
     if (selectedIndex !== null && selectedIndex < galleryItems.length - 1) {
@@ -149,9 +142,9 @@ export default function Gallery() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BlurFade delay={0.25} inView sessionKey="gallery-header">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}>
               Galerie
-            </h2>
+            </h1>
             <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
               Ein Einblick in meine besten Werke
             </p>

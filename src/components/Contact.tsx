@@ -1,8 +1,12 @@
 import { Mail, Phone, MapPin, Send, Clock, Loader2, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 type Kundentyp = 'Privatperson' | 'Unternehmen';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MIN_SUBMIT_DELAY_MS = 2500;
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -13,8 +17,10 @@ export default function Contact() {
     ansprechpartner: '',
     email: '',
     telefonnummer: '',
-    message: ''
+    message: '',
+    website: '' // honeypot: real users never see or fill this field
   });
+  const [mountedAt] = useState(() => Date.now());
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
@@ -23,6 +29,20 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
     setStatus({ type: null, message: '' });
+
+    // Bot defense: honeypot filled or submitted suspiciously fast — pretend
+    // success without touching the database, don't tip off the bot.
+    if (formData.website || Date.now() - mountedAt < MIN_SUBMIT_DELAY_MS) {
+      setStatus({ type: 'success', message: 'Nachricht erfolgreich gesendet!' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!EMAIL_REGEX.test(formData.email)) {
+      setStatus({ type: 'error', message: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' });
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const submissionData = {
@@ -51,7 +71,8 @@ export default function Contact() {
         ansprechpartner: '',
         email: '',
         telefonnummer: '',
-        message: ''
+        message: '',
+        website: ''
       });
     } catch (error) {
       console.error('Fehler:', error);
@@ -78,6 +99,18 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div>
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              {/* Honeypot: hidden from real users, bots that autofill every field trip it */}
+              <input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute -left-[9999px] w-px h-px overflow-hidden"
+              />
+
               {/* Kundentyp Select */}
               <div>
                 <label htmlFor="kundentyp" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Kundentyp *</label>
@@ -234,9 +267,9 @@ export default function Contact() {
 
               <p className="text-xs sm:text-sm text-gray-400 text-center leading-relaxed">
                 Mit dem Absenden des Formulars erkläre ich mich mit der Verarbeitung meiner personenbezogenen Daten zur Bearbeitung meiner Anfrage gemäß der{' '}
-                <a href="/datenschutz" className="text-[#22c55e] hover:text-[#16a34a] underline transition-colors">
+                <Link to="/datenschutz" className="text-[#22c55e] hover:text-[#16a34a] underline transition-colors">
                   Datenschutzerklärung
-                </a>{' '}
+                </Link>{' '}
                 einverstanden
               </p>
             </form>

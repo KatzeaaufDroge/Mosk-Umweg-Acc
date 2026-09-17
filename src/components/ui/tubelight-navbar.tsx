@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { LucideIcon } from "lucide-react"
+import { Link } from "react-router-dom"
 import { cn } from "@/lib/utils"
 
 interface NavItem {
   name: string
+  to?: string
   onClick?: () => void
   icon?: LucideIcon
   image?: string
@@ -33,19 +35,19 @@ export function NavBar({ items, className, activeSection }: NavBarProps) {
           const Icon = item.icon
           const isActive = activeTab === item.name
 
-          return (
-            <button
-              key={item.name}
-              onClick={() => {
-                setActiveTab(item.name)
-                item.onClick?.()
-              }}
-              className={cn(
-                "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-all",
-                "text-white/60 hover:text-white",
-                isActive && "text-white drop-shadow-[0_0_8px_rgba(255,255,255,1)] drop-shadow-[0_0_16px_rgba(100,200,255,0.8)]",
-              )}
-            >
+          const handleClick = () => {
+            setActiveTab(item.name)
+            item.onClick?.()
+          }
+
+          const navClassName = cn(
+            "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-all",
+            "text-white/60 hover:text-white",
+            isActive && "text-white drop-shadow-[0_0_8px_rgba(255,255,255,1)] drop-shadow-[0_0_16px_rgba(100,200,255,0.8)]",
+          )
+
+          const content = (
+            <>
               {item.mobileImage ? (
                 <>
                   <span className="hidden md:inline">{item.name}</span>
@@ -92,6 +94,20 @@ export function NavBar({ items, className, activeSection }: NavBarProps) {
                   </div>
                 </motion.div>
               )}
+            </>
+          )
+
+          if (item.to) {
+            return (
+              <Link key={item.name} to={item.to} onClick={handleClick} className={navClassName}>
+                {content}
+              </Link>
+            )
+          }
+
+          return (
+            <button key={item.name} onClick={handleClick} className={navClassName}>
+              {content}
             </button>
           )
         })}

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { loadUmamiIfConsented } from '../lib/analytics';
 
 export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);
@@ -9,10 +11,12 @@ export default function CookieBanner() {
     if (!cookieConsent) {
       setIsVisible(true);
     }
+    loadUmamiIfConsented();
   }, []);
 
   const handleAccept = () => {
     localStorage.setItem('cookieConsent', 'accepted');
+    loadUmamiIfConsented();
     setIsVisible(false);
   };
 
@@ -29,13 +33,13 @@ export default function CookieBanner() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex-1 pr-8">
             <p className="text-sm text-gray-300 leading-relaxed">
-              Diese Website verwendet technisch notwendige Cookies. Sie können weitere Informationen in unser{' '}
-              <a
-                href="/datenschutz"
+              Diese Website verwendet technisch notwendige Cookies sowie, mit Ihrer Zustimmung, Analyse-Cookies. Sie können weitere Informationen in unser{' '}
+              <Link
+                to="/datenschutz"
                 className="text-blue-400 hover:text-blue-300 transition-colors duration-200 underline"
               >
                 Datenschutzerklärung
-              </a>
+              </Link>
               {' '}finden.
             </p>
           </div>
@@ -47,12 +51,18 @@ export default function CookieBanner() {
             >
               Schließen
             </button>
-            <a
-              href="/datenschutz"
+            <button
+              onClick={handleAccept}
+              className="px-4 py-2 text-sm font-medium text-black bg-[#f59e0b] hover:bg-[#ffc61a] rounded-lg transition-colors duration-200"
+            >
+              Akzeptieren
+            </button>
+            <Link
+              to="/datenschutz"
               className="px-4 py-2 text-sm font-medium text-neutral-900 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors duration-200 inline-block text-center"
             >
               Datenschutzerklärung
-            </a>
+            </Link>
           </div>
 
           <button

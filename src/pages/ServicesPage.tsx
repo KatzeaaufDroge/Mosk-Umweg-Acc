@@ -3,10 +3,13 @@ import { Users, Briefcase, ArrowRight } from 'lucide-react';
 import { ServiceHero } from '../components/ui/service-hero';
 import { BlurFade } from '../components/ui/blur-fade';
 import { useAnimation } from '../context/AnimationContext';
+import { useScrollToContact } from '../hooks/useScrollToContact';
+import { Seo } from '../components/Seo';
 
 export default function ServicesPage() {
   const navigate = useNavigate();
   const { showInitialAnimation } = useAnimation();
+  const scrollToContact = useScrollToContact();
 
   const handlePrivateCustomers = () => {
     navigate('/services/event');
@@ -18,6 +21,11 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-[#262626] pt-28 sm:pt-32 pb-16 sm:pb-24">
+      <Seo
+        title="Services – Event & Business – Mosk Unlimited"
+        description="Fotografie, Videografie und Editing – wählen Sie den passenden Service-Bereich für Privatkunden oder Unternehmen."
+        path="/services"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BlurFade delay={0.25} inView={showInitialAnimation} sessionKey="services-hero">
           <ServiceHero
@@ -83,18 +91,7 @@ export default function ServicesPage() {
               Kontaktieren Sie mich für eine kostenlose Beratung. Gemeinsam finden wir die perfekte Lösung für Ihr Projekt.
             </p>
             <button
-              onClick={() => {
-                navigate('/');
-                setTimeout(() => {
-                  const element = document.getElementById('contact');
-                  if (element) {
-                    const navHeight = window.innerWidth < 640 ? 80 : 100;
-                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-                    const offsetPosition = elementPosition - navHeight;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                  }
-                }, 100);
-              }}
+              onClick={scrollToContact}
               className="group inline-flex items-center gap-2 sm:gap-3 bg-[#F5B700] text-[#0A1F44] px-5 sm:px-8 py-2 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-[#ffc61a] transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
             >
               Jetzt Beratung anfragen

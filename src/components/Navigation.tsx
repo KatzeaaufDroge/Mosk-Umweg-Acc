@@ -3,8 +3,8 @@ import { NavBar } from './ui/tubelight-navbar';
 import { MobileDropdown } from './ui/mobile-dropdown';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
+import { getNavHeight } from '../lib/utils';
 import logoIcon from '../../public/Logo.png';
-import serviceIcon from '../../assets/f61c5e57-a3c5-4a50-99e0-637f33fef76b.png';
 import houseIcon from '../../assets/house.png';
 import zahnradIcon from '../../public/Zahnrad.png';
 
@@ -57,11 +57,6 @@ export default function Navigation() {
       setActiveSection('Home');
     }
   }, [location.pathname]);
-
-  const getNavHeight = () => {
-    if (window.innerWidth < 640) return 80;
-    return 100;
-  };
 
   const scrollToContact = () => {
     if (location.pathname !== '/') {
@@ -119,16 +114,17 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { name: 'Home', icon: Home, onClick: () => goToHome(), image: houseIcon },
-    { name: 'Services', icon: Zap, onClick: () => goToServices() },
-    { name: 'Über mich', icon: Info, onClick: () => goToAbout() },
-    { name: 'Galerie', icon: Image, onClick: () => goToPortfolio() },
+    { name: 'Home', to: '/', icon: Home, onClick: () => goToHome(), image: houseIcon },
+    { name: 'Services', to: '/services', icon: Zap, onClick: () => goToServices() },
+    { name: 'Über mich', to: '/about', icon: Info, onClick: () => goToAbout() },
+    { name: 'Galerie', to: '/portfolio', icon: Image, onClick: () => goToPortfolio() },
     { name: 'Kontakt', icon: Mail, onClick: () => scrollToContact() },
-    { name: 'Impressum', icon: FileText, onClick: () => goToImpressum() },
+    { name: 'Impressum', to: '/impressum', icon: FileText, onClick: () => goToImpressum() },
   ]
 
   const mobileNavItems = navItems.map(item => ({
     name: item.name,
+    to: item.to,
     icon: item.icon || Mail,
     onClick: item.onClick,
     image: item.image || (item.name === 'Services' ? zahnradIcon : undefined),

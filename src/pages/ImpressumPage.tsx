@@ -1,6 +1,14 @@
+import { Link } from 'react-router-dom';
+import { Seo } from '../components/Seo';
+
 export default function ImpressumPage() {
   return (
     <div className="min-h-screen bg-neutral-950 pt-24 sm:pt-32 pb-12 sm:pb-16">
+      <Seo
+        title="Impressum – Mosk Unlimited"
+        description="Impressum und rechtliche Angaben zu Mosk Unlimited, St. Vith, Belgien."
+        path="/impressum"
+      />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 sm:mb-12">Impressum</h1>
 
@@ -60,18 +68,18 @@ export default function ImpressumPage() {
           <section className="pt-6 sm:pt-8 border-t border-gray-700">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4">Weitere Informationen</h2>
             <div className="flex flex-wrap gap-4">
-              <a
-                href="/agb"
+              <Link
+                to="/agb"
                 className="inline-flex items-center px-6 py-3 bg-[#22c55e] text-black font-semibold rounded-lg hover:bg-[#16a34a] transition-all duration-300 text-sm sm:text-base"
               >
                 AGB
-              </a>
-              <a
-                href="/datenschutz"
+              </Link>
+              <Link
+                to="/datenschutz"
                 className="inline-flex items-center px-6 py-3 bg-[#22c55e] text-black font-semibold rounded-lg hover:bg-[#16a34a] transition-all duration-300 text-sm sm:text-base"
               >
                 Datenschutzerklärung
-              </a>
+              </Link>
             </div>
           </section>
         </div>

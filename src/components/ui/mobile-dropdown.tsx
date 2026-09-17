@@ -2,9 +2,13 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { LucideIcon } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const MotionLink = motion.create(Link)
 
 interface MobileDropdownItem {
   name: string
+  to?: string
   icon: LucideIcon
   onClick: () => void
   image?: string
@@ -68,6 +72,39 @@ export function MobileDropdown({ items, activeSection }: MobileDropdownProps) {
               const Icon = item.icon
               const isActive = activeSection === item.name
 
+              const itemClassName = `w-full px-4 py-3 flex items-center gap-3 transition-colors ${
+                isActive
+                  ? 'bg-white/10 text-white'
+                  : 'text-white/60 hover:text-white hover:bg-white/5'
+              }`
+
+              const content = (
+                <>
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} className="w-[18px] h-[18px]" />
+                  ) : (
+                    <Icon size={18} />
+                  )}
+                  <span className="text-sm font-medium">{item.name}</span>
+                </>
+              )
+
+              if (item.to) {
+                return (
+                  <MotionLink
+                    key={item.name}
+                    to={item.to}
+                    onClick={() => handleItemClick(item.onClick)}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={itemClassName}
+                  >
+                    {content}
+                  </MotionLink>
+                )
+              }
+
               return (
                 <motion.button
                   key={item.name}
@@ -75,18 +112,9 @@ export function MobileDropdown({ items, activeSection }: MobileDropdownProps) {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className={`w-full px-4 py-3 flex items-center gap-3 transition-colors ${
-                    isActive
-                      ? 'bg-white/10 text-white'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
+                  className={itemClassName}
                 >
-                  {item.image ? (
-                    <img src={item.image} alt={item.name} className="w-[18px] h-[18px]" />
-                  ) : (
-                    <Icon size={18} />
-                  )}
-                  <span className="text-sm font-medium">{item.name}</span>
+                  {content}
                 </motion.button>
               )
             })}

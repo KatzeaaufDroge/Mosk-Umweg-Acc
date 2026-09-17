@@ -1,7 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Wir tragen die Schlüssel hier direkt ein, damit keine .env Datei nötig ist
-const supabaseUrl = 'https://vdkrdvlixefpsjwrywku.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZka3JkdmxpeGVmcHNqd3J5d2t1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQyMDIwMzAsImV4cCI6MjA3OTc3ODAzMH0.RpVArDYZ9BjBPyzMll8h99z-8QSMuU8QMVJmyvajPCs';
+// The anon key is safe to expose client-side (access is enforced by Row
+// Level Security policies in Supabase), but it lives in env vars so the
+// project can be configured per environment without editing source.
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

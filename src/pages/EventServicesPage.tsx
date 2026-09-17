@@ -1,35 +1,23 @@
 import { ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { ServiceHero } from '../components/ui/service-hero';
 import { ServiceList } from '../components/ui/service-list';
 import { BlurFade } from '../components/ui/blur-fade';
 import { useAnimation } from '../context/AnimationContext';
 import { eventServices } from '../data/services';
+import { useScrollToContact } from '../hooks/useScrollToContact';
+import { Seo } from '../components/Seo';
 
 export default function EventServicesPage() {
-  const navigate = useNavigate();
   const { showInitialAnimation } = useAnimation();
-
-  const getNavHeight = () => {
-    if (window.innerWidth < 640) return 80;
-    return 100;
-  };
-
-  const scrollToContact = () => {
-    navigate('/');
-    setTimeout(() => {
-      const element = document.getElementById('contact');
-      if (element) {
-        const navHeight = getNavHeight();
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - navHeight;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    }, 100);
-  };
+  const scrollToContact = useScrollToContact();
 
   return (
     <div className="min-h-screen bg-[#262626] pt-28 sm:pt-32 pb-16 sm:pb-24">
+      <Seo
+        title="Event Services – Fotografie, Videografie, Editing – Mosk Unlimited"
+        description="Professionelle Eventdokumentation für Festivals, Konzerte und Firmenevents – Fotografie, Videografie und Editing aus einer Hand."
+        path="/services/event"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BlurFade delay={0.25} inView={showInitialAnimation} sessionKey="event-hero">
           <ServiceHero

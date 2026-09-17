@@ -3,6 +3,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { Shield, Globe, Info } from 'lucide-react';
+import { Seo } from '../components/Seo';
 
 type Language = 'de' | 'en' | 'fr';
 
@@ -79,6 +80,11 @@ export default function DatenschutzPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 pt-24 sm:pt-32 pb-12 sm:pb-16">
+      <Seo
+        title="Datenschutzerklärung – Mosk Unlimited"
+        description="Informationen zur Verarbeitung personenbezogener Daten gemäß DSGVO bei Mosk Unlimited."
+        path="/datenschutz"
+      />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col items-center space-y-6">
           <div className="flex items-center gap-3">

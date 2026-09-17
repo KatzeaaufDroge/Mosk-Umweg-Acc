@@ -1,30 +1,18 @@
 import { ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import Gallery from '../components/Gallery';
+import { useScrollToContact } from '../hooks/useScrollToContact';
+import { Seo } from '../components/Seo';
 
 export default function PortfolioPage() {
-  const navigate = useNavigate();
-
-  const getNavHeight = () => {
-    if (window.innerWidth < 640) return 80;
-    return 100;
-  };
-
-  const scrollToContact = () => {
-    navigate('/');
-    setTimeout(() => {
-      const element = document.getElementById('contact');
-      if (element) {
-        const navHeight = getNavHeight();
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - navHeight;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-      }
-    }, 100);
-  };
+  const scrollToContact = useScrollToContact();
 
   return (
     <div>
+      <Seo
+        title="Galerie – Mosk Unlimited"
+        description="Ein Einblick in die besten Arbeiten von Mosk Unlimited: Event-Fotografie und mehr aus St. Vith, Belgien."
+        path="/portfolio"
+      />
       <Gallery />
       <section className="relative py-16 sm:py-24 overflow-hidden" style={{ backgroundColor: '#262626' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,4 +1,5 @@
 import { Instagram } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -29,19 +30,19 @@ export default function Footer() {
             <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Rechtliches</h4>
             <ul className="space-y-2 text-sm sm:text-base">
               <li>
-                <a href="/impressum" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
+                <Link to="/impressum" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
                   Impressum
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/datenschutz" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
+                <Link to="/datenschutz" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
                   Datenschutz
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/agb" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
+                <Link to="/agb" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
                   AGB
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
