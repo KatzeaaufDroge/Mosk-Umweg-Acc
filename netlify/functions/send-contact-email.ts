@@ -1,16 +1,17 @@
-// Supabase Edge Function, triggered by a Database Webhook on
-// INSERT into `contact_submissions`. Sends a notification email via Resend
-// so new contact requests don't just sit silently in the database.
+// Netlify Function, called directly by the contact form on submit.
+// Sends a notification email via Resend. No database involved.
 //
-// Deploy: supabase functions deploy notify-contact
-// Secret:  supabase secrets set RESEND_API_KEY=<your resend api key>
-// Webhook: Supabase Dashboard -> Database -> Webhooks -> INSERT on
-//          contact_submissions -> HTTP POST to this function's URL.
+// Env var required (set in Netlify dashboard -> Site settings -> Environment variables):
+//   RESEND_API_KEY
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
-const NOTIFY_TO = 'd.mamon@moskunlimited.be';
-// Must be a sender/domain verified in your Resend account.
-const NOTIFY_FROM = 'Mosk Unlimited Kontaktformular <kontakt@moskunlimited.be>';
+// TEMP: moskunlimited.be is not verified in Resend yet, so we're using the
+// sandbox sender/recipient. Once the domain is verified, switch NOTIFY_TO
+// back to d.mamon@moskunlimited.be and NOTIFY_FROM to the kontakt@ address.
+const NOTIFY_TO = 'moneyprintercrp@gmail.com';
+const NOTIFY_FROM = 'Mosk Unlimited Kontaktformular <onboarding@resend.dev>';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface ContactSubmission {
   kundentyp: string | null;
@@ -21,13 +22,6 @@ interface ContactSubmission {
   email: string;
   telefonnummer: string | null;
   message: string;
-  created_at: string;
-}
-
-interface WebhookPayload {
-  type: string;
-  table: string;
-  record: ContactSubmission;
 }
 
 function escapeHtml(value: string): string {
@@ -67,24 +61,29 @@ function buildEmailHtml(record: ContactSubmission): string {
   `;
 }
 
-Deno.serve(async (req: Request) => {
+export default async (req: Request) => {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
   }
 
-  const apiKey = Deno.env.get('RESEND_API_KEY');
+  const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error('RESEND_API_KEY is not set');
-    return new Response('OK', { status: 200 });
+    return new Response('Server misconfigured', { status: 500 });
+  }
+
+  let record: ContactSubmission;
+  try {
+    record = await req.json();
+  } catch {
+    return new Response('Invalid JSON', { status: 400 });
+  }
+
+  if (!record.email || !EMAIL_REGEX.test(record.email) || !record.message) {
+    return new Response('Invalid submission', { status: 400 });
   }
 
   try {
-    const payload: WebhookPayload = await req.json();
-    if (payload.type !== 'INSERT' || payload.table !== 'contact_submissions') {
-      return new Response('Ignored', { status: 200 });
-    }
-
-    const record = payload.record;
     const response = await fetch(RESEND_API_URL, {
       method: 'POST',
       headers: {
@@ -102,11 +101,12 @@ Deno.serve(async (req: Request) => {
 
     if (!response.ok) {
       console.error('Resend API error:', await response.text());
+      return new Response('Email send failed', { status: 502 });
     }
   } catch (error) {
-    console.error('notify-contact failed:', error);
+    console.error('send-contact-email failed:', error);
+    return new Response('Email send failed', { status: 502 });
   }
 
-  // Always 200 so Supabase's webhook delivery doesn't endlessly retry.
   return new Response('OK', { status: 200 });
-});
+};

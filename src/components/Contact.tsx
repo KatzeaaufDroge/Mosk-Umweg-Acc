@@ -1,7 +1,6 @@
 import { Mail, Phone, MapPin, Send, Clock, Loader2, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
 
 type Kundentyp = 'Privatperson' | 'Unternehmen';
 
@@ -56,11 +55,13 @@ export default function Contact() {
         message: formData.message
       };
 
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([submissionData]);
+      const response = await fetch('/.netlify/functions/send-contact-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData)
+      });
 
-      if (error) throw error;
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
 
       setStatus({ type: 'success', message: 'Nachricht erfolgreich gesendet!' });
       setFormData({
