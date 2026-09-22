@@ -5,11 +5,8 @@
 //   RESEND_API_KEY
 
 const RESEND_API_URL = 'https://api.resend.com/emails';
-// TEMP: moskunlimited.be is not verified in Resend yet, so we're using the
-// sandbox sender/recipient. Once the domain is verified, switch NOTIFY_TO
-// back to d.mamon@moskunlimited.be and NOTIFY_FROM to the kontakt@ address.
-const NOTIFY_TO = 'moneyprintercrp@gmail.com';
-const NOTIFY_FROM = 'Mosk Unlimited Kontaktformular <onboarding@resend.dev>';
+const NOTIFY_TO = 'd.mamon@moskunlimited.be';
+const NOTIFY_FROM = 'Mosk Unlimited Kontaktformular <kontakt@moskunlimited.be>';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
