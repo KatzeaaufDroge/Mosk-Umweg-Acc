@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { ServiceHero } from '../components/ui/service-hero';
-import { ServiceList } from '../components/ui/service-list';
+import { ServiceExplorer } from '../components/ui/service-explorer';
 import { BlurFade } from '../components/ui/blur-fade';
 import { useAnimation } from '../context/AnimationContext';
 import { eventServices } from '../data/services';
@@ -27,7 +27,7 @@ export default function EventServicesPage() {
         </BlurFade>
 
         <BlurFade delay={0.5} inView={showInitialAnimation} sessionKey="event-services">
-          <ServiceList services={eventServices} />
+          <ServiceExplorer services={eventServices} kundentyp="Privatperson" />
         </BlurFade>
 
         <BlurFade delay={0.75} inView={showInitialAnimation} sessionKey="event-cta">

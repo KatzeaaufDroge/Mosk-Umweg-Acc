@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { ServiceHero } from '../components/ui/service-hero';
-import { ServiceList } from '../components/ui/service-list';
+import { ServiceExplorer } from '../components/ui/service-explorer';
 import { BlurFade } from '../components/ui/blur-fade';
 import { useAnimation } from '../context/AnimationContext';
 import { businessServices } from '../data/services';
@@ -27,7 +27,7 @@ export default function BusinessServicesPage() {
         </BlurFade>
 
         <BlurFade delay={0.5} inView={showInitialAnimation} sessionKey="business-services">
-          <ServiceList services={businessServices} />
+          <ServiceExplorer services={businessServices} kundentyp="Unternehmen" />
         </BlurFade>
 
         <BlurFade delay={0.75} inView={showInitialAnimation} sessionKey="business-cta">

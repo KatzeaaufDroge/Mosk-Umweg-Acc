@@ -1,6 +1,7 @@
-import { Mail, Phone, MapPin, Send, Clock, Loader2, MessageCircle } from 'lucide-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Mail, Phone, MapPin, Send, Clock, Loader2, MessageCircle, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import type { ContactPrefill } from '../hooks/useScrollToContact';
 
 type Kundentyp = 'Privatperson' | 'Unternehmen';
 
@@ -20,6 +21,24 @@ export default function Contact() {
     website: '' // honeypot: real users never see or fill this field
   });
   const [mountedAt] = useState(() => Date.now());
+  // Gewählter Service aus dem Service-Flow, geht in den Mail-Betreff
+  const [leistung, setLeistung] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  // Vorausfüllen, wenn man über eine Service-Karte hierher kommt
+  useEffect(() => {
+    const prefill = (location.state as { contactPrefill?: ContactPrefill } | null)?.contactPrefill;
+    if (!prefill) return;
+    setFormData((prev) => ({ ...prev, kundentyp: prefill.kundentyp, message: prefill.message }));
+    setLeistung(prefill.leistung);
+    setStatus({ type: null, message: '' });
+    // State entfernen, damit ein Reload das Formular nicht erneut überschreibt
+    navigate(location.pathname, { replace: true, state: null });
+    // Fokus erst nach dem Scrollen setzen, sonst springt die Seite
+    setTimeout(() => messageRef.current?.focus({ preventScroll: true }), 700);
+  }, [location.state, location.pathname, navigate]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{ type: 'success' | 'error' | null, message: string }>({ type: null, message: '' });
@@ -52,7 +71,8 @@ export default function Contact() {
         nachname: formData.kundentyp === 'Privatperson' ? formData.nachname : null,
         telefonnummer: formData.telefonnummer || null,
         email: formData.email,
-        message: formData.message
+        message: formData.message,
+        leistung: leistung || null
       };
 
       const response = await fetch('/.netlify/functions/send-contact-email', {
@@ -64,6 +84,7 @@ export default function Contact() {
       if (!response.ok) throw new Error(`Request failed: ${response.status}`);
 
       setStatus({ type: 'success', message: 'Nachricht erfolgreich gesendet!' });
+      setLeistung('');
       setFormData({
         kundentyp: 'Privatperson',
         vorname: '',
@@ -100,6 +121,22 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           <div>
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              {leistung && (
+                <div className="flex items-center justify-between gap-3 rounded-lg border border-brand/40 bg-brand/10 px-4 py-3">
+                  <p className="text-sm sm:text-base text-white">
+                    <span className="text-gray-400">Anfrage für: </span>
+                    <span className="font-semibold">{leistung}</span>
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setLeistung('')}
+                    className="shrink-0 rounded-md p-1 text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                    aria-label="Service-Auswahl entfernen"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              )}
               {/* Honeypot: hidden from real users, bots that autofill every field trip it */}
               <input
                 type="text"
@@ -230,6 +267,7 @@ export default function Contact() {
               <div>
                 <label htmlFor="message" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Nachricht *</label>
                 <textarea
+                  ref={messageRef}
                   id="message"
                   name="message"
                   value={formData.message}

@@ -1,13 +1,18 @@
+import { ArrowRight } from 'lucide-react';
+
 interface ServiceCardProps {
   title: string;
   description: string;
+  idealFor: string[];
   image: string;
   icon?: string;
+  // Aufgeklappt: die "Ideal für"-Punkte stehen dann als eigene Karten darunter
+  expanded?: boolean;
 }
 
-export function ServiceCard({ title, description, image, icon }: ServiceCardProps) {
+export function ServiceCard({ title, description, idealFor, image, icon, expanded = false }: ServiceCardProps) {
   return (
-    <div className="group rounded-xl overflow-hidden bg-[#171717] hover:shadow-2xl hover:shadow-brand/10 transition-all duration-300 h-full flex flex-col">
+    <div className="group rounded-xl overflow-hidden bg-[#171717] hover:shadow-2xl hover:shadow-brand/10 transition-shadow duration-300 h-full flex flex-col">
       <div className="aspect-video overflow-hidden bg-gray-900">
         <img
           src={image}
@@ -21,9 +26,23 @@ export function ServiceCard({ title, description, image, icon }: ServiceCardProp
           {icon && <img src={icon} alt="" className="w-10 h-10 object-cover" />}
           {title}
         </h3>
-        <p className="text-gray-300 text-sm sm:text-base leading-relaxed flex-1 whitespace-pre-wrap">
-          {description}
-        </p>
+        <p className="text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap">{description}</p>
+        {!expanded && (
+          <>
+            <div className="text-gray-300 text-sm sm:text-base leading-relaxed flex-1">
+              <p className="mb-1">Ideal für:</p>
+              <ul>
+                {idealFor.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
+            </div>
+            <span className="inline-flex items-center gap-2 pt-2 text-brand font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
+              Auswählen
+              <ArrowRight size={18} />
+            </span>
+          </>
+        )}
       </div>
     </div>
   );

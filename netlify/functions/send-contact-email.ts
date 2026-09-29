@@ -19,6 +19,14 @@ interface ContactSubmission {
   email: string;
   telefonnummer: string | null;
   message: string;
+  // Gewählter Service aus dem Service-Flow, z.B. "Fotografie – Geburtstage"
+  leistung?: string | null;
+}
+
+// Nur einzeilig und kurz in den Betreff übernehmen
+function cleanLeistung(value: unknown): string {
+  if (typeof value !== 'string') return '';
+  return value.replace(/[\r\n]+/g, ' ').trim().slice(0, 120);
 }
 
 function escapeHtml(value: string): string {
@@ -34,7 +42,9 @@ function buildEmailHtml(record: ContactSubmission): string {
       ? `${record.unternehmensname ?? ''} (${record.ansprechpartner ?? ''})`
       : `${record.vorname ?? ''} ${record.nachname ?? ''}`.trim();
 
+  const leistung = cleanLeistung(record.leistung);
   const rows: [string, string][] = [
+    ...(leistung ? ([['Anfrage für', leistung]] as [string, string][]) : []),
     ['Kundentyp', record.kundentyp ?? '—'],
     ['Name', name || '—'],
     ['E-Mail', record.email],
@@ -50,7 +60,7 @@ function buildEmailHtml(record: ContactSubmission): string {
 
   return `
     <div style="font-family:sans-serif;font-size:14px;color:#111;">
-      <h2 style="color:#f59e0b;">Neue Kontaktanfrage</h2>
+      <h2 style="color:#55a041;">Neue Kontaktanfrage</h2>
       <table>${rowsHtml}</table>
       <p style="margin-top:16px;"><strong>Nachricht:</strong></p>
       <p style="white-space:pre-wrap;">${escapeHtml(record.message)}</p>
@@ -91,7 +101,9 @@ export default async (req: Request) => {
         from: NOTIFY_FROM,
         to: [NOTIFY_TO],
         reply_to: record.email,
-        subject: `Neue Kontaktanfrage von ${record.vorname ?? record.unternehmensname ?? record.email}`,
+        subject: cleanLeistung(record.leistung)
+          ? `Neue Anfrage: ${cleanLeistung(record.leistung)} – ${record.vorname ?? record.unternehmensname ?? record.email}`
+          : `Neue Kontaktanfrage von ${record.vorname ?? record.unternehmensname ?? record.email}`,
         html: buildEmailHtml(record),
       }),
     });
