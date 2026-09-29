@@ -1,0 +1,262 @@
+/*
+  Mosk-Look für das Admin-Panel (Decap CMS): dunkel, Logo-Grün, Glas-Karten
+  über dem Beams-Hintergrund (beams.js).
+
+  Decap nutzt generierte Klassen wie "css-1a2b3c-AppHeader". Die Selektoren
+  greifen per [class*="…"] auf den lesbaren Teil zu. Nach einem Decap-Update
+  kann sich ein Name ändern -> dann hier anpassen (Version in index.html gepinnt).
+*/
+:root {
+  --mk-g: #6cb430;
+  --mk-g2: #3c8430;
+  --mk-g3: #246c30;
+  --mk-gs: rgba(108, 180, 48, 0.14);
+  --mk-bg: #0c0f0c;
+  --mk-glass: rgba(20, 24, 20, 0.72);
+  --mk-line: rgba(255, 255, 255, 0.08);
+  --mk-text: #e9ece8;
+  --mk-mut: #9aa39a;
+}
+
+body {
+  background: var(--mk-bg) !important;
+}
+
+.mg-beams {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  /* hinter allem; Decaps Container nicht anfassen (Editor nutzt absolute Positionierung) */
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(15px);
+}
+
+/* ---------- Kopfzeile ---------- */
+header[class*="AppHeader"] {
+  background: rgba(12, 15, 12, 0.78) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: none !important;
+  border-bottom: 1px solid var(--mk-line);
+}
+
+[class*="AppHeaderContent"]::before {
+  content: '';
+  width: 30px;
+  height: 30px;
+  margin-right: 14px;
+  flex: 0 0 30px;
+  background: url('/apple-touch-icon.png') center / contain no-repeat;
+}
+
+[class*="AppHeaderContent"] {
+  align-items: center;
+}
+
+[class*="AppHeaderNavLink"],
+[class*="AppHeaderButton"] {
+  color: var(--mk-mut) !important;
+  border-radius: 8px;
+}
+
+[class*="AppHeaderNavLink"]:hover,
+[class*="AppHeaderButton"]:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Decap-Klassennamen enthalten "Active" auch bei inaktiven Links ->
+   echtes Merkmal ist header-link-active / aria-current */
+[class*="AppHeaderContent"] .header-link-active,
+[class*="AppHeaderContent"] [aria-current='page'] {
+  color: var(--mk-g) !important;
+  background: var(--mk-gs) !important;
+}
+
+[class*="AppHeaderNavLink"] svg,
+[class*="AppHeaderButton"] svg {
+  color: inherit !important;
+}
+
+[class*="AppHeaderSiteLink"] {
+  color: var(--mk-mut) !important;
+}
+
+[class*="AppHeaderSiteLink"]:hover {
+  color: var(--mk-g) !important;
+}
+
+/* ---------- Startseite (Übersicht) ---------- */
+[class*="AppMainContainer"],
+[class*="CollectionContainer"] {
+  background: transparent !important;
+}
+
+[class*="SidebarContainer"],
+[class*="CollectionTopContainer"],
+[class*="ListCard-card"] {
+  background: var(--mk-glass) !important;
+  border: 1px solid var(--mk-line) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--mk-text);
+  border-radius: 14px !important;
+}
+
+[class*="SidebarHeading"],
+[class*="CollectionTopHeading"],
+[class*="ListCardTitle"] {
+  color: #fff !important;
+}
+
+[class*="CollectionTopDescription"] {
+  color: var(--mk-mut) !important;
+}
+
+[class*="SearchInput"] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #fff !important;
+  border-radius: 8px;
+}
+
+[class*="SearchInput"]::placeholder {
+  color: var(--mk-mut);
+}
+
+[class*="SearchContainer"] svg {
+  color: var(--mk-mut) !important;
+}
+
+[class*="SidebarNavLink"] {
+  color: var(--mk-mut) !important;
+  border-left-color: transparent !important;
+}
+
+[class*="SidebarNavLink"]:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+[class*="SidebarNavLink"].sidebar-active,
+[class*="SidebarNavLink"][aria-current='page'] {
+  color: #fff !important;
+  background: var(--mk-gs) !important;
+  border-left-color: var(--mk-g) !important;
+}
+
+[class*="SidebarNavLink"] svg {
+  color: var(--mk-g) !important;
+}
+
+[class*="ListCard-card"] {
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+[class*="ListCard-card"]:hover {
+  border-color: rgba(108, 180, 48, 0.55) !important;
+  transform: translateY(-1px);
+}
+
+[class*="ListCardLink"] {
+  color: inherit !important;
+}
+
+[class*="ViewControlsButton"] {
+  color: var(--mk-mut) !important;
+}
+
+[class*="ViewControlsButton"]:hover {
+  color: var(--mk-g) !important;
+}
+
+/* ---------- Editor: Werkzeugleiste + Knöpfe in Markenfarbe ---------- */
+[class*="ToolbarContainer"] {
+  background: rgba(12, 15, 12, 0.92) !important;
+  border-bottom: 1px solid var(--mk-line);
+  box-shadow: none !important;
+  color: var(--mk-text);
+}
+
+[class*="ToolbarSectionBackLink"],
+[class*="BackCollection"],
+[class*="BackArrow"] {
+  color: var(--mk-text) !important;
+}
+
+[class*="ToolbarSectionBackLink"]:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+[class*="PublishButton"],
+[class*="SaveButton"] {
+  background: var(--mk-g2) !important;
+  color: #fff !important;
+}
+
+[class*="PublishButton"]:hover,
+[class*="SaveButton"]:hover {
+  background: var(--mk-g3) !important;
+}
+
+[class*="EditorContainer"] [class*="ControlPaneContainer"] {
+  padding-top: 8px;
+}
+
+button[role='switch'][aria-checked='true'] [class*="ToggleBackground"] {
+  background: var(--mk-g) !important;
+}
+
+/* ---------- Login ---------- */
+section[class*="AuthenticationPage"] {
+  background: transparent !important;
+}
+
+section[class*="AuthenticationPage"] > *:not(canvas) {
+  position: relative;
+}
+
+section[class*="AuthenticationPage"] form,
+section[class*="AuthenticationPage"] [class*="AuthForm"] {
+  background: var(--mk-glass);
+  border: 1px solid var(--mk-line);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+section[class*="AuthenticationPage"] input {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid var(--mk-line) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+}
+
+section[class*="AuthenticationPage"] input:focus {
+  border-color: var(--mk-g) !important;
+  outline: none;
+}
+
+section[class*="AuthenticationPage"] button[class*="LoginButton"] {
+  background: var(--mk-g2) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+}
+
+section[class*="AuthenticationPage"] button[class*="LoginButton"]:hover {
+  background: var(--mk-g3) !important;
+}
+
+section[class*="AuthenticationPage"] [class*="GoBackButton"],
+section[class*="AuthenticationPage"] [class*="ErrorMessage"],
+section[class*="AuthenticationPage"] p {
+  color: var(--mk-mut) !important;
+}
+
+[class*="AppHeaderContent"] [class*="IconWrapper"] {
+  color: inherit !important;
+}

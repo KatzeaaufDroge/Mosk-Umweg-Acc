@@ -42,6 +42,27 @@
     return layout === 'highlight' && index === 0 ? 'gross' : 'normal';
   }
 
+  // Eigene Layouts: Muster als Text "gross,normal,breit" (siehe galerie-vorlagen.json)
+  var VORLAGEN_URL = '/admin/galerie-vorlagen.json';
+
+  function parsePattern(str) {
+    return String(str || '')
+      .split(',')
+      .map(function (x) {
+        return x.trim();
+      })
+      .filter(function (x) {
+        return SIZE_NAME[x];
+      });
+  }
+
+  function patternMatches(items, pattern) {
+    if (!pattern.length || !items.length) return false;
+    return items.every(function (item, i) {
+      return (item.get('groesse') || 'normal') === pattern[i % pattern.length];
+    });
+  }
+
   function layoutName(id) {
     for (var i = 0; i < LAYOUTS.length; i++) if (LAYOUTS[i].id === id) return LAYOUTS[i].name;
     return 'Mosaik';
@@ -123,6 +144,11 @@
   .mg-ico{display:grid;grid-template-columns:repeat(2,11px);grid-auto-rows:11px;gap:2px}
   .mg-ico i{background:#3a423a;border-radius:2px}
   .mg-ico i.f{background:var(--g)}
+  .mg-dia.custom{grid-template-rows:none;grid-auto-rows:1fr;grid-auto-flow:row dense;align-content:start}
+  .mg-dia.custom i{min-height:0}
+  .mg-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:600;color:var(--g);text-decoration:none;background:none;border:0;padding:0}
+  .mg-link:hover{text-decoration:underline}
+  .mg-formnote{font-size:12px;color:var(--mut);margin:8px 0 0}
   .mg-help{font-size:12px;color:#8d968c;line-height:1.5;margin:0}
   .mg-help b{color:#cfd5ce}
   .mg-stage{overflow:auto;padding:28px;display:flex;justify-content:center;align-items:flex-start;background:radial-gradient(circle at 50% 0,#1b221b,#101311 70%)}
@@ -145,6 +171,15 @@
   .mg-ghost{opacity:.3}
   .mg-chosen{box-shadow:0 12px 30px rgba(0,0,0,.5)}
   .mg-none{color:#9aa39a;text-align:center;padding:40px 10px;font-size:14px}
+  .mg-ph{background:linear-gradient(135deg,#3c8430,#246c30)}
+  .mg-repeat{background:#3a3f3a;cursor:default;opacity:.55}
+  .mg-muster{background:#141814;border-radius:12px;padding:14px;color:#e9ece8}
+  .mg-mhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:13px;color:#9aa39a}
+  .mg-muster .mg-frame{max-width:380px;margin:0 auto;box-shadow:none;padding:12px}
+  .mg-muster .mg-frame.mobile{max-width:240px}
+  .mg-mtools{max-width:380px;margin:14px auto 0;display:flex;flex-direction:column;gap:12px}
+  .mg-mrow{display:flex;flex-wrap:wrap;gap:8px}
+  .mg-muster .mg-btn--ghost{color:#e9ece8}
   /* Decap erzwingt im Editor 800px Mindestbreite -> am Handy unbenutzbar */
   @media (max-width:820px){
     [class*="EditorContainer"],[class*="ToolbarContainer"]{min-width:0!important}
@@ -184,6 +219,54 @@
       { className: 'mg-dia', style: d.column ? { gridAutoFlow: 'column' } : null },
       d.cells.map(function (c, i) {
         return h('i', { key: i, style: { gridColumn: 'span ' + c[0], gridRow: 'span ' + c[1] } });
+      }),
+    );
+  }
+
+  // Skizze eines eigenen Musters (3 Spalten, Muster wiederholt bis Fläche voll)
+  var SPAN = { normal: [1, 1], breit: [2, 1], hoch: [1, 2], gross: [2, 2] };
+  function patternDiagram(pattern) {
+    var cells = [];
+    var area = 0;
+    for (var i = 0; area < 9 && pattern.length && i < 24; i++) {
+      var sz = pattern[i % pattern.length];
+      cells.push(sz);
+      area += SPAN[sz][0] * SPAN[sz][1];
+    }
+    return h(
+      'div',
+      { className: 'mg-dia custom', style: { gridTemplateRows: 'repeat(3,1fr)' } },
+      cells.map(function (sz, i) {
+        return h('i', { key: i, style: { gridColumn: 'span ' + SPAN[sz][0], gridRow: 'span ' + SPAN[sz][1] } });
+      }),
+    );
+  }
+
+  function customCards(vorlagen, items, layout, onPick) {
+    return h(
+      'div',
+      { className: 'mg-presets' },
+      vorlagen.map(function (v, idx) {
+        var pattern = parsePattern(v.muster);
+        var on = layout === 'raster' && patternMatches(items, pattern);
+        return h(
+          'button',
+          {
+            key: idx,
+            type: 'button',
+            className: 'mg-preset' + (on ? ' on' : ''),
+            onClick: function () {
+              onPick(pattern);
+            },
+          },
+          patternDiagram(pattern),
+          h(
+            'span',
+            { className: 'mg-txt' },
+            h('b', null, v.name || 'Ohne Namen', on ? h('span', { className: 'mg-check' }, '✓') : null),
+            h('small', null, pattern.length + ' Kacheln, wiederholt sich'),
+          ),
+        );
       }),
     );
   }
@@ -249,7 +332,12 @@
       window.dispatchEvent(new CustomEvent(LAYOUT_CHANGED, { detail: id }));
     },
     render: function () {
-      return h('div', { className: 'mg' }, presetCards(this.props.value || 'mosaik', this.pick));
+      return h(
+        'div',
+        { className: 'mg' },
+        presetCards(this.props.value || 'mosaik', this.pick),
+        h('p', { className: 'mg-formnote' }, 'Eigene Layouts findest du unter „Layout bearbeiten“.'),
+      );
     },
   });
 
@@ -263,6 +351,7 @@
         selected: null,
         mobile: false,
         urls: {},
+        vorlagen: [],
         layout: (entry && entry.getIn(['data', 'layout'])) || 'mosaik',
       };
     },
@@ -296,6 +385,36 @@
       document.body.style.overflow = 'hidden';
       // am Handy direkt die Handy-Ansicht zeigen
       this.setState({ open: true, selected: null, mobile: window.innerWidth < 860 });
+      this.loadVorlagen();
+    },
+
+    loadVorlagen: function () {
+      var self = this;
+      fetch(VORLAGEN_URL, { cache: 'no-store' })
+        .then(function (r) {
+          return r.ok ? r.json() : { vorlagen: [] };
+        })
+        .then(function (data) {
+          var all = (data && data.vorlagen) || [];
+          self.setState({
+            vorlagen: all.filter(function (v) {
+              return parsePattern(v.muster).length > 0;
+            }),
+          });
+        })
+        .catch(function () {});
+    },
+
+    // Eigenes Muster anwenden: Vorlage "Raster" + Größen der Reihe nach setzen
+    applyPattern: function (pattern) {
+      if (!pattern.length || !this.props.value) return;
+      window.dispatchEvent(new CustomEvent(LAYOUT_SET, { detail: 'raster' }));
+      this.props.onChange(
+        this.props.value.map(function (item, i) {
+          return item.set('groesse', pattern[i % pattern.length]);
+        }),
+      );
+      this.setState({ selected: null });
     },
 
     close: function () {
@@ -543,6 +662,19 @@
             'aside',
             { className: 'mg-side' },
             h('section', null, h('h3', null, 'Vorlage'), presetCards(layout, this.pickLayout)),
+            h(
+              'section',
+              null,
+              h('h3', null, 'Eigene Layouts'),
+              this.state.vorlagen.length
+                ? customCards(this.state.vorlagen, items, layout, this.applyPattern)
+                : h('p', { className: 'mg-empty-note' }, 'Noch keine eigenen Layouts.'),
+              h(
+                'a',
+                { className: 'mg-link', href: '#/collections/layouts/entries/vorlagen' },
+                '+ Eigene Layouts anlegen und bearbeiten',
+              ),
+            ),
             h('section', null, h('h3', null, 'Ausgewähltes Bild'), this.renderSelected(items, layout)),
             h(
               'section',
@@ -608,6 +740,203 @@
     },
   });
 
+  /* ---------- Muster-Editor für eigene Layouts ---------- */
+
+  var DEMO_TILES = 9;
+
+  var MusterControl = createClass({
+    getInitialState: function () {
+      return { selected: null, mobile: false };
+    },
+
+    componentDidMount: function () {
+      this.initSortable();
+    },
+
+    componentDidUpdate: function () {
+      if (this.gridEl !== this.sortableEl) this.initSortable();
+    },
+
+    componentWillUnmount: function () {
+      if (this.sortable) this.sortable.destroy();
+    },
+
+    pattern: function () {
+      var p = parsePattern(this.props.value);
+      return p.length ? p : ['normal'];
+    },
+
+    save: function (pattern) {
+      this.props.onChange(pattern.join(','));
+    },
+
+    initSortable: function () {
+      if (this.sortable) {
+        this.sortable.destroy();
+        this.sortable = null;
+      }
+      this.sortableEl = this.gridEl;
+      if (!this.gridEl || !Sortable) return;
+      var self = this;
+      this.sortable = Sortable.create(this.gridEl, {
+        animation: 160,
+        ghostClass: 'mg-ghost',
+        chosenClass: 'mg-chosen',
+        delay: 200,
+        delayOnTouchOnly: true,
+        // nur echte Muster-Kacheln verschieben, nicht die grauen Wiederholungen
+        draggable: '.mg-tile:not(.mg-repeat)',
+        onEnd: function (evt) {
+          var from = evt.oldDraggableIndex;
+          var to = evt.newDraggableIndex;
+          if (from === to || from == null || to == null) return;
+          var parent = evt.from;
+          parent.removeChild(evt.item);
+          parent.insertBefore(evt.item, parent.children[evt.oldIndex] || null);
+          var p = self.pattern().slice();
+          var moved = p.splice(from, 1)[0];
+          p.splice(to, 0, moved);
+          self.save(p);
+          self.setState({ selected: to });
+        },
+      });
+    },
+
+    render: function () {
+      var self = this;
+      var pattern = this.pattern();
+      var sel = this.state.selected !== null && this.state.selected < pattern.length ? this.state.selected : null;
+      var mobile = this.state.mobile;
+      var total = Math.max(DEMO_TILES, pattern.length);
+
+      var tiles = [];
+      for (var i = 0; i < total; i++) {
+        var own = i < pattern.length;
+        var size = pattern[i % pattern.length];
+        tiles.push(
+          h(
+            'div',
+            {
+              key: i,
+              className:
+                'mg-tile mg-ph mg-tile--' + size + (own ? '' : ' mg-repeat') + (own && sel === i ? ' sel' : ''),
+              onClick: own
+                ? (function (idx) {
+                    return function () {
+                      self.setState({ selected: sel === idx ? null : idx });
+                    };
+                  })(i)
+                : null,
+            },
+            h('span', { className: 'mg-num' }, own ? String(i + 1) : '↻'),
+            size !== 'normal' ? h('span', { className: 'mg-badge' }, SIZE_NAME[size]) : null,
+          ),
+        );
+      }
+
+      var sizeButtons =
+        sel !== null
+          ? h(
+              'div',
+              { className: 'mg-sizes' },
+              SIZES.map(function (s) {
+                return h(
+                  'button',
+                  {
+                    key: s.id,
+                    type: 'button',
+                    className: 'mg-size' + (pattern[sel] === s.id ? ' on' : ''),
+                    onClick: function () {
+                      var p = pattern.slice();
+                      p[sel] = s.id;
+                      self.save(p);
+                    },
+                  },
+                  sizeIcon(s.id),
+                  s.name,
+                );
+              }),
+            )
+          : h('p', { className: 'mg-empty-note' }, 'Kachel antippen, um ihre Größe zu wählen. Ziehen zum Umsortieren.');
+
+      var tools = h(
+        'div',
+        { className: 'mg-mtools' },
+        sizeButtons,
+        h(
+          'div',
+          { className: 'mg-mrow' },
+          h(
+            'button',
+            {
+              type: 'button',
+              className: 'mg-btn mg-btn--primary',
+              onClick: function () {
+                var p = pattern.concat(['normal']);
+                self.save(p);
+                self.setState({ selected: p.length - 1 });
+              },
+            },
+            '+ Kachel',
+          ),
+          sel !== null && pattern.length > 1
+            ? h(
+                'button',
+                {
+                  type: 'button',
+                  className: 'mg-btn mg-btn--ghost',
+                  onClick: function () {
+                    var p = pattern.slice();
+                    p.splice(sel, 1);
+                    self.save(p);
+                    self.setState({ selected: null });
+                  },
+                },
+                'Kachel ' + (sel + 1) + ' entfernen',
+              )
+            : null,
+        ),
+      );
+
+      return h(
+        'div',
+        { className: 'mg mg-muster' },
+        h(
+          'div',
+          { className: 'mg-mhead' },
+          h('span', null, pattern.length + (pattern.length === 1 ? ' Kachel' : ' Kacheln') + ' · grau = Wiederholung'),
+          h(
+            'div',
+            { className: 'mg-seg' },
+            h('button', { type: 'button', className: mobile ? '' : 'on', onClick: function () { self.setState({ mobile: false }); } }, 'Computer'),
+            h('button', { type: 'button', className: mobile ? 'on' : '', onClick: function () { self.setState({ mobile: true }); } }, 'Handy'),
+          ),
+        ),
+        h(
+          'div',
+          { className: 'mg-frame' + (mobile ? ' mobile' : '') },
+          h(
+            'div',
+            { className: 'mg-wrap' },
+            h(
+              'div',
+              {
+                className: 'mg-grid',
+                style: { '--cols': mobile ? 2 : 3 },
+                ref: function (el) {
+                  self.gridEl = el;
+                },
+              },
+              tiles,
+            ),
+          ),
+        ),
+        tools,
+      );
+    },
+  });
+
   CMS.registerWidget('galerie', GalerieControl, list.preview);
+  CMS.registerWidget('vorlage-muster', MusterControl);
   CMS.registerWidget('galerie-layout', LayoutControl, select.preview);
 })();

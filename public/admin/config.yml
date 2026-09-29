@@ -164,3 +164,29 @@ collections:
                 required: false
                 hint: 'Was ist zu sehen? z.B. „DJ auf der Hauptbühne" – hilft bei Google.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
+
+  - name: layouts
+    label: Eigene Layouts
+    description: >
+      Eigene Layout-Muster anlegen. Sie erscheinen danach in jeder Galerie-Kategorie
+      unter „Layout bearbeiten“ (nach dem Veröffentlichen, ca. 1–2 Minuten).
+    editor:
+      preview: false
+    files:
+      - name: vorlagen
+        label: Meine Layouts
+        file: public/admin/galerie-vorlagen.json
+        fields:
+          - name: vorlagen
+            label: Layouts
+            label_singular: Layout
+            widget: list
+            add_to_top: true
+            collapsed: false
+            summary: '{{fields.name}}'
+            fields:
+              - { name: name, label: Name, widget: string, hint: 'z.B. „Event groß“' }
+              - name: muster
+                label: Muster
+                widget: vorlage-muster
+                default: 'gross,normal,normal,normal,normal,breit'

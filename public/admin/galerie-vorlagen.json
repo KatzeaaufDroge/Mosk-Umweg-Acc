@@ -1,0 +1,8 @@
+{
+  "vorlagen": [
+    {
+      "name": "Wechselnd (Beispiel)",
+      "muster": "gross,normal,normal,normal,normal,breit"
+    }
+  ]
+}
