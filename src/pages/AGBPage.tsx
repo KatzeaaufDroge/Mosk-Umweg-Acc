@@ -96,7 +96,7 @@ export default function AGBPage() {
                 className={
                   selectedLanguage === lang
                     ? "min-w-[140px] transition-all duration-200 bg-black text-white hover:bg-black border-0"
-                    : "min-w-[140px] transition-all duration-200 bg-[#22c55e] text-black hover:bg-[#16a34a] border-0"
+                    : "min-w-[140px] transition-all duration-200 bg-brand text-black hover:bg-brand-dark border-0"
                 }
               >
                 {languageLabels[lang]}

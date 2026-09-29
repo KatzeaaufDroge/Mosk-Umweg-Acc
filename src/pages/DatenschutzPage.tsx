@@ -88,7 +88,7 @@ export default function DatenschutzPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col items-center space-y-6">
           <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-[#22c55e]" />
+            <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-brand" />
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center">
               Datenschutz / Privacy Policy
             </h1>
@@ -108,7 +108,7 @@ export default function DatenschutzPage() {
                 className={
                   selectedLanguage === lang.code
                     ? "min-w-[140px] transition-all duration-200 bg-black text-white hover:bg-black border-0"
-                    : "min-w-[140px] transition-all duration-200 bg-[#22c55e] text-black hover:bg-[#16a34a] border-0"
+                    : "min-w-[140px] transition-all duration-200 bg-brand text-black hover:bg-brand-dark border-0"
                 }
               >
                 {lang.label}
@@ -117,10 +117,10 @@ export default function DatenschutzPage() {
           </div>
         </div>
 
-        <Card className="border-2 border-[#22c55e]/20 shadow-lg bg-neutral-900">
-          <CardHeader className="bg-gradient-to-r from-[#22c55e]/10 to-transparent">
+        <Card className="border-2 border-brand/20 shadow-lg bg-neutral-900">
+          <CardHeader className="bg-gradient-to-r from-brand/10 to-transparent">
             <div className="flex items-start gap-3">
-              <Info className="w-5 h-5 sm:w-6 sm:h-6 text-[#22c55e] mt-1 flex-shrink-0" />
+              <Info className="w-5 h-5 sm:w-6 sm:h-6 text-brand mt-1 flex-shrink-0" />
               <div>
                 <CardTitle className="text-xl sm:text-2xl md:text-3xl text-white">
                   {currentContent.title}
@@ -132,7 +132,7 @@ export default function DatenschutzPage() {
             </div>
           </CardHeader>
           <CardContent className="pt-6">
-            <ScrollArea className="h-[500px] sm:h-[600px] w-full rounded-lg border-2 border-[#22c55e]/20 p-4 sm:p-6 bg-neutral-800/30">
+            <ScrollArea className="h-[500px] sm:h-[600px] w-full rounded-lg border-2 border-brand/20 p-4 sm:p-6 bg-neutral-800/30">
               <div className="space-y-4 sm:space-y-6">
                 {currentContent.content.map((paragraph, index) => {
                   const colonIndex = paragraph.indexOf(':');

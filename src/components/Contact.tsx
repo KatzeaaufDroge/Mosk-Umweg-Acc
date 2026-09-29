@@ -94,7 +94,7 @@ export default function Contact() {
     <section id="contact" className="py-24 bg-[#262626]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#22c55e] mb-3 sm:mb-4 uppercase tracking-widest">Kontakt aufnehmen</h2>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-brand mb-3 sm:mb-4 uppercase tracking-widest">Kontakt aufnehmen</h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
@@ -268,7 +268,7 @@ export default function Contact() {
 
               <p className="text-xs sm:text-sm text-gray-400 text-center leading-relaxed">
                 Mit dem Absenden des Formulars erkläre ich mich mit der Verarbeitung meiner personenbezogenen Daten zur Bearbeitung meiner Anfrage gemäß der{' '}
-                <Link to="/datenschutz" className="text-[#22c55e] hover:text-[#16a34a] underline transition-colors">
+                <Link to="/datenschutz" className="text-brand hover:text-brand-dark underline transition-colors">
                   Datenschutzerklärung
                 </Link>{' '}
                 einverstanden

@@ -9,7 +9,7 @@ interface ServiceHeroProps {
 export function ServiceHero({ title, subtitle, children }: ServiceHeroProps) {
   return (
     <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-[#22c55e] mb-4 sm:mb-6">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brand mb-4 sm:mb-6">
         {title}
       </h1>
       {subtitle && (

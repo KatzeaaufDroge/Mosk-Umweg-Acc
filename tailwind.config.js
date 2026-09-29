@@ -4,6 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Grün aus dem Mosk-Logo – überall für Grün verwenden
+        brand: {
+          DEFAULT: '#6cb430',
+          dark: '#5a9a26',
+        },
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

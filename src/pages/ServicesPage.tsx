@@ -38,46 +38,46 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 max-w-5xl mx-auto">
             <button
               onClick={handlePrivateCustomers}
-              className="group relative bg-[#171717] hover:bg-gradient-to-br hover:from-[#242424] hover:to-[#1c1c1c] rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-[#22c55e]/10 p-8 sm:p-12 text-left"
+              className="group relative bg-[#171717] hover:bg-gradient-to-br hover:from-[#242424] hover:to-[#1c1c1c] rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-brand/10 p-8 sm:p-12 text-left"
             >
               <div className="relative z-10">
-                <div className="bg-[#22c55e] w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-brand w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform duration-300">
                   <Users className="text-black" size={32} />
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-[#22c55e] transition-colors duration-300">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-brand transition-colors duration-300">
                   Für Privatkunden
                 </h2>
                 <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8">
                   Event-Fotografie, Event-Videografie und professionelles Editing für Festivals, Konzerte, Hochzeiten und private Veranstaltungen.
                 </p>
-                <div className="inline-flex items-center gap-2 text-[#22c55e] font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
+                <div className="inline-flex items-center gap-2 text-brand font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
                   Services ansehen
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/0 to-[#22c55e]/0 group-hover:from-[#22c55e]/5 group-hover:to-[#22c55e]/10 transition-all duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-br from-brand/0 to-brand/0 group-hover:from-brand/5 group-hover:to-brand/10 transition-all duration-300" />
             </button>
 
             <button
               onClick={handleBusinessCustomers}
-              className="group relative bg-[#171717] hover:bg-gradient-to-br hover:from-[#242424] hover:to-[#1c1c1c] rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-[#22c55e]/10 p-8 sm:p-12 text-left"
+              className="group relative bg-[#171717] hover:bg-gradient-to-br hover:from-[#242424] hover:to-[#1c1c1c] rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-brand/10 p-8 sm:p-12 text-left"
             >
               <div className="relative z-10">
-                <div className="bg-[#22c55e] w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-brand w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform duration-300">
                   <Briefcase className="text-black" size={32} />
                 </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-[#22c55e] transition-colors duration-300">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-brand transition-colors duration-300">
                   Für Unternehmen
                 </h2>
                 <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8">
                   Business-Fotografie, Imagefilme, Werbevideos und professionelle Nachbearbeitung für Ihr Unternehmen und Ihre Marke.
                 </p>
-                <div className="inline-flex items-center gap-2 text-[#22c55e] font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
+                <div className="inline-flex items-center gap-2 text-brand font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
                   Services ansehen
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-[#22c55e]/0 to-[#22c55e]/0 group-hover:from-[#22c55e]/5 group-hover:to-[#22c55e]/10 transition-all duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-br from-brand/0 to-brand/0 group-hover:from-brand/5 group-hover:to-brand/10 transition-all duration-300" />
             </button>
           </div>
         </BlurFade>

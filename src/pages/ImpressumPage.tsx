@@ -70,13 +70,13 @@ export default function ImpressumPage() {
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/agb"
-                className="inline-flex items-center px-6 py-3 bg-[#22c55e] text-black font-semibold rounded-lg hover:bg-[#16a34a] transition-all duration-300 text-sm sm:text-base"
+                className="inline-flex items-center px-6 py-3 bg-brand text-black font-semibold rounded-lg hover:bg-brand-dark transition-all duration-300 text-sm sm:text-base"
               >
                 AGB
               </Link>
               <Link
                 to="/datenschutz"
-                className="inline-flex items-center px-6 py-3 bg-[#22c55e] text-black font-semibold rounded-lg hover:bg-[#16a34a] transition-all duration-300 text-sm sm:text-base"
+                className="inline-flex items-center px-6 py-3 bg-brand text-black font-semibold rounded-lg hover:bg-brand-dark transition-all duration-300 text-sm sm:text-base"
               >
                 Datenschutzerklärung
               </Link>
