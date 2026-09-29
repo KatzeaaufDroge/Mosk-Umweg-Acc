@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { Button } from '../components/ui/button';
+import { Scale, Globe, Info } from 'lucide-react';
 import { Seo } from '../components/Seo';
 
 type Language = 'de' | 'en' | 'fr';
@@ -26,7 +27,7 @@ const contentByLanguage: Record<Language, ContentData> = {
       '7. Nutzungsrechte: Sofern nicht anders vereinbart, erhält der Auftraggeber ein einfaches, nicht übertragbares Nutzungsrecht für den vereinbarten Zweck. Eine Bearbeitung, Veränderung, Weitergabe oder sonstige Abänderung der gelieferten Werke ist ohne vorherige schriftliche Zustimmung des Auftragnehmers nicht gestattet.',
       '8. Referenzen: Der Auftragnehmer ist berechtigt, Arbeiten nur nach vorheriger Zustimmung des Auftraggebers als Referenz zu verwenden.',
       '9. Haftung: Der Auftragnehmer haftet nur bei Vorsatz oder grober Fahrlässigkeit. Bei leichter Fahrlässigkeit ist die Haftung auf den vorhersehbaren, vertragstypischen Schaden begrenzt.',
-      '10. Gerichtsstand und anwendbares Recht: Es gilt belgisches Recht. Gerichtsstand ist St. Vith (Belgien). Sollte dieser gesetzlich nicht zuständig oder nicht verfügbar sein, gilt der gesetzlich zuständige Gerichtsstand.',
+      '10. Gerichtsstand und anwendbares Recht: Es gilt belgisches Recht. Gerichtsstand ist Eupen (Belgien). Sollte dieser gesetzlich nicht zuständig oder nicht verfügbar sein, gilt der gesetzlich zuständige Gerichtsstand.',
     ],
   },
   en: {
@@ -42,7 +43,7 @@ const contentByLanguage: Record<Language, ContentData> = {
       '7. Usage rights: Usage rights are limited to the agreed purpose. Any modification, alteration, transfer or adaptation of the delivered works is prohibited without prior written consent of the contractor.',
       '8. References: Use of work as reference is permitted only with prior consent of the client.',
       '9. Liability: Liability is limited to intent and gross negligence.',
-      '10. Applicable law and jurisdiction: Belgian law applies. Jurisdiction: St. Vith (Belgium). If this court is not legally competent or available, the legally competent court shall apply.',
+      '10. Applicable law and jurisdiction: Belgian law applies. Jurisdiction: Eupen (Belgium). If this court is not legally competent or available, the legally competent court shall apply.',
     ],
   },
   fr: {
@@ -58,7 +59,7 @@ const contentByLanguage: Record<Language, ContentData> = {
       '7. Droits d\'utilisation: Les droits d\'utilisation sont limités à l\'usage convenu. Toute modification, adaptation, transmission ou altération des œuvres livrées est interdite sans l\'accord écrit préalable du prestataire.',
       '8. Références: L\'utilisation des travaux comme référence n\'est autorisée qu\'après accord préalable du client.',
       '9. Responsabilité: La responsabilité est limitée aux cas de faute lourde ou intentionnelle.',
-      '10. Droit applicable et juridiction: Droit belge – tribunal compétent : St. Vith (Belgique). À défaut, le tribunal légalement compétent sera d\'application.',
+      '10. Droit applicable et juridiction: Droit belge – tribunal compétent : Eupen (Belgique). À défaut, le tribunal légalement compétent sera d\'application.',
     ],
   },
 };
@@ -81,13 +82,21 @@ export default function AGBPage() {
         description="Allgemeine Geschäftsbedingungen von Mosk Unlimited, St. Vith, Belgien."
         path="/agb"
       />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col items-center space-y-6">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center whitespace-nowrap">
-            AGB / Terms & Conditions / Conditions Générales
-          </h1>
+          <div className="flex items-center gap-3">
+            <Scale className="w-8 h-8 sm:w-10 sm:h-10 text-brand" />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center">
+              AGB / Terms & Conditions
+            </h1>
+          </div>
 
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex items-center gap-2 text-gray-400">
+            <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-xs sm:text-sm">Choose your language:</span>
+          </div>
+
+          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
             {(Object.keys(languageLabels) as Language[]).map((lang) => (
               <Button
                 key={lang}
@@ -105,19 +114,26 @@ export default function AGBPage() {
           </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl sm:text-3xl">{currentContent.title}</CardTitle>
-            <CardDescription className="text-base">
-              {currentContent.description}
-            </CardDescription>
+        <Card className="border-2 border-brand/20 shadow-lg bg-neutral-900">
+          <CardHeader className="bg-gradient-to-r from-brand/10 to-transparent">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 sm:w-6 sm:h-6 text-brand mt-1 flex-shrink-0" />
+              <div>
+                <CardTitle className="text-xl sm:text-2xl md:text-3xl text-white">
+                  {currentContent.title}
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base mt-2 text-gray-400">
+                  {currentContent.description}
+                </CardDescription>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[500px] w-full rounded-md border border-neutral-800 p-4 bg-neutral-950">
-              <div className="space-y-6">
+          <CardContent className="pt-6">
+            <ScrollArea className="h-[500px] sm:h-[600px] w-full rounded-lg border-2 border-brand/20 p-4 sm:p-6 bg-neutral-800/30">
+              <div className="space-y-4 sm:space-y-6">
                 {currentContent.content.map((paragraph, index) => {
                   const colonIndex = paragraph.indexOf(':');
-                  const hasHeader = colonIndex > 0 && colonIndex < 50;
+                  const hasHeader = colonIndex > 0 && colonIndex < 100;
 
                   if (hasHeader) {
                     const header = paragraph.substring(0, colonIndex);
@@ -128,7 +144,7 @@ export default function AGBPage() {
                         <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
                           {header}:
                         </h3>
-                        <p className="text-gray-300 leading-relaxed text-sm sm:text-base ml-4">
+                        <p className="text-gray-300 leading-relaxed text-sm sm:text-base ml-4 whitespace-pre-line">
                           {content}
                         </p>
                       </div>
