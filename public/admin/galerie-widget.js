@@ -148,6 +148,9 @@
   .mg-dia.custom i{min-height:0}
   .mg-link{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:13px;font-weight:600;color:var(--g);text-decoration:none;background:none;border:0;padding:0}
   .mg-link:hover{text-decoration:underline}
+  .mg-h3row{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .mg-h3row h3{margin-bottom:10px}
+  .mg-refresh{margin-top:0;font-size:12px;cursor:pointer}
   .mg-formnote{font-size:12px;color:var(--mut);margin:8px 0 0}
   .mg-help{font-size:12px;color:#8d968c;line-height:1.5;margin:0}
   .mg-help b{color:#cfd5ce}
@@ -665,14 +668,28 @@
             h(
               'section',
               null,
-              h('h3', null, 'Eigene Layouts'),
+              h(
+                'div',
+                { className: 'mg-h3row' },
+                h('h3', null, 'Eigene Layouts'),
+                h(
+                  'button',
+                  { type: 'button', className: 'mg-link mg-refresh', onClick: this.loadVorlagen, title: 'Neu angelegte Layouts laden' },
+                  '↻ Aktualisieren',
+                ),
+              ),
               this.state.vorlagen.length
                 ? customCards(this.state.vorlagen, items, layout, this.applyPattern)
                 : h('p', { className: 'mg-empty-note' }, 'Noch keine eigenen Layouts.'),
               h(
                 'a',
-                { className: 'mg-link', href: '#/collections/layouts/entries/vorlagen' },
-                '+ Eigene Layouts anlegen und bearbeiten',
+                {
+                  className: 'mg-link',
+                  href: '/admin/index.html#/collections/layouts/entries/vorlagen',
+                  target: '_blank',
+                  rel: 'noopener',
+                },
+                '+ Eigene Layouts anlegen (neuer Tab)',
               ),
             ),
             h('section', null, h('h3', null, 'Ausgewähltes Bild'), this.renderSelected(items, layout)),
