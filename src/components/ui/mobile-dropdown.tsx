@@ -74,8 +74,8 @@ export function MobileDropdown({ items, activeSection }: MobileDropdownProps) {
 
               const itemClassName = `w-full px-4 py-3 flex items-center gap-3 transition-colors ${
                 isActive
-                  ? 'bg-white/10 text-white'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  ? 'bg-brand/15 text-white'
+                  : 'text-white/60 hover:text-white hover:bg-brand/10'
               }`
 
               const content = (
