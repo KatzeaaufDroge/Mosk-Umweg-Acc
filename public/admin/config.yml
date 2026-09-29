@@ -53,7 +53,7 @@ collections:
               - { label: 'Mosaik – Bilder im natürlichen Format, versetzt', value: mosaik }
               - { label: 'Raster – gleichmäßig, einzelne Bilder größer möglich', value: raster }
               - { label: 'Highlight – erstes Bild groß, Rest im Raster', value: highlight }
-            hint: Vorlage wählen, dann unten in der Vorschau per Ziehen und Antippen anpassen.
+            hint: Vorlage antippen. Reihenfolge und Größen einzelner Bilder unten über „Layout bearbeiten“.
           - name: bilder
             label: Bilder
             label_singular: Bild
@@ -85,7 +85,7 @@ collections:
               - { label: 'Mosaik – Bilder im natürlichen Format, versetzt', value: mosaik }
               - { label: 'Raster – gleichmäßig, einzelne Bilder größer möglich', value: raster }
               - { label: 'Highlight – erstes Bild groß, Rest im Raster', value: highlight }
-            hint: Vorlage wählen, dann unten in der Vorschau per Ziehen und Antippen anpassen.
+            hint: Vorlage antippen. Reihenfolge und Größen einzelner Bilder unten über „Layout bearbeiten“.
           - name: bilder
             label: Bilder
             label_singular: Bild
@@ -117,7 +117,7 @@ collections:
               - { label: 'Mosaik – Bilder im natürlichen Format, versetzt', value: mosaik }
               - { label: 'Raster – gleichmäßig, einzelne Bilder größer möglich', value: raster }
               - { label: 'Highlight – erstes Bild groß, Rest im Raster', value: highlight }
-            hint: Vorlage wählen, dann unten in der Vorschau per Ziehen und Antippen anpassen.
+            hint: Vorlage antippen. Reihenfolge und Größen einzelner Bilder unten über „Layout bearbeiten“.
           - name: bilder
             label: Bilder
             label_singular: Bild
@@ -149,7 +149,7 @@ collections:
               - { label: 'Mosaik – Bilder im natürlichen Format, versetzt', value: mosaik }
               - { label: 'Raster – gleichmäßig, einzelne Bilder größer möglich', value: raster }
               - { label: 'Highlight – erstes Bild groß, Rest im Raster', value: highlight }
-            hint: Vorlage wählen, dann unten in der Vorschau per Ziehen und Antippen anpassen.
+            hint: Vorlage antippen. Reihenfolge und Größen einzelner Bilder unten über „Layout bearbeiten“.
           - name: bilder
             label: Bilder
             label_singular: Bild
