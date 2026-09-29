@@ -96,7 +96,8 @@ header[class*="AppHeader"] {
 
 [class*="SidebarContainer"],
 [class*="CollectionTopContainer"],
-[class*="ListCard-card"] {
+[class*="ListCard-card"],
+[class*="GridCard-card"] {
   background: var(--mk-glass) !important;
   border: 1px solid var(--mk-line) !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
@@ -108,7 +109,8 @@ header[class*="AppHeader"] {
 
 [class*="SidebarHeading"],
 [class*="CollectionTopHeading"],
-[class*="ListCardTitle"] {
+[class*="ListCardTitle"],
+[class*="CardHeading"] {
   color: #fff !important;
 }
 
@@ -151,17 +153,37 @@ header[class*="AppHeader"] {
   color: var(--mk-g) !important;
 }
 
-[class*="ListCard-card"] {
-  transition: border-color 0.15s, transform 0.15s;
+[class*="ListCard-card"],
+[class*="GridCard-card"] {
+  overflow: hidden;
+  transition: border-color 0.15s, transform 0.15s, background-color 0.15s;
 }
 
-[class*="ListCard-card"]:hover {
+[class*="ListCard-card"]:hover,
+[class*="GridCard-card"]:hover {
   border-color: rgba(108, 180, 48, 0.55) !important;
+  background: rgba(30, 38, 30, 0.85) !important;
   transform: translateY(-1px);
 }
 
-[class*="ListCardLink"] {
+/* Decap färbt beim Hover den Link-Bereich weiß -> transparent halten */
+[class*="ListCardLink"],
+[class*="ListCardLink"]:hover,
+[class*="GridCardLink"],
+[class*="GridCardLink"]:hover,
+[class*="CardBody"] {
   color: inherit !important;
+  background: transparent !important;
+}
+
+[class*="ListCardLink"]:hover [class*="ListCardTitle"],
+[class*="GridCardLink"]:hover [class*="CardHeading"] {
+  color: var(--mk-g) !important;
+}
+
+/* Kachel-Ansicht: Decaps weißer Verlauf am Kartenende */
+[class*="CardBody"]::after {
+  display: none !important;
 }
 
 [class*="ViewControlsButton"] {
