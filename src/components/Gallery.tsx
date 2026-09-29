@@ -2,7 +2,16 @@ import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Masonry from 'react-masonry-css';
 import { BlurFade } from './ui/blur-fade';
-import { visibleGalleryItems as galleryItems, optimizedSrc, optimizedSrcSet, type GalleryItem } from '../data/gallery';
+import {
+  visibleGalleryCategories,
+  optimizedSrc,
+  optimizedSrcSet,
+  type GalleryCategory,
+  type GalleryItem,
+} from '../data/gallery';
+
+// Alle sichtbaren Bilder in Anzeige-Reihenfolge, damit die Lightbox kategorieübergreifend blättert
+const galleryItems: GalleryItem[] = visibleGalleryCategories.flatMap((c) => c.items);
 
 interface LightboxProps {
   item: GalleryItem;
@@ -86,6 +95,80 @@ function Lightbox({ item, index, total, onClose, onNext, onPrev }: LightboxProps
   );
 }
 
+interface TileProps {
+  item: GalleryItem;
+  onOpen: () => void;
+  fill: boolean;
+}
+
+// Bild-Kachel. fill = Kachel füllt eine feste Rasterzelle (object-cover),
+// sonst natürliche Höhe (Mosaik).
+function Tile({ item, onOpen, fill }: TileProps) {
+  const big = item.size !== 'normal';
+  return (
+    <div
+      onClick={onOpen}
+      className={`group relative overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-lg transition-shadow duration-300 ${
+        fill ? `gallery-tile gallery-tile--${item.size}` : 'mb-4 sm:mb-5 lg:mb-6'
+      }`}
+    >
+      <img
+        src={optimizedSrc(item.src, big ? 1400 : 900)}
+        srcSet={optimizedSrcSet(item.src, [480, 900, 1400, 2000])}
+        sizes={
+          big
+            ? '(min-width: 1024px) 66vw, 100vw'
+            : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'
+        }
+        alt={item.alt}
+        className={`w-full transition-transform duration-300 group-hover:scale-105 ${
+          fill ? 'h-full object-cover' : 'h-auto object-contain'
+        }`}
+        loading="lazy"
+        decoding="async"
+      />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 group-hover:bg-white/30 transition-colors">
+          <ChevronRight size={24} className="text-white" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface CategoryGridProps {
+  category: GalleryCategory;
+  offset: number;
+  onOpen: (index: number) => void;
+}
+
+function CategoryGrid({ category, offset, onOpen }: CategoryGridProps) {
+  if (category.layout === 'mosaik') {
+    return (
+      <Masonry
+        breakpointCols={{ default: 3, 1024: 2, 640: 1 }}
+        className="masonry-grid"
+        columnClassName="masonry-grid-column"
+      >
+        {category.items.map((item, i) => (
+          <Tile key={`${item.src}-${i}`} item={item} fill={false} onOpen={() => onOpen(offset + i)} />
+        ))}
+      </Masonry>
+    );
+  }
+
+  return (
+    <div className="gallery-grid-wrap">
+      <div className="gallery-grid">
+        {category.items.map((item, i) => (
+          <Tile key={`${item.src}-${i}`} item={item} fill onOpen={() => onOpen(offset + i)} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Gallery() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -100,6 +183,9 @@ export default function Gallery() {
       setSelectedIndex(selectedIndex - 1);
     }
   };
+
+  const showCategoryTitles = visibleGalleryCategories.length > 1;
+  let offset = 0;
 
   return (
     <section className="relative pt-32 sm:pt-40 pb-16 sm:pb-24 overflow-hidden" style={{ backgroundColor: '#262626' }}>
@@ -116,35 +202,20 @@ export default function Gallery() {
         </BlurFade>
 
         <BlurFade delay={0.5} inView sessionKey="gallery-grid">
-          <Masonry
-            breakpointCols={{ default: 3, 1024: 2, 640: 1 }}
-            className="masonry-grid"
-            columnClassName="masonry-grid-column"
-          >
-            {galleryItems.map((item, index) => (
-              <div
-                key={`${item.src}-${index}`}
-                onClick={() => setSelectedIndex(index)}
-                className="group relative overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-lg transition-shadow duration-300 mb-4 sm:mb-5 lg:mb-6"
-              >
-                <img
-                  src={optimizedSrc(item.src, 900)}
-                  srcSet={optimizedSrcSet(item.src, [480, 900, 1400])}
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  alt={item.alt}
-                  className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="bg-white/20 backdrop-blur-sm rounded-full p-3 group-hover:bg-white/30 transition-colors">
-                    <ChevronRight size={24} className="text-white" />
-                  </div>
+          <div className="space-y-12 sm:space-y-16">
+            {visibleGalleryCategories.map((category) => {
+              const start = offset;
+              offset += category.items.length;
+              return (
+                <div key={category.id}>
+                  {showCategoryTitles && (
+                    <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8">{category.title}</h2>
+                  )}
+                  <CategoryGrid category={category} offset={start} onOpen={setSelectedIndex} />
                 </div>
-              </div>
-            ))}
-          </Masonry>
+              );
+            })}
+          </div>
         </BlurFade>
 
       </div>

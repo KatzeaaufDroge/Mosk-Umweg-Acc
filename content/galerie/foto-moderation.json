@@ -1,5 +1,6 @@
 {
   "title": "Moderation",
   "sichtbar": false,
+  "layout": "mosaik",
   "bilder": []
 }
