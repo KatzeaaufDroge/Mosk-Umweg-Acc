@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { AnimatePresence, LayoutGroup, MotionConfig, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { Service } from '../../data/services';
+import { ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
+import type { IdealFor, Service } from '../../data/services';
 import { ServiceCard } from './service-card';
 import { useContactWithPrefill, type ContactPrefill } from '../../hooks/useScrollToContact';
 import { getNavHeight } from '../../lib/utils';
@@ -12,9 +12,83 @@ interface ServiceExplorerProps {
   kundentyp: ContactPrefill['kundentyp'];
 }
 
+const OTHER: IdealFor = {
+  title: 'Etwas anderes',
+  text: 'Du hast etwas anderes im Kopf? Wähle das aus und beschreib dein Projekt kurz im Formular.',
+};
+
+// Anlass-Karte: erster Klick klappt auf (kurzer Text + "Auswählen"),
+// "Auswählen" übernimmt die Wahl ins Kontaktformular.
+function OccasionCard({
+  item,
+  open,
+  index,
+  dashed,
+  onToggle,
+  onChoose,
+}: {
+  item: IdealFor;
+  open: boolean;
+  index: number;
+  dashed?: boolean;
+  onToggle: () => void;
+  onChoose: () => void;
+}) {
+  const panelId = `anlass-${index}`;
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + index * 0.05 } }}
+      className={`rounded-xl border transition-colors duration-200 ${open ? 'sm:col-span-2 border-brand/70 bg-[#171717]' : `${dashed ? 'border-dashed border-white/15' : 'border-white/10 bg-[#171717]'} hover:border-brand/60`}`}
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="group w-full flex items-center justify-between gap-3 text-left px-5 py-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      >
+        <span className={`font-semibold text-sm sm:text-base ${dashed && !open ? 'text-gray-300' : 'text-white'}`}>
+          {item.title}
+        </span>
+        <ChevronDown
+          size={18}
+          className={`shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-brand' : 'text-gray-500 group-hover:text-brand'}`}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={panelId}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 flex flex-col sm:flex-row sm:items-end gap-4">
+              <p className="flex-1 text-gray-300 text-sm sm:text-base leading-relaxed">{item.text}</p>
+              <button
+                type="button"
+                onClick={onChoose}
+                className="group shrink-0 inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-light text-black font-bold text-sm sm:text-base rounded-lg px-5 py-3 transition-colors"
+              >
+                Auswählen
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 // Karte anklicken -> sie wandert in die Mitte, die anderen verschwinden,
-// die "Ideal für"-Punkte klappen als eigene Karten auf. Eine davon anklicken
-// springt zum Kontaktformular auf der Startseite, vorausgefüllt.
+// die "Ideal für"-Punkte klappen als eigene Karten auf. Anlass anklicken
+// zeigt einen kurzen Text, "Auswählen" springt zum Kontaktformular auf der
+// Startseite, vorausgefüllt.
 // Die Auswahl steht in der Adresse (?service=…): Zurück-Taste klappt zu,
 // und vom Kontaktformular zurück landet man wieder in der offenen Auswahl.
 export function ServiceExplorer({ services, kundentyp }: ServiceExplorerProps) {
@@ -26,6 +100,10 @@ export function ServiceExplorer({ services, kundentyp }: ServiceExplorerProps) {
 
   const selected = services.find((s) => s.id === params.get('service')) ?? null;
   const visible = selected ? [selected] : services;
+  const [openOccasion, setOpenOccasion] = useState<string | null>(null);
+
+  // Beim Wechsel des Services ist wieder alles zugeklappt
+  useEffect(() => setOpenOccasion(null), [selected?.id]);
 
   useEffect(() => {
     if (!selected) return;
@@ -101,35 +179,20 @@ export function ServiceExplorer({ services, kundentyp }: ServiceExplorerProps) {
               >
                 <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-5">Worum geht es genau?</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  {selected.idealFor.map((anlass, i) => (
-                    <motion.button
-                      key={anlass}
-                      type="button"
-                      onClick={() => requestService(selected, anlass)}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + i * 0.05 } }}
-                      className="group flex items-center justify-between gap-3 text-left bg-[#171717] border border-white/10 hover:border-brand/70 rounded-xl px-5 py-4 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                    >
-                      <span className="text-white font-semibold text-sm sm:text-base">{anlass}</span>
-                      <ArrowRight
-                        size={18}
-                        className="shrink-0 text-gray-500 group-hover:text-brand group-hover:translate-x-1 transition-all duration-200"
+                  {[...selected.idealFor, OTHER].map((item, i) => {
+                    const isOther = item === OTHER;
+                    return (
+                      <OccasionCard
+                        key={item.title}
+                        item={item}
+                        index={i}
+                        dashed={isOther}
+                        open={openOccasion === item.title}
+                        onToggle={() => setOpenOccasion(openOccasion === item.title ? null : item.title)}
+                        onChoose={() => requestService(selected, isOther ? undefined : item.title)}
                       />
-                    </motion.button>
-                  ))}
-                  <motion.button
-                    type="button"
-                    onClick={() => requestService(selected)}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + selected.idealFor.length * 0.05 } }}
-                    className="group sm:col-span-2 flex items-center justify-between gap-3 text-left border border-dashed border-white/15 hover:border-brand/70 rounded-xl px-5 py-4 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                  >
-                    <span className="text-gray-300 text-sm sm:text-base">Etwas anderes – ich beschreibe es selbst</span>
-                    <ArrowRight
-                      size={18}
-                      className="shrink-0 text-gray-500 group-hover:text-brand group-hover:translate-x-1 transition-all duration-200"
-                    />
-                  </motion.button>
+                    );
+                  })}
                 </div>
 
                 <button

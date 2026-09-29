@@ -1,9 +1,10 @@
 import { ArrowRight } from 'lucide-react';
+import type { IdealFor } from '../../data/services';
 
 interface ServiceCardProps {
   title: string;
   description: string;
-  idealFor: string[];
+  idealFor: IdealFor[];
   image: string;
   icon?: string;
   // Aufgeklappt: die "Ideal für"-Punkte stehen dann als eigene Karten darunter
@@ -33,7 +34,7 @@ export function ServiceCard({ title, description, idealFor, image, icon, expande
               <p className="mb-1">Ideal für:</p>
               <ul>
                 {idealFor.map((item) => (
-                  <li key={item}>• {item}</li>
+                  <li key={item.title}>• {item.title}</li>
                 ))}
               </ul>
             </div>
