@@ -40,7 +40,7 @@ export default function BusinessServicesPage() {
             </p>
             <button
               onClick={scrollToContact}
-              className="group inline-flex items-center gap-2 sm:gap-3 bg-[#F5B700] text-[#0A1F44] px-5 sm:px-8 py-2 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-[#ffc61a] transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+              className="group inline-flex items-center gap-2 sm:gap-3 bg-brand text-black px-5 sm:px-8 py-2 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-brand-light transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
             >
               Jetzt Beratung anfragen
               <ArrowRight className="group-hover:translate-x-1 transition-transform duration-300" size={18} />

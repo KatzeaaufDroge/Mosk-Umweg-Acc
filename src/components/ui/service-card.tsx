@@ -7,7 +7,7 @@ interface ServiceCardProps {
 
 export function ServiceCard({ title, description, image, icon }: ServiceCardProps) {
   return (
-    <div className="group rounded-xl overflow-hidden bg-[#171717] hover:shadow-2xl hover:shadow-[#f59e0b]/10 transition-all duration-300 h-full flex flex-col">
+    <div className="group rounded-xl overflow-hidden bg-[#171717] hover:shadow-2xl hover:shadow-brand/10 transition-all duration-300 h-full flex flex-col">
       <div className="aspect-video overflow-hidden bg-gray-900">
         <img
           src={image}

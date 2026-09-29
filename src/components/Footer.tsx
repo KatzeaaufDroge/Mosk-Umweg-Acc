@@ -16,7 +16,7 @@ export default function Footer() {
             <div className="flex gap-3">
               <a
                 href="https://www.instagram.com/dimaa_mamon/"
-                className="bg-white/10 hover:bg-[#F5B700] w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                className="bg-white/10 hover:bg-brand w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
                 aria-label="Instagram"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -30,17 +30,17 @@ export default function Footer() {
             <h4 className="font-bold text-base sm:text-lg mb-3 sm:mb-4">Rechtliches</h4>
             <ul className="space-y-2 text-sm sm:text-base">
               <li>
-                <Link to="/impressum" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
+                <Link to="/impressum" className="text-gray-300 hover:text-brand transition-colors duration-300">
                   Impressum
                 </Link>
               </li>
               <li>
-                <Link to="/datenschutz" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
+                <Link to="/datenschutz" className="text-gray-300 hover:text-brand transition-colors duration-300">
                   Datenschutz
                 </Link>
               </li>
               <li>
-                <Link to="/agb" className="text-gray-300 hover:text-[#F5B700] transition-colors duration-300">
+                <Link to="/agb" className="text-gray-300 hover:text-brand transition-colors duration-300">
                   AGB
                 </Link>
               </li>

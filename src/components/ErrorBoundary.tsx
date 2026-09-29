@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen flex items-center justify-center bg-black text-white px-4 text-center">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: '#f59e0b' }}>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: '#55a041' }}>
               Etwas ist schiefgelaufen.
             </h1>
             <p className="text-gray-300 mb-6">
@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </p>
             <a
               href="/"
-              className="inline-block bg-[#f59e0b] text-black px-6 py-3 rounded-lg font-bold hover:bg-[#ffc61a] transition-colors"
+              className="inline-block bg-brand text-black px-6 py-3 rounded-lg font-bold hover:bg-brand-light transition-colors"
             >
               Zur Startseite
             </a>

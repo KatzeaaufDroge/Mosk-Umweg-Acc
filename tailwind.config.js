@@ -8,6 +8,8 @@ export default {
         brand: {
           DEFAULT: '#55a041',
           dark: '#4a8a38',
+          // Hover für volle Grün-Buttons: heller, schwarze Schrift bleibt gut lesbar (8,2:1)
+          light: '#61b54a',
         },
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',

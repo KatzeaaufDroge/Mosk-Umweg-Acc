@@ -53,7 +53,7 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Kontakt</h2>
             <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>E-Mail: <a href="mailto:d.mamon@moskunlimited.be" className="text-blue-400 hover:text-blue-300">d.mamon@moskunlimited.be</a></p>
+              <p>E-Mail: <a href="mailto:d.mamon@moskunlimited.be" className="text-brand hover:text-brand-light">d.mamon@moskunlimited.be</a></p>
               <p>Telefon: +32 472 80 44 61</p>
             </div>
           </section>

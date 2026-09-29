@@ -121,7 +121,7 @@ export default function Contact() {
                   value={formData.kundentyp}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                   disabled={isSubmitting}
                 >
                   <option value="Privatperson">Privatperson</option>
@@ -141,7 +141,7 @@ export default function Contact() {
                       value={formData.vorname}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                       placeholder="Ihr Vorname"
                       disabled={isSubmitting}
                     />
@@ -155,7 +155,7 @@ export default function Contact() {
                       value={formData.nachname}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                       placeholder="Ihr Nachname"
                       disabled={isSubmitting}
                     />
@@ -175,7 +175,7 @@ export default function Contact() {
                       value={formData.unternehmensname}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                       placeholder="Unternehmensname"
                       disabled={isSubmitting}
                     />
@@ -189,7 +189,7 @@ export default function Contact() {
                       value={formData.ansprechpartner}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                       placeholder="Ihr Name"
                       disabled={isSubmitting}
                     />
@@ -207,7 +207,7 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                   placeholder="ihre@email.de"
                   disabled={isSubmitting}
                 />
@@ -221,7 +221,7 @@ export default function Contact() {
                   name="telefonnummer"
                   value={formData.telefonnummer}
                   onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
                   placeholder="Optional"
                   disabled={isSubmitting}
                 />
@@ -236,7 +236,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-[#f59e0b] outline-none resize-none text-sm sm:text-base"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none resize-none text-sm sm:text-base"
                   placeholder="Ihre Nachricht..."
                   disabled={isSubmitting}
                 ></textarea>
@@ -251,7 +251,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group w-full bg-[#f59e0b] text-black px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-[#ffc61a] transition-all flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-50"
+                className="group w-full bg-brand text-black px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-brand-light transition-all flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -280,26 +280,26 @@ export default function Contact() {
              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-6 sm:mb-8">KONTAKTINFORMATIONEN</h3>
              <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12">
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-[#f59e0b] w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><Mail className="text-[#0A1F44]" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">E-MAIL</h4><a href="mailto:d.mamon@moskunlimited.be" className="text-gray-400 hover:text-[#f59e0b] text-xs sm:text-sm break-all">d.mamon@moskunlimited.be</a></div>
+                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><Mail className="text-brand" size={20} /></div>
+                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">E-MAIL</h4><a href="mailto:d.mamon@moskunlimited.be" className="text-gray-400 hover:text-brand text-xs sm:text-sm break-all">d.mamon@moskunlimited.be</a></div>
                 </div>
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-[#f59e0b] w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><Phone className="text-[#0A1F44]" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">TELEFON</h4><a href="tel:+32472804461" className="text-gray-400 hover:text-[#f59e0b] text-xs sm:text-sm">(+32) 0472 80 44 61</a></div>
+                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><Phone className="text-brand" size={20} /></div>
+                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">TELEFON</h4><a href="tel:+32472804461" className="text-gray-400 hover:text-brand text-xs sm:text-sm">(+32) 0472 80 44 61</a></div>
                 </div>
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-[#f59e0b] w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><MessageCircle className="text-[#0A1F44]" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">WHATSAPP</h4><a href="https://wa.me/32472804461" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#f59e0b] text-xs sm:text-sm">Chat starten</a></div>
+                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><MessageCircle className="text-brand" size={20} /></div>
+                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">WHATSAPP</h4><a href="https://wa.me/32472804461" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand text-xs sm:text-sm">Chat starten</a></div>
                 </div>
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-[#f59e0b] w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><MapPin className="text-[#0A1F44]" size={20} /></div>
+                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><MapPin className="text-brand" size={20} /></div>
                   <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">STANDORT</h4><p className="text-gray-400 text-xs sm:text-sm">Bahnhofstraße 16/1<br />4780 St. Vith<br />Belgien</p></div>
                 </div>
              </div>
              <div className="bg-black p-6 sm:p-8 rounded-xl">
                <h4 className="text-lg sm:text-2xl font-bold text-white mb-3 sm:mb-4">Starten wir Ihr Projekt.</h4>
                <p className="text-white mb-4 sm:mb-6 text-sm sm:text-base">Egal ob Fotografie, Videoproduktion oder professionelle Videobearbeitung-ich setze Ihr Projekt zuverlässig um.</p>
-               <div className="flex items-center gap-2 text-[#FFB400] font-semibold text-sm sm:text-base"><Clock size={18} /><span>Antwort innerhalb von 48 Stunden</span></div>
+               <div className="flex items-center gap-2 text-brand font-semibold text-sm sm:text-base"><Clock size={18} /><span>Antwort innerhalb von 48 Stunden</span></div>
              </div>
           </div>
         </div>

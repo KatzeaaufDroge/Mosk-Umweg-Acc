@@ -36,7 +36,7 @@ export default function CookieBanner() {
               Diese Website verwendet technisch notwendige Cookies sowie, mit Ihrer Zustimmung, Analyse-Cookies. Sie können weitere Informationen in unser{' '}
               <Link
                 to="/datenschutz"
-                className="text-blue-400 hover:text-blue-300 transition-colors duration-200 underline"
+                className="text-brand hover:text-brand-light transition-colors duration-200 underline"
               >
                 Datenschutzerklärung
               </Link>
@@ -53,13 +53,13 @@ export default function CookieBanner() {
             </button>
             <button
               onClick={handleAccept}
-              className="px-4 py-2 text-sm font-medium text-black bg-[#f59e0b] hover:bg-[#ffc61a] rounded-lg transition-colors duration-200"
+              className="px-4 py-2 text-sm font-medium text-black bg-brand hover:bg-brand-light rounded-lg transition-colors duration-200"
             >
               Akzeptieren
             </button>
             <Link
               to="/datenschutz"
-              className="px-4 py-2 text-sm font-medium text-neutral-900 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors duration-200 inline-block text-center"
+              className="px-2 py-2 text-sm font-medium text-gray-300 underline underline-offset-4 decoration-gray-500 hover:text-brand hover:decoration-brand transition-colors duration-200 inline-block text-center"
             >
               Datenschutzerklärung
             </Link>
