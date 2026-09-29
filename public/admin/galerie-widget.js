@@ -183,6 +183,47 @@
   .mg-mtools{max-width:380px;margin:14px auto 0;display:flex;flex-direction:column;gap:12px}
   .mg-mrow{display:flex;flex-wrap:wrap;gap:8px}
   .mg-muster .mg-btn--ghost{color:#e9ece8}
+  /* ---------- Übersicht (Startseite nach dem Login) ---------- */
+  body.mg-dash [class*="EditorContainer"],body.mg-dash [class*="ControlPaneContainer"],body.mg-dash [class*="ControlContainer"],body.mg-dash [class*="NoPreviewContainer"],body.mg-dash [class*="PreviewPaneContainer"]{background:transparent!important;box-shadow:none!important;border:0!important}
+  body.mg-dash [class*="ToolbarSectionMain"],body.mg-dash [class*="ToolbarSectionBackLink"]{visibility:hidden}
+  body.mg-dash [class*="ToolbarContainer"]::before{content:"";position:absolute;left:18px;top:50%;width:30px;height:30px;margin-top:-15px;background:url('/favicon-96x96.png') center/contain no-repeat}
+  body.mg-dash [class*="ToolbarContainer"]::after{content:"Mosk Unlimited · Verwaltung";position:absolute;left:58px;top:50%;transform:translateY(-50%);color:#e9ece8;font-weight:700;font-size:14px}
+  body.mg-dash [class*="ControlContainer"] > [class*="FieldLabel"],body.mg-dash [class*="ControlTopbar"],body.mg-dash label[class*="FieldLabel"]{display:none!important}
+  body.mg-dash [class*="ControlPaneContainer"]{max-width:980px;margin:0 auto}
+  .mg-dash-wrap{color:#e9ece8;padding:8px 0 40px}
+  .mg-dash-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px}
+  .mg-dash-head h1{margin:0;font-size:30px;font-weight:800;color:#fff;letter-spacing:-.01em}
+  .mg-dash-head p{margin:6px 0 0;color:#9aa39a;font-size:14px}
+  .mg-dash-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
+  .mg-glass{background:rgba(20,24,20,.74);border:1px solid rgba(255,255,255,.08);border-radius:16px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(0,0,0,.35);padding:18px}
+  .mg-glass h2{margin:0 0 4px;font-size:16px;font-weight:700;color:#fff}
+  .mg-glass .mg-sub2{margin:0 0 14px;font-size:13px;color:#9aa39a}
+  .mg-area{margin-top:14px}
+  .mg-area h3{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8d968c;font-weight:700}
+  .mg-row{display:flex;align-items:center;gap:14px;padding:10px;border-radius:12px;text-decoration:none;color:inherit;border:1px solid transparent;transition:background .15s,border-color .15s}
+  .mg-row:hover{background:rgba(255,255,255,.04);border-color:rgba(85,160,65,.45)}
+  .mg-thumbs{display:flex;gap:3px;flex:0 0 auto}
+  .mg-thumbs img,.mg-thumbs span{width:40px;height:40px;border-radius:7px;object-fit:cover;background:#1e241e;display:block}
+  .mg-thumbs span{border:1px dashed rgba(255,255,255,.14);background:transparent}
+  .mg-rowtxt{flex:1;min-width:0}
+  .mg-rowtxt b{display:block;font-size:14px;color:#fff}
+  .mg-rowtxt small{display:block;font-size:12px;color:#9aa39a;margin-top:2px}
+  .mg-pill{flex:0 0 auto;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
+  .mg-pill.on{background:rgba(85,160,65,.16);color:#8fd17a}
+  .mg-pill.off{background:rgba(255,255,255,.06);color:#9aa39a}
+  .mg-pill.hid{background:rgba(255,196,0,.12);color:#e8c35a}
+  .mg-go{flex:0 0 auto;color:#55a041;font-weight:700;font-size:13px}
+  .mg-side2{display:flex;flex-direction:column;gap:16px}
+  .mg-soon{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+  .mg-soon .mg-bars{display:flex;align-items:flex-end;gap:5px;height:48px;margin:4px 0 2px}
+  .mg-soon .mg-bars i{width:14px;border-radius:3px 3px 0 0;background:rgba(85,160,65,.25)}
+  .mg-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.07);color:#cfd5ce}
+  .mg-dlink{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#55a041;text-decoration:none}
+  .mg-dlink:hover{text-decoration:underline}
+  .mg-tip{font-size:13px;color:#cfd5ce;line-height:1.5;margin:0}
+  .mg-stand{font-size:12px;color:#8d968c}
+  @media (max-width:820px){.mg-dash-grid{grid-template-columns:1fr}.mg-dash-head h1{font-size:24px}.mg-thumbs img:nth-child(n+3),.mg-thumbs span:nth-child(n+3){display:none}}
+
   /* Decap erzwingt im Editor 800px Mindestbreite -> am Handy unbenutzbar */
   @media (max-width:820px){
     [class*="EditorContainer"],[class*="ToolbarContainer"]{min-width:0!important}
@@ -630,6 +671,7 @@
           }),
           h('span', { className: 'mg-num' }, String(i + 1)),
           !natural && size !== 'normal' ? h('span', { className: 'mg-badge' }, SIZE_NAME[size]) : null,
+          item.get('video') ? h('span', { className: 'mg-badge', style: { right: 'auto', left: 8, top: 'auto', bottom: 8 } }, '▶ Video') : null,
         );
       });
 
@@ -953,6 +995,218 @@
     },
   });
 
+  /* ---------- Übersicht ---------- */
+
+  var DASH = '#/collections/uebersicht/entries/start';
+
+  // Nach dem Login direkt auf die Übersicht statt auf die erste Liste
+  function routeDashboard() {
+    var hash = location.hash;
+    if (hash === '' || hash === '#/' || hash === '#/collections/uebersicht' || hash === '#/collections/uebersicht/') {
+      location.replace(DASH);
+      return;
+    }
+    document.body.classList.toggle('mg-dash', hash.indexOf(DASH) === 0);
+  }
+  window.addEventListener('hashchange', routeDashboard);
+  routeDashboard();
+
+  // Decap lädt einen Eintrag nicht neu, wenn man direkt von einem Eintrag in
+  // einen anderen springt (Formular zeigt dann alte Daten -> Pflichtfelder
+  // "leer"). Deshalb erst kurz über die Liste der Sammlung navigieren.
+  function openEntry(e, target) {
+    if (e) e.preventDefault();
+    var m = target.match(/^#\/collections\/([^/]+)/);
+    location.hash = m ? '#/collections/' + m[1] : '#/';
+    setTimeout(function () {
+      location.hash = target;
+    }, 60);
+  }
+
+  function formatStand(iso) {
+    if (!iso) return '';
+    try {
+      return new Date(iso).toLocaleString('de-BE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      return '';
+    }
+  }
+
+  var UebersichtControl = createClass({
+    getInitialState: function () {
+      return { status: null, error: false, vorlagen: null };
+    },
+
+    componentDidMount: function () {
+      var self = this;
+      routeDashboard();
+      fetch('/admin/galerie-status.json', { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        })
+        .then(function (d) {
+          self.setState({ status: d });
+        })
+        .catch(function () {
+          self.setState({ error: true });
+        });
+      fetch(VORLAGEN_URL, { cache: 'no-store' })
+        .then(function (r) {
+          return r.ok ? r.json() : { vorlagen: [] };
+        })
+        .then(function (d) {
+          self.setState({ vorlagen: (d && d.vorlagen) || [] });
+        })
+        .catch(function () {});
+    },
+
+    renderRow: function (k) {
+      var thumbs = [];
+      for (var i = 0; i < 4; i++) {
+        var src = k.vorschau[i];
+        thumbs.push(src ? h('img', { key: i, src: previewUrl(src, 120), alt: '' }) : h('span', { key: i }));
+      }
+      var pill, note;
+      if (k.ausgeblendet && k.anzahl > 0) {
+        pill = h('span', { className: 'mg-pill hid' }, 'Ausgeblendet');
+        note = k.anzahl + ' Inhalte, bewusst versteckt';
+      } else if (k.anzahl > 0) {
+        pill = h('span', { className: 'mg-pill on' }, 'Online');
+        note = k.anzahl + (k.anzahl === 1 ? ' Inhalt' : ' Inhalte') + (k.videos ? ' · davon ' + k.videos + ' Video' + (k.videos === 1 ? '' : 's') : '') + ' · Layout: ' + layoutName(k.layout);
+      } else {
+        pill = h('span', { className: 'mg-pill off' }, 'Leer');
+        note = 'Erscheint automatisch, sobald du etwas hinzufügst';
+      }
+      return h(
+        'a',
+        {
+          key: k.id,
+          className: 'mg-row',
+          href: '#/collections/galerie/entries/' + k.id,
+          onClick: function (e) {
+            openEntry(e, '#/collections/galerie/entries/' + k.id);
+          },
+        },
+        h('div', { className: 'mg-thumbs' }, thumbs),
+        h('div', { className: 'mg-rowtxt' }, h('b', null, k.title), h('small', null, note)),
+        pill,
+        h('span', { className: 'mg-go', 'aria-hidden': true }, '›'),
+      );
+    },
+
+    render: function () {
+      var self = this;
+      var st = this.state.status;
+      var areas = [];
+      if (st) {
+        st.kategorien.forEach(function (k) {
+          var a = areas.filter(function (x) {
+            return x.name === k.bereich;
+          })[0];
+          if (!a) areas.push((a = { name: k.bereich, items: [] }));
+          a.items.push(k);
+        });
+      }
+      var online = st
+        ? st.kategorien.filter(function (k) {
+            return k.anzahl > 0 && !k.ausgeblendet;
+          }).length
+        : 0;
+
+      var galerie = h(
+        'section',
+        { className: 'mg-glass' },
+        h('h2', null, 'Galerie'),
+        h(
+          'p',
+          { className: 'mg-sub2' },
+          st
+            ? online + ' von ' + st.kategorien.length + ' Kategorien sind auf der Website zu sehen. Leere Kategorien bleiben unsichtbar, bis du etwas hinzufügst.'
+            : this.state.error
+              ? 'Der Galerie-Stand konnte nicht geladen werden. Bitte die Seite neu laden.'
+              : 'Wird geladen …',
+        ),
+        areas.map(function (a) {
+          return h('div', { key: a.name, className: 'mg-area' }, h('h3', null, a.name), a.items.map(self.renderRow));
+        }),
+      );
+
+      var bars = [18, 30, 22, 40, 34, 46, 28];
+      var besucher = h(
+        'section',
+        { className: 'mg-glass mg-soon' },
+        h('h2', null, 'Besucher'),
+        h('span', { className: 'mg-tag' }, 'Kommt bald'),
+        h(
+          'div',
+          { className: 'mg-bars', 'aria-hidden': true },
+          bars.map(function (v, i) {
+            return h('i', { key: i, style: { height: v + 'px' } });
+          }),
+        ),
+        h('p', { className: 'mg-tip' }, 'Hier siehst du bald, wie viele Leute deine Website besuchen.'),
+      );
+
+      var anzahlLayouts = this.state.vorlagen ? this.state.vorlagen.length : null;
+      var layouts = h(
+        'section',
+        { className: 'mg-glass' },
+        h('h2', null, 'Eigene Layouts'),
+        h(
+          'p',
+          { className: 'mg-sub2' },
+          anzahlLayouts === null ? '…' : anzahlLayouts === 1 ? '1 gespeichertes Layout' : anzahlLayouts + ' gespeicherte Layouts',
+        ),
+        h(
+          'a',
+          {
+            className: 'mg-dlink',
+            href: '#/collections/layouts/entries/vorlagen',
+            onClick: function (e) {
+              openEntry(e, '#/collections/layouts/entries/vorlagen');
+            },
+          },
+          'Layouts verwalten ›',
+        ),
+      );
+
+      var tipp = h(
+        'section',
+        { className: 'mg-glass' },
+        h('h2', null, 'Tipp'),
+        h(
+          'p',
+          { className: 'mg-tip' },
+          'Sammle deine Änderungen und klicke dann einmal auf „Veröffentlichen“. Jede Veröffentlichung braucht ca. 1–2 Minuten, bis sie live ist.',
+        ),
+      );
+
+      return h(
+        'div',
+        { className: 'mg mg-dash-wrap' },
+        h(
+          'div',
+          { className: 'mg-dash-head' },
+          h(
+            'div',
+            null,
+            h('h1', null, 'Übersicht'),
+            h('p', null, 'Alles für deine Website an einem Ort.'),
+          ),
+          h(
+            'div',
+            { style: { textAlign: 'right' } },
+            h('a', { className: 'mg-dlink', href: '/', target: '_blank', rel: 'noopener' }, 'Website ansehen ›'),
+            st && st.stand ? h('div', { className: 'mg-stand' }, 'Stand der Website: ' + formatStand(st.stand)) : null,
+          ),
+        ),
+        h('div', { className: 'mg-dash-grid' }, galerie, h('div', { className: 'mg-side2' }, besucher, layouts, tipp)),
+      );
+    },
+  });
+
+  CMS.registerWidget('uebersicht', UebersichtControl);
   CMS.registerWidget('galerie', GalerieControl, list.preview);
   CMS.registerWidget('vorlage-muster', MusterControl);
   CMS.registerWidget('galerie-layout', LayoutControl, select.preview);

@@ -1,6 +1,8 @@
 {
   "title": "Moderation",
-  "sichtbar": false,
+  "bereich": "Fotografie",
+  "reihenfolge": 20,
+  "sichtbar": true,
   "layout": "mosaik",
   "bilder": []
 }

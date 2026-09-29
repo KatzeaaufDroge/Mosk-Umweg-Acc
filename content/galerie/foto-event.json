@@ -1,5 +1,7 @@
 {
   "title": "Event",
+  "bereich": "Fotografie",
+  "reihenfolge": 10,
   "sichtbar": true,
   "layout": "mosaik",
   "bilder": [

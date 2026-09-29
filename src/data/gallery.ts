@@ -1,6 +1,11 @@
 // Galerie-Inhalte liegen als JSON unter /content/galerie und werden über das
 // Admin-Panel (/admin, Decap CMS) gepflegt. Jede Änderung dort ist ein Commit,
 // der den normalen Netlify-Deploy auslöst.
+//
+// Jede Datei = eine Kategorie. Bereich (Fotografie/Videografie/Editing) und
+// Reihenfolge stehen in der Datei. Leere Kategorien blendet die Website
+// automatisch aus – sobald Dima Inhalte hinzufügt, erscheinen sie.
+// Neue Kategorie: JSON hier anlegen + in public/admin/config.yml eintragen.
 
 // Layout-Vorlagen pro Kategorie (im Admin wählbar):
 // - mosaik:    Bilder im natürlichen Format, versetzt (Masonry)
@@ -15,9 +20,11 @@ const SIZES: GallerySize[] = ['normal', 'breit', 'hoch', 'gross'];
 
 interface GalleryFile {
   title: string;
-  sichtbar: boolean;
+  bereich?: string;
+  reihenfolge?: number;
+  sichtbar?: boolean;
   layout?: string;
-  bilder?: { bild: string; beschreibung?: string; groesse?: string }[];
+  bilder?: { bild: string; beschreibung?: string; groesse?: string; video?: string }[];
 }
 
 export interface GalleryItem {
@@ -25,15 +32,21 @@ export interface GalleryItem {
   alt: string;
   category: string;
   size: GallerySize;
+  // Einbettbare Video-URL (YouTube-nocookie / Vimeo), lädt erst nach Klick
+  video?: string;
 }
 
 export interface GalleryCategory {
   id: string;
-  bereich: 'Fotografie';
+  bereich: string;
   title: string;
-  visible: boolean;
   layout: GalleryLayout;
   items: GalleryItem[];
+}
+
+export interface GalleryArea {
+  name: string;
+  categories: GalleryCategory[];
 }
 
 // Eine im Admin gesetzte Größe gewinnt, sonst gilt die Vorgabe der Vorlage.
@@ -43,27 +56,34 @@ function effectiveSize(layout: GalleryLayout, index: number, chosen?: string): G
   return layout === 'highlight' && index === 0 ? 'gross' : 'normal';
 }
 
-// Reihenfolge der Kategorien auf der Seite. Neue Kategorien hier ergänzen
-// und in public/admin/config.yml eintragen.
-const CATEGORY_ORDER = ['foto-event', 'foto-moderation', 'foto-unternehmen', 'foto-werbung'];
+// YouTube/Vimeo-Link -> datensparsame Einbett-URL (null = kein gültiges Video)
+export function embedUrl(link?: string): string | undefined {
+  if (!link) return undefined;
+  const url = link.trim();
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0`;
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}?autoplay=1&dnt=1`;
+  return undefined;
+}
 
 const files = import.meta.glob<GalleryFile>('/content/galerie/*.json', {
   eager: true,
   import: 'default',
 });
 
-export const galleryCategories: GalleryCategory[] = CATEGORY_ORDER.flatMap((id) => {
-  const file = files[`/content/galerie/${id}.json`];
-  if (!file) return [];
-  const layout: GalleryLayout = (LAYOUTS as string[]).includes(file.layout ?? '')
-    ? (file.layout as GalleryLayout)
-    : 'mosaik';
-  return [
-    {
+const allCategories: (GalleryCategory & { order: number; hidden: boolean })[] = Object.entries(files)
+  .map(([path, file]) => {
+    const id = path.split('/').pop()!.replace(/\.json$/, '');
+    const layout: GalleryLayout = (LAYOUTS as string[]).includes(file.layout ?? '')
+      ? (file.layout as GalleryLayout)
+      : 'mosaik';
+    return {
       id,
-      bereich: 'Fotografie' as const,
+      bereich: file.bereich || 'Fotografie',
       title: file.title,
-      visible: file.sichtbar,
+      order: file.reihenfolge ?? 999,
+      hidden: file.sichtbar === false,
       layout,
       items: (file.bilder ?? [])
         .filter((b) => b.bild)
@@ -72,14 +92,24 @@ export const galleryCategories: GalleryCategory[] = CATEGORY_ORDER.flatMap((id) 
           alt: b.beschreibung || file.title,
           category: file.title,
           size: effectiveSize(layout, i, b.groesse),
+          video: embedUrl(b.video),
         })),
-    },
-  ];
-});
+    };
+  })
+  .sort((a, b) => a.order - b.order);
 
-export const visibleGalleryCategories: GalleryCategory[] = galleryCategories.filter(
-  (c) => c.visible && c.items.length > 0,
+// Auf der Website erscheint eine Kategorie, sobald sie Inhalte hat
+// (und nicht bewusst ausgeblendet wurde).
+export const visibleGalleryCategories: GalleryCategory[] = allCategories.filter(
+  (c) => !c.hidden && c.items.length > 0,
 );
+
+export const galleryAreas: GalleryArea[] = visibleGalleryCategories.reduce<GalleryArea[]>((areas, c) => {
+  const area = areas.find((a) => a.name === c.bereich);
+  if (area) area.categories.push(c);
+  else areas.push({ name: c.bereich, categories: [c] });
+  return areas;
+}, []);
 
 // Dima lädt Originale in voller Kameragröße hoch. Live liefert Netlifys
 // Image CDN automatisch verkleinerte WebP/AVIF-Versionen aus; lokal (vite dev)

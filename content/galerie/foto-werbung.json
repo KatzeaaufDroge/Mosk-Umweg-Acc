@@ -1,6 +1,8 @@
 {
   "title": "Werbung / Marketing",
-  "sichtbar": false,
+  "bereich": "Fotografie",
+  "reihenfolge": 40,
+  "sichtbar": true,
   "layout": "mosaik",
   "bilder": []
 }

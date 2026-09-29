@@ -91,7 +91,8 @@
 
   // Im Editor (…/entries/…) ist der Hintergrund verdeckt -> Animation pausieren
   function visible() {
-    return !/\/entries\//.test(location.hash) && document.visibilityState !== 'hidden';
+    var onDashboard = location.hash.indexOf('/collections/uebersicht/') !== -1;
+    return (onDashboard || !/\/entries\//.test(location.hash)) && document.visibilityState !== 'hidden';
   }
 
   function animate() {
