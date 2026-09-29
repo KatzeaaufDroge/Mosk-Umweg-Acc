@@ -37,10 +37,9 @@ function OccasionCard({
   const panelId = `anlass-${index}`;
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + index * 0.05 } }}
-      className={`rounded-xl border transition-colors duration-200 ${open ? 'sm:col-span-2 border-brand/70 bg-[#171717]' : `${dashed ? 'border-dashed border-white/15' : 'border-white/10 bg-[#171717]'} hover:border-brand/60`}`}
+      animate={{ opacity: 1, y: 0, transition: { delay: 0.2 + index * 0.05, duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+      className={`rounded-xl border transition-colors duration-200 ${open ? 'border-brand/70 bg-[#171717]' : `${dashed ? 'border-dashed border-white/15' : 'border-white/10 bg-[#171717]'} hover:border-brand/60`}`}
     >
       <button
         type="button"
@@ -61,23 +60,27 @@ function OccasionCard({
         {open && (
           <motion.div
             id={panelId}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ height: 0 }}
+            animate={{ height: 'auto', transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] } }}
+            exit={{ height: 0, transition: { duration: 0.2, ease: [0.4, 0, 1, 1] } }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-5 flex flex-col sm:flex-row sm:items-end gap-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.2, delay: 0.08 } }}
+              exit={{ opacity: 0, transition: { duration: 0.1 } }}
+              className="px-5 pb-5 flex flex-col sm:flex-row sm:items-end gap-4"
+            >
               <p className="flex-1 text-gray-300 text-sm sm:text-base leading-relaxed">{item.text}</p>
               <button
                 type="button"
                 onClick={onChoose}
-                className="group shrink-0 inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-light text-black font-bold text-sm sm:text-base rounded-lg px-5 py-3 transition-colors"
+                className="group self-start sm:self-auto shrink-0 inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-light text-black font-bold text-sm sm:text-base rounded-lg px-5 py-2.5 transition-colors"
               >
                 Auswählen
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -178,7 +181,7 @@ export function ServiceExplorer({ services, kundentyp }: ServiceExplorerProps) {
                 className="max-w-2xl mx-auto mt-8 sm:mt-10"
               >
                 <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-5">Worum geht es genau?</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="flex flex-col gap-3">
                   {[...selected.idealFor, OTHER].map((item, i) => {
                     const isOther = item === OTHER;
                     return (
