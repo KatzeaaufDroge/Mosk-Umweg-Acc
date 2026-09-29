@@ -639,7 +639,7 @@
         h(
           'div',
           { className: 'mg-top' },
-          h('img', { src: '/apple-touch-icon.png', alt: '' }),
+          h('img', { src: '/favicon-96x96.png', alt: '' }),
           h('h2', null, 'Galerie-Layout', h('small', null, title ? 'Kategorie: ' + title : '')),
           h('div', { className: 'mg-spacer' }),
           h(

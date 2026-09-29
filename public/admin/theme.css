@@ -48,7 +48,7 @@ header[class*="AppHeader"] {
   height: 30px;
   margin-right: 14px;
   flex: 0 0 30px;
-  background: url('/apple-touch-icon.png') center / contain no-repeat;
+  background: url('/favicon-96x96.png') center / contain no-repeat;
 }
 
 [class*="AppHeaderContent"] {
