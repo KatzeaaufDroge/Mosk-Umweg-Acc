@@ -5,6 +5,7 @@ import { BlurFade } from '../components/ui/blur-fade';
 import { useAnimation } from '../context/AnimationContext';
 import { useScrollToContact } from '../hooks/useScrollToContact';
 import { Seo } from '../components/Seo';
+import KineticGrid from '../components/ui/kinetic-grid';
 
 export default function ServicesPage() {
   const navigate = useNavigate();
@@ -20,7 +21,8 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#262626] pt-28 sm:pt-32 pb-16 sm:pb-24">
+    <KineticGrid className="min-h-screen">
+    <div className="pt-28 sm:pt-32 pb-16 sm:pb-24">
       <Seo
         title="Services – Event & Business – Mosk Unlimited"
         description="Fotografie, Videografie und Editing – wählen Sie den passenden Service-Bereich für Privatkunden oder Unternehmen."
@@ -101,5 +103,6 @@ export default function ServicesPage() {
         </BlurFade>
       </div>
     </div>
+    </KineticGrid>
   );
 }
