@@ -2,43 +2,7 @@ import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Masonry from 'react-masonry-css';
 import { BlurFade } from './ui/blur-fade';
-import img1 from '../../assets/bunt.webp';
-import img2 from '../../assets/Bunterrave.webp';
-import img3 from '../../assets/DampfVerbessertRR.webp';
-import img4 from '../../assets/darkrave.webp';
-import img5 from '../../assets/DJ.webp';
-import img6 from '../../assets/DJ2VerbessertRR.webp';
-import img7 from '../../assets/djmagga.webp';
-import img8 from '../../assets/djmax.webp';
-import img9 from '../../assets/dunkelrave.webp';
-import img10 from '../../assets/fest.webp';
-import img11 from '../../assets/fest2.webp';
-import img12 from '../../assets/jungspunt.webp';
-import img13 from '../../assets/Rave.webp';
-import img14 from '../../assets/VerbessertRR.webp';
-
-interface GalleryItem {
-  src: string;
-  alt: string;
-  category?: string;
-}
-
-const galleryItems: GalleryItem[] = [
-  { src: img5, alt: 'DJ Performance', category: 'Fotografie' },
-  { src: img13, alt: 'Rave Event', category: 'Fotografie' },
-  { src: img9, alt: 'Dunkle Atmosphäre', category: 'Fotografie' },
-  { src: img2, alt: 'Bunter Rave', category: 'Fotografie' },
-  { src: img14, alt: 'Event Detail', category: 'Fotografie' },
-  { src: img1, alt: 'Bunte Szene', category: 'Fotografie' },
-  { src: img6, alt: 'DJ Action', category: 'Fotografie' },
-  { src: img10, alt: 'Festival Crowd', category: 'Fotografie' },
-  { src: img3, alt: 'Dampf Effekt', category: 'Fotografie' },
-  { src: img12, alt: 'Portrait', category: 'Fotografie' },
-  { src: img11, alt: 'Festival Publikum', category: 'Fotografie' },
-  { src: img4, alt: 'Dark Rave', category: 'Fotografie' },
-  { src: img7, alt: 'DJ Magga', category: 'Fotografie' },
-  { src: img8, alt: 'DJ Max', category: 'Fotografie' },
-];
+import { visibleGalleryItems as galleryItems, optimizedSrc, optimizedSrcSet, type GalleryItem } from '../data/gallery';
 
 interface LightboxProps {
   item: GalleryItem;
@@ -93,7 +57,7 @@ function Lightbox({ item, index, total, onClose, onNext, onPrev }: LightboxProps
         </button>
 
         <img
-          src={item.src}
+          src={optimizedSrc(item.src, 2000)}
           alt={item.alt}
           className="max-w-full max-h-[90vh] object-contain px-2 sm:px-0"
         />
@@ -159,12 +123,14 @@ export default function Gallery() {
           >
             {galleryItems.map((item, index) => (
               <div
-                key={index}
+                key={`${item.src}-${index}`}
                 onClick={() => setSelectedIndex(index)}
                 className="group relative overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-lg transition-shadow duration-300 mb-4 sm:mb-5 lg:mb-6"
               >
                 <img
-                  src={item.src}
+                  src={optimizedSrc(item.src, 900)}
+                  srcSet={optimizedSrcSet(item.src, [480, 900, 1400])}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                   alt={item.alt}
                   className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"

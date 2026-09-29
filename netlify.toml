@@ -9,3 +9,23 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Admin-Panel (Decap CMS): nicht einbettbar (Clickjacking), nicht indexieren,
+# keine Referrer an Dritte.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "frame-ancestors 'none'"
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "no-cache"
+
+# Hochgeladene Galerie-Dateien: falls jemand z.B. eine SVG mit Skript hochlädt
+# und sie direkt aufgerufen wird, darf darin nichts ausgeführt werden.
+[[headers]]
+  for = "/gallery/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; sandbox"
+    X-Content-Type-Options = "nosniff"
