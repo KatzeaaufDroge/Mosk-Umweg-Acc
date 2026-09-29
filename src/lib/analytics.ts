@@ -1,5 +1,5 @@
 const UMAMI_SRC = 'https://cloud.umami.is/script.js';
-const UMAMI_WEBSITE_ID = '05e2cf8d-3770-4f0c-b020-e7752d1c448b';
+const UMAMI_WEBSITE_ID = '2ce08832-0b02-4dff-a490-09b9f52e3ab3';
 
 // Only loads the analytics script once the user has actively accepted
 // cookies via the CookieBanner — never loaded unconditionally.
