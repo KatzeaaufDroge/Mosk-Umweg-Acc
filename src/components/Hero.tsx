@@ -34,7 +34,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A1F44] via-[#0d2a5c] to-[#0A1F44] pt-16 sm:pt-20 md:pt-0">
+    <section className="relative min-h-screen flex items-center justify-center bg-black pt-16 sm:pt-20 md:pt-0">
       {images.map((image, index) => (
         <div key={image.src} className={`absolute inset-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-80' : 'opacity-0'}`}>
           <img
@@ -46,7 +46,7 @@ export default function Hero() {
             loading={index === 0 ? "eager" : "lazy"}
             decoding="async"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0A1F44]/80 via-[#0d2a5c]/50 to-[#0A1F44]/80 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/45 to-black/80" />
         </div>
       ))}
 
