@@ -7,10 +7,10 @@
   kann sich ein Name ändern -> dann hier anpassen (Version in index.html gepinnt).
 */
 :root {
-  --mk-g: #6cb430;
-  --mk-g2: #3c8430;
-  --mk-g3: #246c30;
-  --mk-gs: rgba(108, 180, 48, 0.14);
+  --mk-g: #55a041;
+  --mk-g2: #4a8a38;
+  --mk-g3: #3e7530;
+  --mk-gs: rgba(85, 160, 65, 0.14);
   --mk-bg: #0c0f0c;
   --mk-glass: rgba(20, 24, 20, 0.72);
   --mk-line: rgba(255, 255, 255, 0.08);
@@ -161,7 +161,7 @@ header[class*="AppHeader"] {
 
 [class*="ListCard-card"]:hover,
 [class*="GridCard-card"]:hover {
-  border-color: rgba(108, 180, 48, 0.55) !important;
+  border-color: rgba(85, 160, 65, 0.55) !important;
   background: rgba(30, 38, 30, 0.85) !important;
   transform: translateY(-1px);
 }

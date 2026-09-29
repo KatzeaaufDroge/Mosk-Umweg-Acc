@@ -8,7 +8,7 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-    --primary: 93 58% 45%; /* Logo-Grün #6cb430 */
+    --primary: 107 42% 44%; /* Logo-Grün #55a041 */
     --primary-foreground: 210 40% 8%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -156,7 +156,7 @@ footer * {
 
 .lang-button {
   display: inline-block;
-  background-color: #6cb430;
+  background-color: #55a041;
   color: #000000;
   border-radius: 10px;
   padding: 10px 16px;
@@ -168,7 +168,7 @@ footer * {
 }
 
 .lang-button:hover {
-  background-color: #5a9a26;
+  background-color: #4a8a38;
 }
 
 .lang-button.lang-active {

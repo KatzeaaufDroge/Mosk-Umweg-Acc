@@ -6,8 +6,8 @@ export default {
       colors: {
         // Grün aus dem Mosk-Logo – überall für Grün verwenden
         brand: {
-          DEFAULT: '#6cb430',
-          dark: '#5a9a26',
+          DEFAULT: '#55a041',
+          dark: '#4a8a38',
         },
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',

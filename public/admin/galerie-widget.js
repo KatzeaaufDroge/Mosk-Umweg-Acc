@@ -79,7 +79,7 @@
 
   /* ---------- Styles (Farben aus dem Logo) ---------- */
   var css = `
-  .mg{--g:#6cb430;--g2:#3c8430;--g3:#246c30;--gs:rgba(108,180,48,.14);--ink:#1d2a1f;--mut:#6b7280;--line:#e3e7e1;font-family:inherit}
+  .mg{--g:#55a041;--g2:#4a8a38;--g3:#3e7530;--gs:rgba(85, 160, 65,.14);--ink:#1d2a1f;--mut:#6b7280;--line:#e3e7e1;font-family:inherit}
   .mg *{box-sizing:border-box}
   .mg button{font-family:inherit;cursor:pointer}
   .mg-btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px;line-height:1}
@@ -126,7 +126,7 @@
   .mg-side .mg-presets{grid-template-columns:1fr}
   .mg-side .mg-preset{flex-direction:row;align-items:center;background:#1a1f1a;border-color:#2a312a;color:#e9ece8}
   .mg-side .mg-preset:hover{border-color:#4b6b3a}
-  .mg-side .mg-preset.on{border-color:var(--g);background:rgba(108,180,48,.12)}
+  .mg-side .mg-preset.on{border-color:var(--g);background:rgba(85, 160, 65,.12)}
   .mg-side .mg-preset small{color:#9aa39a}
   .mg-side .mg-dia{width:72px;flex:0 0 72px;height:54px;background:#0c0e0c}
   .mg-side .mg-dia i{background:#4a524a}
@@ -140,7 +140,7 @@
   .mg-sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .mg-size{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px;border-radius:9px;border:2px solid #2a312a;background:#141814;color:#cfd5ce;font-size:12px;font-weight:600}
   .mg-size:hover{border-color:#4b6b3a}
-  .mg-size.on{border-color:var(--g);color:#fff;background:rgba(108,180,48,.12)}
+  .mg-size.on{border-color:var(--g);color:#fff;background:rgba(85, 160, 65,.12)}
   .mg-ico{display:grid;grid-template-columns:repeat(2,11px);grid-auto-rows:11px;gap:2px}
   .mg-ico i{background:#3a423a;border-radius:2px}
   .mg-ico i.f{background:var(--g)}
@@ -165,7 +165,7 @@
   .mg-tile img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none;-webkit-user-drag:none}
   .mg-grid.natural .mg-tile img{height:auto}
   .mg-tile::after{content:"";position:absolute;inset:0;border-radius:6px;box-shadow:inset 0 0 0 0 var(--g);transition:box-shadow .12s}
-  .mg-tile:hover::after{box-shadow:inset 0 0 0 2px rgba(108,180,48,.6)}
+  .mg-tile:hover::after{box-shadow:inset 0 0 0 2px rgba(85, 160, 65,.6)}
   .mg-tile.sel::after{box-shadow:inset 0 0 0 4px var(--g)}
   .mg-tile--breit{grid-column:span 2}.mg-tile--hoch{grid-row:span 2}.mg-tile--gross{grid-column:span 2;grid-row:span 2}
   .mg-num{position:absolute;left:8px;top:8px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:rgba(0,0,0,.65);color:#fff;font-size:12px;font-weight:700;line-height:22px;text-align:center}
@@ -174,7 +174,7 @@
   .mg-ghost{opacity:.3}
   .mg-chosen{box-shadow:0 12px 30px rgba(0,0,0,.5)}
   .mg-none{color:#9aa39a;text-align:center;padding:40px 10px;font-size:14px}
-  .mg-ph{background:linear-gradient(135deg,#3c8430,#246c30)}
+  .mg-ph{background:linear-gradient(135deg,#4a8a38,#3e7530)}
   .mg-repeat{background:#3a3f3a;cursor:default;opacity:.55}
   .mg-muster{background:#141814;border-radius:12px;padding:14px;color:#e9ece8}
   .mg-mhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:13px;color:#9aa39a}

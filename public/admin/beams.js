@@ -22,9 +22,9 @@
   var hgt = 0;
   var frame = 0;
 
-  // Logo-Grün liegt bei ca. 90–110° Farbton
+  // Logo-Grün #55a041 liegt bei ca. 107° Farbton
   function hue() {
-    return 88 + Math.random() * 30;
+    return 97 + Math.random() * 20;
   }
 
   function createBeam() {
@@ -49,7 +49,7 @@
     beam.x = column * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
     beam.width = 100 + Math.random() * 100;
     beam.speed = 0.5 + Math.random() * 0.4;
-    beam.hue = 88 + (index * 30) / BEAMS;
+    beam.hue = 97 + (index * 20) / BEAMS;
     beam.opacity = 0.2 + Math.random() * 0.1;
   }
 
