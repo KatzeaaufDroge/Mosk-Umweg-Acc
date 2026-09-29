@@ -282,3 +282,9 @@ section[class*="AuthenticationPage"] p {
 [class*="AppHeaderContent"] [class*="IconWrapper"] {
   color: inherit !important;
 }
+
+/* Logo auf der Login-Seite nicht von der Anmeldekarte überdecken lassen */
+/* (das Logo-Bild ragt über seinen Rahmen hinaus, daher Abstand an der Karte) */
+section[class*="AuthenticationPage"] form[class*="AuthForm"] {
+  margin-top: 40px !important;
+}

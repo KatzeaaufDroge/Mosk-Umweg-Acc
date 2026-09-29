@@ -217,6 +217,25 @@
   .mg-soon{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
   .mg-soon .mg-bars{display:flex;align-items:flex-end;gap:5px;height:48px;margin:4px 0 2px}
   .mg-soon .mg-bars i{width:14px;border-radius:3px 3px 0 0;background:rgba(85,160,65,.25)}
+  .mg-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 14px}
+  .mg-kpi{background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px}
+  .mg-kpi b{display:block;font-size:24px;font-weight:800;color:#fff;line-height:1.1;font-variant-numeric:tabular-nums}
+  .mg-kpi small{display:block;font-size:11px;color:#9aa39a;margin-top:3px}
+  .mg-chart{position:relative;height:84px;display:flex;align-items:flex-end;gap:2px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:4px}
+  .mg-bar{flex:1;display:flex;align-items:flex-end;height:100%;cursor:default}
+  .mg-bar i{display:block;width:100%;min-height:2px;background:#55a041;border-radius:4px 4px 0 0;transition:filter .12s}
+  .mg-bar:hover i{filter:brightness(1.25)}
+  .mg-bar.zero i{background:rgba(255,255,255,.14)}
+  .mg-axis{display:flex;justify-content:space-between;font-size:10px;color:#8d968c;margin-bottom:12px}
+  .mg-tip2{position:absolute;bottom:100%;transform:translate(-50%,-6px);background:#0c0f0c;border:1px solid rgba(255,255,255,.12);color:#e9ece8;font-size:11px;padding:4px 7px;border-radius:6px;white-space:nowrap;pointer-events:none}
+  .mg-pages{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+  .mg-pages li{font-size:12px;color:#cfd5ce}
+  .mg-pages .mg-prow{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px}
+  .mg-pages .mg-prow span:last-child{color:#9aa39a;font-variant-numeric:tabular-nums}
+  .mg-pages .mg-track{height:3px;border-radius:2px;background:rgba(255,255,255,.07)}
+  .mg-pages .mg-track i{display:block;height:100%;border-radius:2px;background:#55a041}
+  .mg-h4{margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8d968c;font-weight:700}
+  .mg-note{font-size:11px;color:#8d968c;line-height:1.45;margin:0 0 8px}
   .mg-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.07);color:#cfd5ce}
   .mg-dlink{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#55a041;text-decoration:none}
   .mg-dlink:hover{text-decoration:underline}
@@ -1032,6 +1051,192 @@
     }
   }
 
+  /* ---------- Besucher (Umami, Freigabelink = nur Lesezugriff) ---------- */
+
+  var UMAMI_SHARE_URL = 'https://cloud.umami.is/share/yUQtpyaeeut5coxn';
+  var UMAMI_API = 'https://gateway-eu.umami.is/api';
+  var UMAMI_SHARE_ID = 'yUQtpyaeeut5coxn';
+  var DAY = 864e5;
+
+  // Umami-Freigabe: erst Lesezugang holen, dann Statistik abfragen.
+  // (Kennung "x-umami-share-context" wie in Umamis eigener Freigabeseite;
+  // ändert Umami das, zeigt die Karte nur den Link zur Statistik.)
+  function umami(path, share) {
+    return fetch(UMAMI_API + path, {
+      headers: { 'x-umami-share-token': share.token, 'x-umami-share-context': '1' },
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    });
+  }
+
+  function num(v) {
+    if (v && typeof v === 'object') v = v.value;
+    return typeof v === 'number' ? v : 0;
+  }
+
+  function fmt(n) {
+    return new Intl.NumberFormat('de-BE').format(n);
+  }
+
+  function startOfDay(t) {
+    var d = new Date(t);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  }
+
+  var BesucherCard = createClass({
+    getInitialState: function () {
+      return { data: null, error: false, hover: null };
+    },
+
+    componentDidMount: function () {
+      var self = this;
+      var now = Date.now();
+      var today = startOfDay(now);
+      var from14 = startOfDay(now - 13 * DAY);
+      var tz = encodeURIComponent('Europe/Brussels');
+      fetch(UMAMI_API + '/share/' + UMAMI_SHARE_ID)
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.json();
+        })
+        .then(function (share) {
+          var id = share.websiteId;
+          var range = function (from) {
+            return 'startAt=' + from + '&endAt=' + now;
+          };
+          return Promise.all([
+            umami('/websites/' + id + '/stats?' + range(today), share),
+            umami('/websites/' + id + '/stats?' + range(startOfDay(now - 6 * DAY)), share),
+            umami('/websites/' + id + '/stats?' + range(startOfDay(now - 29 * DAY)), share),
+            umami('/websites/' + id + '/pageviews?' + range(from14) + '&unit=day&timezone=' + tz, share),
+            umami('/websites/' + id + '/metrics?' + range(startOfDay(now - 29 * DAY)) + '&type=path&limit=5', share),
+          ]);
+        })
+        .then(function (res) {
+          // Tage ohne Besuch fehlen in der Antwort -> mit 0 auffüllen
+          var sessions = (res[3] && (res[3].sessions || res[3].pageviews)) || [];
+          var byDay = {};
+          sessions.forEach(function (p) {
+            byDay[startOfDay(new Date(p.x).getTime())] = (byDay[startOfDay(new Date(p.x).getTime())] || 0) + num(p.y);
+          });
+          var days = [];
+          for (var i = 13; i >= 0; i--) {
+            var t = startOfDay(now - i * DAY);
+            days.push({ t: t, v: byDay[t] || 0 });
+          }
+          self.setState({
+            data: {
+              heute: num(res[0].visitors),
+              woche: num(res[1].visitors),
+              monat: num(res[2].visitors),
+              aufrufe: num(res[2].pageviews),
+              days: days,
+              pages: Array.isArray(res[4]) ? res[4] : [],
+            },
+          });
+        })
+        .catch(function () {
+          self.setState({ error: true });
+        });
+    },
+
+    render: function () {
+      var self = this;
+      var d = this.state.data;
+      var link = h(
+        'a',
+        { className: 'mg-dlink', href: UMAMI_SHARE_URL, target: '_blank', rel: 'noopener' },
+        'Alle Details ansehen ›',
+      );
+
+      if (this.state.error) {
+        return h(
+          'section',
+          { className: 'mg-glass' },
+          h('h2', null, 'Besucher'),
+          h('p', { className: 'mg-sub2' }, 'Die Statistik ist gerade nicht erreichbar.'),
+          link,
+        );
+      }
+      if (!d) {
+        return h('section', { className: 'mg-glass' }, h('h2', null, 'Besucher'), h('p', { className: 'mg-sub2' }, 'Wird geladen …'));
+      }
+
+      var max = Math.max.apply(null, d.days.map(function (x) { return x.v; }).concat([1]));
+      var hover = this.state.hover;
+      var dayFmt = function (t) {
+        return new Date(t).toLocaleDateString('de-BE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+      };
+      var bars = d.days.map(function (x, i) {
+        return h(
+          'div',
+          {
+            key: x.t,
+            className: 'mg-bar' + (x.v ? '' : ' zero'),
+            onMouseEnter: function () { self.setState({ hover: i }); },
+            onMouseLeave: function () { self.setState({ hover: null }); },
+            'aria-label': dayFmt(x.t) + ': ' + x.v + ' Besucher',
+            role: 'img',
+          },
+          h('i', { style: { height: Math.max(2, (x.v / max) * 100) + '%' } }),
+        );
+      });
+      var tip =
+        hover !== null
+          ? h(
+              'div',
+              { className: 'mg-tip2', style: { left: ((hover + 0.5) / d.days.length) * 100 + '%' } },
+              dayFmt(d.days[hover].t) + ' · ' + d.days[hover].v + ' Besucher',
+            )
+          : null;
+
+      var pageMax = d.pages.reduce(function (m, p) { return Math.max(m, num(p.y)); }, 1);
+      var pageName = function (path) {
+        var names = { '/': 'Startseite', '/portfolio': 'Galerie', '/services': 'Services', '/services/event': 'Services – Privat', '/services/business': 'Services – Unternehmen', '/about': 'Über mich', '/impressum': 'Impressum', '/datenschutz': 'Datenschutz', '/agb': 'AGB' };
+        return names[path] || path;
+      };
+
+      return h(
+        'section',
+        { className: 'mg-glass' },
+        h('h2', null, 'Besucher'),
+        h(
+          'div',
+          { className: 'mg-kpis' },
+          h('div', { className: 'mg-kpi' }, h('b', null, fmt(d.heute)), h('small', null, 'heute')),
+          h('div', { className: 'mg-kpi' }, h('b', null, fmt(d.woche)), h('small', null, '7 Tage')),
+          h('div', { className: 'mg-kpi' }, h('b', null, fmt(d.monat)), h('small', null, '30 Tage')),
+        ),
+        h('div', { className: 'mg-h4' }, 'Besucher pro Tag'),
+        h('div', { className: 'mg-chart' }, bars, tip),
+        h('div', { className: 'mg-axis' }, h('span', null, dayFmt(d.days[0].t)), h('span', null, 'heute')),
+        d.pages.length
+          ? h(
+              'div',
+              null,
+              h('div', { className: 'mg-h4' }, 'Meistbesucht (30 Tage)'),
+              h(
+                'ul',
+                { className: 'mg-pages' },
+                d.pages.map(function (p) {
+                  return h(
+                    'li',
+                    { key: p.x },
+                    h('div', { className: 'mg-prow' }, h('span', null, pageName(p.x)), h('span', null, fmt(num(p.y)))),
+                    h('div', { className: 'mg-track' }, h('i', { style: { width: (num(p.y) / pageMax) * 100 + '%' } })),
+                  );
+                }),
+              ),
+            )
+          : null,
+        h('p', { className: 'mg-note' }, fmt(d.aufrufe) + ' Seitenaufrufe in 30 Tagen. Gezählt wird nur, wer im Cookie-Banner zustimmt – die echten Zahlen liegen höher.'),
+        link,
+      );
+    },
+  });
+
   var UebersichtControl = createClass({
     getInitialState: function () {
       return { status: null, error: false, vorlagen: null };
@@ -1132,21 +1337,7 @@
         }),
       );
 
-      var bars = [18, 30, 22, 40, 34, 46, 28];
-      var besucher = h(
-        'section',
-        { className: 'mg-glass mg-soon' },
-        h('h2', null, 'Besucher'),
-        h('span', { className: 'mg-tag' }, 'Kommt bald'),
-        h(
-          'div',
-          { className: 'mg-bars', 'aria-hidden': true },
-          bars.map(function (v, i) {
-            return h('i', { key: i, style: { height: v + 'px' } });
-          }),
-        ),
-        h('p', { className: 'mg-tip' }, 'Hier siehst du bald, wie viele Leute deine Website besuchen.'),
-      );
+      var besucher = h(BesucherCard, null);
 
       var anzahlLayouts = this.state.vorlagen ? this.state.vorlagen.length : null;
       var layouts = h(
