@@ -3,63 +3,77 @@
   "bereich": "Fotografie",
   "reihenfolge": 10,
   "sichtbar": true,
-  "layout": "mosaik",
+  "layout": "raster",
   "bilder": [
     {
       "bild": "/gallery/DJ.webp",
-      "beschreibung": "DJ Performance"
+      "beschreibung": "DJ Performance",
+      "groesse": "gross"
     },
     {
       "bild": "/gallery/Rave.webp",
-      "beschreibung": "Rave Event"
+      "beschreibung": "Rave Event",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/dunkelrave.webp",
-      "beschreibung": "Dunkle Atmosphäre"
+      "beschreibung": "Dunkle Atmosphäre",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/Bunterrave.webp",
-      "beschreibung": "Bunter Rave"
+      "beschreibung": "Bunter Rave",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/VerbessertRR.webp",
-      "beschreibung": "Event Detail"
-    },
-    {
-      "bild": "/gallery/bunt.webp",
-      "beschreibung": "Bunte Szene"
-    },
-    {
-      "bild": "/gallery/DJ2VerbessertRR.webp",
-      "beschreibung": "DJ Action"
-    },
-    {
-      "bild": "/gallery/fest.webp",
-      "beschreibung": "Festival Crowd"
+      "beschreibung": "Event Detail",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/DampfVerbessertRR.webp",
-      "beschreibung": "Dampf Effekt"
+      "beschreibung": "Dampf Effekt",
+      "groesse": "normal"
+    },
+    {
+      "bild": "/gallery/fest.webp",
+      "beschreibung": "Festival Crowd",
+      "groesse": "normal"
+    },
+    {
+      "bild": "/gallery/bunt.webp",
+      "beschreibung": "Bunte Szene",
+      "groesse": "breit"
+    },
+    {
+      "bild": "/gallery/DJ2VerbessertRR.webp",
+      "beschreibung": "DJ Action",
+      "groesse": "gross"
     },
     {
       "bild": "/gallery/jungspunt.webp",
-      "beschreibung": "Portrait"
+      "beschreibung": "Portrait",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/fest2.webp",
-      "beschreibung": "Festival Publikum"
-    },
-    {
-      "bild": "/gallery/darkrave.webp",
-      "beschreibung": "Dark Rave"
-    },
-    {
-      "bild": "/gallery/djmagga.webp",
-      "beschreibung": "DJ Magga"
+      "beschreibung": "Festival Publikum",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/djmax.webp",
-      "beschreibung": "DJ Max"
+      "beschreibung": "DJ Max",
+      "groesse": "normal"
+    },
+    {
+      "bild": "/gallery/darkrave.webp",
+      "beschreibung": "Dark Rave",
+      "groesse": "breit"
+    },
+    {
+      "bild": "/gallery/djmagga.webp",
+      "beschreibung": "DJ Magga",
+      "groesse": "gross"
     }
   ]
 }
