@@ -6,6 +6,14 @@
   "layout": "raster",
   "bilder": [
     {
+      "bild": "/gallery/1000054197.jpg",
+      "beschreibung": "big G Konzert"
+    },
+    {
+      "bild": "/gallery/1000054192.jpg",
+      "beschreibung": "big G Konzert "
+    },
+    {
       "bild": "/gallery/DJ.webp",
       "beschreibung": "DJ Performance",
       "groesse": "gross"
