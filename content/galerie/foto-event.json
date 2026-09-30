@@ -6,82 +6,69 @@
   "layout": "raster",
   "bilder": [
     {
-      "bild": "/gallery/1000054197.jpg",
-      "beschreibung": "big G Konzert"
-    },
-    {
       "bild": "/gallery/1000054192.jpg",
-      "beschreibung": "big G Konzert "
-    },
-    {
-      "bild": "/gallery/DJ.webp",
-      "beschreibung": "DJ Performance",
+      "beschreibung": "big G Konzert ",
       "groesse": "gross"
     },
     {
-      "bild": "/gallery/Rave.webp",
-      "beschreibung": "Rave Event",
+      "bild": "/gallery/1000054204.jpg",
+      "beschreibung": "big G Konzert ",
       "groesse": "normal"
+    },
+    {
+      "bild": "/gallery/1000054179.jpg",
+      "beschreibung": "big G Konzert",
+      "groesse": "hoch"
+    },
+    {
+      "bild": "/gallery/1000054197.jpg",
+      "beschreibung": "big G Konzert",
+      "groesse": "hoch"
     },
     {
       "bild": "/gallery/dunkelrave.webp",
-      "beschreibung": "Dunkle Atmosphäre",
-      "groesse": "normal"
-    },
-    {
-      "bild": "/gallery/Bunterrave.webp",
-      "beschreibung": "Bunter Rave",
-      "groesse": "normal"
-    },
-    {
-      "bild": "/gallery/VerbessertRR.webp",
-      "beschreibung": "Event Detail",
+      "beschreibung": "OOC",
       "groesse": "normal"
     },
     {
       "bild": "/gallery/DampfVerbessertRR.webp",
-      "beschreibung": "Dampf Effekt",
-      "groesse": "normal"
-    },
-    {
-      "bild": "/gallery/fest.webp",
-      "beschreibung": "Festival Crowd",
-      "groesse": "normal"
-    },
-    {
-      "bild": "/gallery/bunt.webp",
-      "beschreibung": "Bunte Szene",
+      "beschreibung": "OOC",
       "groesse": "breit"
     },
     {
-      "bild": "/gallery/DJ2VerbessertRR.webp",
-      "beschreibung": "DJ Action",
+      "bild": "/gallery/fest.webp",
+      "beschreibung": "OOC",
       "groesse": "gross"
     },
     {
       "bild": "/gallery/jungspunt.webp",
-      "beschreibung": "Portrait",
-      "groesse": "normal"
+      "beschreibung": "M-Sloth",
+      "groesse": "hoch"
     },
     {
-      "bild": "/gallery/fest2.webp",
-      "beschreibung": "Festival Publikum",
+      "bild": "/gallery/bunt.webp",
+      "beschreibung": "OOC",
       "groesse": "normal"
     },
     {
       "bild": "/gallery/djmax.webp",
-      "beschreibung": "DJ Max",
+      "beschreibung": "OOC",
+      "groesse": "gross"
+    },
+    {
+      "bild": "/gallery/DJ2VerbessertRR.webp",
+      "beschreibung": "OOC",
       "groesse": "normal"
     },
     {
       "bild": "/gallery/darkrave.webp",
-      "beschreibung": "Dark Rave",
+      "beschreibung": "OOC",
       "groesse": "breit"
     },
     {
-      "bild": "/gallery/djmagga.webp",
-      "beschreibung": "DJ Magga",
-      "groesse": "gross"
+      "bild": "/gallery/fest2.webp",
+      "beschreibung": "OOC ",
+      "groesse": "normal"
     }
   ]
 }
