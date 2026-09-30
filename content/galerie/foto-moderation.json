@@ -4,5 +4,10 @@
   "reihenfolge": 20,
   "sichtbar": true,
   "layout": "mosaik",
-  "bilder": []
+  "bilder": [
+    {
+      "bild": "/gallery/1000094391.jpg",
+      "beschreibung": "födekam"
+    }
+  ]
 }
