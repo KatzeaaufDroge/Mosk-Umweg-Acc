@@ -24,8 +24,26 @@ jobs:
           P: ${{ secrets.FTP_PASSWORD }}
         run: |
           lftp -u "$U,$P" "$H" -e "set ftp:ssl-allow true; set ssl:verify-certificate no; set net:max-retries 1; set cmd:fail-exit no;
-            echo '== Website-Ordner (absolut) /domains/moskunlimited.be/public_html/admin:';
-            cls -l /domains/moskunlimited.be/public_html/admin/galerie-status.json;
-            echo '== Oberste Ebene:';
-            cls -1 / ;
+            echo '== versehentliche Kopie in /public_html entfernen';
+            rm -r /public_html/.htaccess;
+            rm -r /public_html/Logo.png;
+            rm -r /public_html/Zahnrad.png;
+            rm -r /public_html/admin;
+            rm -r /public_html/api;
+            rm -r /public_html/apple-touch-icon.png;
+            rm -r /public_html/assets;
+            rm -r /public_html/favicon-144x144.png;
+            rm -r /public_html/favicon-16x16.png;
+            rm -r /public_html/favicon-192x192.png;
+            rm -r /public_html/favicon-32x32.png;
+            rm -r /public_html/favicon-48x48.png;
+            rm -r /public_html/favicon-96x96.png;
+            rm -r /public_html/favicon.ico;
+            rm -r /public_html/gallery;
+            rm -r /public_html/index.html;
+            rm -r /public_html/robots.txt;
+            rm -r /public_html/sitemap.xml;
+            rm -r /public_html/.ftp-deploy-sync-state.json;
+            echo '== /public_html danach:';
+            cls -1 /public_html/ ;
             bye" 2>&1 | grep -v -i -E "ftp://|$H" || true
