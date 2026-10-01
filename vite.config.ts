@@ -48,9 +48,50 @@ function galleryStatus(): Plugin {
   };
 }
 
+// Verkleinerte WebP-Versionen aller Galerie-Bilder für den Build
+// (dist/gallery/_w/<datei>-<breite>.webp). Dima lädt Kamera-Originale hoch,
+// ausgeliefert werden nur passende Größen. Muss zu GALLERY_WIDTHS in
+// src/data/gallery.ts passen. Originale bleiben für das Admin-Panel erhalten.
+const GALLERY_WIDTHS = [480, 900, 1400, 2000];
+
+function galleryImages(): Plugin {
+  let outDir = 'dist';
+  return {
+    name: 'gallery-images',
+    apply: 'build',
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir);
+    },
+    async closeBundle() {
+      const sharp = (await import('sharp')).default;
+      const src = path.resolve(__dirname, 'public/gallery');
+      const dest = path.join(outDir, 'gallery/_w');
+      fs.mkdirSync(dest, { recursive: true });
+      const files = fs.readdirSync(src).filter((f) => /\.(jpe?g|png|webp|avif|tiff?)$/i.test(f));
+      let count = 0;
+      for (const file of files) {
+        for (const width of GALLERY_WIDTHS) {
+          const target = path.join(dest, `${file}-${width}.webp`);
+          await sharp(path.join(src, file))
+            .rotate() // Handy-Fotos: Ausrichtung aus EXIF übernehmen
+            .resize({ width, withoutEnlargement: true })
+            .webp({ quality: 78 })
+            .toFile(target);
+          count++;
+        }
+      }
+      console.log(`gallery-images: ${count} WebP-Versionen aus ${files.length} Bildern erzeugt`);
+
+      // Schutzregeln für den Galerie-Ordner erst hier dazulegen – im
+      // Repo-Ordner public/gallery würde Dima sie im Admin als "Datei" sehen.
+      fs.copyFileSync(path.resolve(__dirname, 'hostinger/gallery.htaccess'), path.join(outDir, 'gallery/.htaccess'));
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), galleryStatus()],
+  plugins: [react(), galleryStatus(), galleryImages()],
   base: '/',
   resolve: {
     alias: {

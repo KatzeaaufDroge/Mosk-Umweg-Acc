@@ -68,14 +68,30 @@
     return 'Mosaik';
   }
 
-  // Veröffentlichte Bilder live als kleine Vorschau über Netlifys Image CDN laden
+  // Veröffentlichte Bilder als kleine WebP-Vorschau laden (erzeugt beim Build,
+  // siehe vite.config.ts -> galleryImages). Neu hochgeladene, noch nicht
+  // gebaute Bilder fallen per onError aufs Original zurück.
   function previewUrl(path, width) {
     var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-    if (!local && /^\/gallery\//.test(path)) {
-      return '/.netlify/images?url=' + encodeURIComponent(path) + '&w=' + (width || 500) + '&q=70';
+    if (!local && /^\/gallery\/(?!_w\/)/.test(path)) {
+      var w = (width || 500) <= 480 ? 480 : 900;
+      return '/gallery/_w/' + path.slice('/gallery/'.length) + '-' + w + '.webp';
     }
     return path;
   }
+
+  // Zentral für alle Vorschaubilder im Admin: Gibt es (noch) keine
+  // verkleinerte Version, das Original laden.
+  document.addEventListener(
+    'error',
+    function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== 'IMG') return;
+      var m = (img.getAttribute('src') || '').match(/^\/gallery\/_w\/(.+)-\d+\.webp$/);
+      if (m) img.setAttribute('src', '/gallery/' + m[1]);
+    },
+    true,
+  );
 
   /* ---------- Styles (Farben aus dem Logo) ---------- */
   var css = `
@@ -685,7 +701,7 @@
             src: self.src(path, size === 'normal' ? 500 : 1000),
             alt: item.get('beschreibung') || '',
             onError: function (e) {
-              if (e.target.src.indexOf('/.netlify/images') !== -1) e.target.src = path;
+              if (e.target.src.indexOf('/gallery/_w/') !== -1) e.target.src = path;
             },
           }),
           h('span', { className: 'mg-num' }, String(i + 1)),

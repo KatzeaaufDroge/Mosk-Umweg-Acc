@@ -1,0 +1,4 @@
+# Nur contact.php ist erreichbar
+<FilesMatch "^(?!contact\.php$).*">
+Require all denied
+</FilesMatch>

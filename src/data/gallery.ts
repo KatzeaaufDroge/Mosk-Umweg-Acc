@@ -111,15 +111,25 @@ export const galleryAreas: GalleryArea[] = visibleGalleryCategories.reduce<Galle
   return areas;
 }, []);
 
-// Dima lädt Originale in voller Kameragröße hoch. Live liefert Netlifys
-// Image CDN automatisch verkleinerte WebP/AVIF-Versionen aus; lokal (vite dev)
-// gibt es den Dienst nicht, dort wird das Original genutzt.
+// Dima lädt Originale in voller Kameragröße hoch. Der Build erzeugt daraus
+// WebP-Versionen in festen Breiten (vite.config.ts -> galleryImages, gleiche
+// Liste). Lokal (vite dev) gibt es die nicht, dort wird das Original genutzt.
+const GALLERY_WIDTHS = [480, 900, 1400, 2000];
+
+function isGalleryImage(src: string) {
+  return src.startsWith('/gallery/') && !src.startsWith('/gallery/_w/');
+}
+
 export function optimizedSrc(src: string, width: number): string {
-  if (!import.meta.env.PROD || !src.startsWith('/')) return src;
-  return `/.netlify/images?url=${encodeURIComponent(src)}&w=${width}&q=78`;
+  if (!import.meta.env.PROD || !isGalleryImage(src)) return src;
+  const w = GALLERY_WIDTHS.find((x) => x >= width) ?? GALLERY_WIDTHS[GALLERY_WIDTHS.length - 1];
+  return `/gallery/_w/${src.slice('/gallery/'.length)}-${w}.webp`;
 }
 
 export function optimizedSrcSet(src: string, widths: number[]): string | undefined {
-  if (!import.meta.env.PROD || !src.startsWith('/')) return undefined;
-  return widths.map((w) => `${optimizedSrc(src, w)} ${w}w`).join(', ');
+  if (!import.meta.env.PROD || !isGalleryImage(src)) return undefined;
+  return widths
+    .filter((w) => GALLERY_WIDTHS.includes(w))
+    .map((w) => `${optimizedSrc(src, w)} ${w}w`)
+    .join(', ');
 }

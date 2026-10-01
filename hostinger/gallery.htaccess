@@ -1,0 +1,9 @@
+# Hochgeladene Dateien: falls z.B. eine SVG mit Skript direkt aufgerufen wird,
+# darf darin nichts ausgeführt werden.
+<IfModule mod_headers.c>
+Header always set Content-Security-Policy "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; sandbox"
+Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+<FilesMatch "\.(php|phtml|phar|html?|js)$">
+Require all denied
+</FilesMatch>
