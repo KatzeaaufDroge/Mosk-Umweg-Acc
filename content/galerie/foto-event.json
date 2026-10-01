@@ -16,34 +16,34 @@
       "groesse": "hoch"
     },
     {
+      "bild": "/gallery/1000054197.jpg",
+      "beschreibung": "big G Konzert",
+      "groesse": "breit"
+    },
+    {
+      "bild": "/gallery/dunkelrave.webp",
+      "beschreibung": "OOC",
+      "groesse": "hoch"
+    },
+    {
       "bild": "/gallery/1000054204.jpg",
       "beschreibung": "big G Konzert ",
       "groesse": "normal"
     },
     {
-      "bild": "/gallery/1000054197.jpg",
-      "beschreibung": "big G Konzert",
-      "groesse": "hoch"
-    },
-    {
-      "bild": "/gallery/dunkelrave.webp",
+      "bild": "/gallery/DampfVerbessertRR.webp",
       "beschreibung": "OOC",
       "groesse": "normal"
     },
     {
-      "bild": "/gallery/DampfVerbessertRR.webp",
-      "beschreibung": "OOC",
-      "groesse": "breit"
-    },
-    {
       "bild": "/gallery/fest.webp",
       "beschreibung": "OOC",
-      "groesse": "gross"
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/jungspunt.webp",
       "beschreibung": "M-Sloth",
-      "groesse": "hoch"
+      "groesse": "gross"
     },
     {
       "bild": "/gallery/bunt.webp",
@@ -58,17 +58,17 @@
     {
       "bild": "/gallery/DJ2VerbessertRR.webp",
       "beschreibung": "OOC",
-      "groesse": "normal"
+      "groesse": "hoch"
     },
     {
       "bild": "/gallery/darkrave.webp",
       "beschreibung": "OOC",
-      "groesse": "breit"
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/fest2.webp",
       "beschreibung": "OOC ",
-      "groesse": "normal"
+      "groesse": "breit"
     }
   ]
 }
