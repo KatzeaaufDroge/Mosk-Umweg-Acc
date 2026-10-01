@@ -1,6 +1,10 @@
 {
   "vorlagen": [
     {
+      "muster": "gross,hoch,normal,breit,hoch,normal,normal,gross,normal",
+      "name": "MUSTER"
+    },
+    {
       "name": "Wechselnd (Beispiel)",
       "muster": "gross,normal,normal,normal,normal,breit"
     }
