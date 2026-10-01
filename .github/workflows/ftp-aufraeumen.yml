@@ -1,0 +1,31 @@
+# Einmaliges Aufräumen nach der Umzugs-Fehlersuche (nur von Hand startbar):
+# - entfernt den versehentlich angelegten Ordner "domains/" in public_html
+# - entfernt die Statusdatei des Deploy-Werkzeugs, damit der nächste Upload
+#   wieder alles vollständig hochlädt
+# Gibt bewusst keine Adressen/Zugangsdaten aus.
+name: FTP-Aufräumen
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: sudo apt-get install -y lftp >/dev/null
+      - name: Aufräumen
+        env:
+          H: ${{ secrets.FTP_SERVER }}
+          U: ${{ secrets.FTP_USERNAME }}
+          P: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -u "$U,$P" "$H" -e "set ftp:ssl-allow true; set ssl:verify-certificate no; set net:max-retries 1; set cmd:fail-exit no;
+            rm -r domains;
+            rm -f .ftp-deploy-sync-state.json;
+            rm -f _redirects;
+            cls -1 --sort=name;
+            bye" 2>&1 | grep -v -i -E "ftp://|$H" || true
