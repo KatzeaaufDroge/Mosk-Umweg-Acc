@@ -2,13 +2,13 @@ import { ArrowRight } from 'lucide-react';
 import Gallery from '../components/Gallery';
 import { useScrollToContact } from '../hooks/useScrollToContact';
 import { Seo } from '../components/Seo';
-import StageLight from '../components/ui/stage-light';
+import GalleryBackdrop from '../components/ui/gallery-backdrop';
 
 export default function PortfolioPage() {
   const scrollToContact = useScrollToContact();
 
   return (
-    <StageLight>
+    <GalleryBackdrop>
       <Seo
         title="Galerie – Mosk Unlimited"
         description="Ein Einblick in die besten Arbeiten von Mosk Unlimited: Event-Fotografie und mehr aus St. Vith, Belgien."
@@ -34,6 +34,6 @@ export default function PortfolioPage() {
           </div>
         </div>
       </section>
-    </StageLight>
+    </GalleryBackdrop>
   );
 }
