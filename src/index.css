@@ -199,3 +199,108 @@ footer * {
     0 18px 44px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(85, 160, 65, 0.12);
 }
+
+/* Bühnenlicht (Galerie, src/components/ui/stage-light.tsx).
+   Blur sitzt am äußeren Element, die Kegelform (clip-path) am inneren,
+   sonst würde der Blur an der Kegelkante hart abgeschnitten. */
+.stage-light {
+  background-color: #111211;
+}
+
+.stage-beam {
+  position: absolute;
+  /* Quelle knapp unter der festen Navigation, damit man den Scheinwerfer sieht */
+  top: 56px;
+  height: 115vh;
+  transform-origin: 50% 0;
+  filter: blur(34px);
+  will-change: transform;
+}
+
+.stage-beam__cone {
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+}
+
+.stage-beam--green {
+  left: 4%;
+  width: min(58vw, 760px);
+  animation: stage-sway-green 46s ease-in-out infinite alternate;
+}
+
+.stage-beam--green .stage-beam__cone {
+  background:
+    radial-gradient(ellipse 22% 14% at 50% 0, rgba(140, 214, 118, 0.42), rgba(140, 214, 118, 0) 100%),
+    linear-gradient(
+    to bottom,
+    rgba(97, 181, 74, 0.34),
+    rgba(85, 160, 65, 0.12) 42%,
+    rgba(85, 160, 65, 0) 78%
+  );
+}
+
+.stage-beam--warm {
+  right: 2%;
+  width: min(48vw, 640px);
+  animation: stage-sway-warm 61s ease-in-out infinite alternate;
+}
+
+.stage-beam--warm .stage-beam__cone {
+  background:
+    radial-gradient(ellipse 22% 14% at 50% 0, rgba(255, 244, 228, 0.26), rgba(255, 244, 228, 0) 100%),
+    linear-gradient(
+    to bottom,
+    rgba(255, 238, 214, 0.17),
+    rgba(255, 238, 214, 0.05) 40%,
+    rgba(255, 238, 214, 0) 72%
+  );
+}
+
+/* Bodennebel: grüner Schimmer unten, driftet seitlich */
+.stage-haze {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: -25vh;
+  height: 70vh;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(85, 160, 65, 0.11), rgba(85, 160, 65, 0) 70%);
+  animation: stage-haze 74s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.stage-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.stage-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 85% 75% at 50% 40%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+@keyframes stage-sway-green {
+  from { transform: rotate(-9deg) translateX(-2vw); }
+  to   { transform: rotate(7deg) translateX(3vw); }
+}
+
+@keyframes stage-sway-warm {
+  from { transform: rotate(8deg); }
+  to   { transform: rotate(-6deg) translateX(-3vw); }
+}
+
+@keyframes stage-haze {
+  from { transform: translateX(-8%); opacity: 0.8; }
+  to   { transform: translateX(8%); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-beam,
+  .stage-haze {
+    animation: none;
+  }
+}

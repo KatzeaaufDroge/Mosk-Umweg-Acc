@@ -2,21 +2,22 @@ import { ArrowRight } from 'lucide-react';
 import Gallery from '../components/Gallery';
 import { useScrollToContact } from '../hooks/useScrollToContact';
 import { Seo } from '../components/Seo';
+import StageLight from '../components/ui/stage-light';
 
 export default function PortfolioPage() {
   const scrollToContact = useScrollToContact();
 
   return (
-    <div>
+    <StageLight>
       <Seo
         title="Galerie – Mosk Unlimited"
         description="Ein Einblick in die besten Arbeiten von Mosk Unlimited: Event-Fotografie und mehr aus St. Vith, Belgien."
         path="/portfolio"
       />
       <Gallery />
-      <section className="relative py-16 sm:py-24 overflow-hidden" style={{ backgroundColor: '#262626' }}>
+      <section className="relative pb-16 sm:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-black p-6 sm:p-8 lg:p-12 rounded-xl text-center">
+          <div className="glass-card p-6 sm:p-8 lg:p-12 rounded-xl text-center">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
               Starten wir Ihr Projekt!
             </h2>
@@ -33,6 +34,6 @@ export default function PortfolioPage() {
           </div>
         </div>
       </section>
-    </div>
+    </StageLight>
   );
 }

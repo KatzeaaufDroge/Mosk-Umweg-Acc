@@ -461,7 +461,7 @@ export default function Gallery() {
   let offset = 0;
 
   return (
-    <section className="relative pt-32 sm:pt-40 pb-16 sm:pb-24 overflow-hidden" style={{ backgroundColor: '#262626' }}>
+    <section className="relative pt-32 sm:pt-40 pb-16 sm:pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BlurFade delay={0.25} inView sessionKey="gallery-header">
           <div className="text-center mb-12 sm:mb-16">
