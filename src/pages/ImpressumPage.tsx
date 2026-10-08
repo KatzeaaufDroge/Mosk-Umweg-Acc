@@ -10,7 +10,7 @@ export default function ImpressumPage() {
         path="/impressum"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 sm:mb-12">Impressum</h1>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-normal text-white lg:text-7xl mb-8 sm:mb-12">Impressum</h1>
 
         <div className="prose prose-invert max-w-none space-y-6 sm:space-y-8">
           <section>

@@ -89,7 +89,7 @@ export default function DatenschutzPage() {
         <div className="flex flex-col items-center space-y-6">
           <div className="flex items-center gap-3">
             <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-brand" />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-normal text-white text-center">
               Datenschutz / Privacy Policy
             </h1>
           </div>

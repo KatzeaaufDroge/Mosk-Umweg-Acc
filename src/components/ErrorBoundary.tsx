@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen flex items-center justify-center bg-black text-white px-4 text-center">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: '#55a041' }}>
+            <h1 className="text-5xl sm:text-6xl font-display font-normal mb-4" style={{ color: '#55a041' }}>
               Etwas ist schiefgelaufen.
             </h1>
             <p className="text-gray-300 mb-6">

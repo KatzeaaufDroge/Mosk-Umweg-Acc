@@ -52,13 +52,13 @@ export default function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-24 text-center">
         <BlurFade delay={0.25} inView={showInitialAnimation} sessionKey="hero-title">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight" style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400, color: '#55a041' }}>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl font-display font-normal mb-3 sm:mb-4 md:mb-6 leading-tight" style={{ color: '#55a041' }}>
             <div>FOTOS. VIDEOS. EDITING.</div>
           </h1>
         </BlurFade>
 
         <BlurFade delay={0.5} inView={showInitialAnimation} sessionKey="hero-subtitle">
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-200 mb-6 sm:mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-display font-normal text-gray-200 mb-6 sm:mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed">
             Ihre Vision. Mein Handwerk. Ein Ergebnis, das überzeugt.
           </p>
         </BlurFade>

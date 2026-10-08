@@ -3,6 +3,12 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        // Fließtext, Menü, Buttons, Karten-Überschriften
+        sans: ['Archivo', 'system-ui', '-apple-system', 'sans-serif'],
+        // Seitentitel (nur eine Strichstärke vorhanden -> immer font-normal)
+        display: ['"Bebas Neue"', 'Impact', 'sans-serif'],
+      },
       colors: {
         // Grün aus dem Mosk-Logo – überall für Grün verwenden
         brand: {

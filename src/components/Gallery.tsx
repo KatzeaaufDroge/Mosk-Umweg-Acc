@@ -297,7 +297,7 @@ export default function Gallery() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BlurFade delay={0.25} inView sessionKey="gallery-header">
           <div className="text-center mb-12 sm:mb-16">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400 }}>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-normal text-white mb-4 sm:mb-6">
               Galerie
             </h1>
             <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
