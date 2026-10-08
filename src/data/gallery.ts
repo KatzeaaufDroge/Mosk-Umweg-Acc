@@ -111,6 +111,39 @@ export const galleryAreas: GalleryArea[] = visibleGalleryCategories.reduce<Galle
   return areas;
 }, []);
 
+// Einstieg der Galerie: diese drei Bereiche stehen immer als große Karten da,
+// auch leer ("Bald verfügbar"). Bereiche, die nur im Admin vorkommen, hängen
+// sich hinten an, sobald sie Inhalte haben.
+const FIXED_AREAS = ['Fotografie', 'Videografie', 'Editing'];
+
+export interface GalleryAreaCard extends GalleryArea {
+  slug: string;
+  // Bilder, die auf der Karte langsam durchwechseln (bei Videos das Vorschaubild)
+  previews: string[];
+}
+
+export function areaSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+export const galleryAreaCards: GalleryAreaCard[] = [
+  ...FIXED_AREAS,
+  ...galleryAreas.map((a) => a.name).filter((n) => !FIXED_AREAS.includes(n)),
+].map((name) => {
+  const categories = galleryAreas.find((a) => a.name === name)?.categories ?? [];
+  return {
+    name,
+    slug: areaSlug(name),
+    categories,
+    previews: [...new Set(categories.flatMap((c) => c.items.map((i) => i.src)))],
+  };
+});
+
 // Dima lädt Originale in voller Kameragröße hoch. Der Build erzeugt daraus
 // WebP-Versionen in festen Breiten (vite.config.ts -> galleryImages, gleiche
 // Liste). Lokal (vite dev) gibt es die nicht, dort wird das Original genutzt.

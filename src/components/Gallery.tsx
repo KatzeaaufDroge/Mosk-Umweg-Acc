@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { ArrowRight, ChevronLeft, ChevronRight, LayoutGrid, Play, X } from 'lucide-react';
 import Masonry from 'react-masonry-css';
 import { BlurFade } from './ui/blur-fade';
+import { getNavHeight } from '../lib/utils';
 import {
-  galleryAreas,
+  galleryAreaCards,
   optimizedSrc,
   optimizedSrcSet,
+  type GalleryAreaCard,
   type GalleryCategory,
   type GalleryItem,
 } from '../data/gallery';
@@ -254,28 +257,193 @@ function FilterBar({
   );
 }
 
-export default function Gallery() {
-  const [areaName, setAreaName] = useState(galleryAreas[0]?.name ?? '');
-  const [categoryId, setCategoryId] = useState(ALL);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+// Bilder auf den Bereichs-Karten wechseln langsam von selbst. Die Karten
+// starten versetzt, damit nicht alle gleichzeitig umblenden.
+const CYCLE_MS = 6000;
 
-  const area = galleryAreas.find((a) => a.name === areaName) ?? galleryAreas[0];
+function useCycle(length: number, startDelay: number): number {
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    if (length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let interval: number | undefined;
+    const start = window.setTimeout(() => {
+      interval = window.setInterval(() => {
+        if (!document.hidden) setActive((n) => (n + 1) % length);
+      }, CYCLE_MS);
+    }, startDelay);
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(interval);
+    };
+  }, [length, startDelay]);
+  return active;
+}
+
+function AreaCard({ area, index, onOpen }: { area: GalleryAreaCard; index: number; onOpen: () => void }) {
+  const active = useCycle(area.previews.length, index * 1700);
+  // Bilder erst laden, wenn sie gleich dran sind; einmal geladen bleiben sie stehen
+  const reached = useRef(0);
+  reached.current = Math.max(reached.current, active);
+  const empty = area.categories.length === 0;
+
+  const label = (
+    <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-8">
+      <h2
+        className={`font-display font-normal text-5xl sm:text-6xl leading-none tracking-wide ${
+          empty ? 'text-white/35' : 'text-white'
+        }`}
+      >
+        {area.name}
+      </h2>
+      {empty ? (
+        <span className="mt-4 inline-block rounded-full border border-white/15 px-3 py-1 text-xs font-medium uppercase tracking-[0.14em] text-white/45">
+          Bald verfügbar
+        </span>
+      ) : (
+        <div className="mt-3 flex items-end justify-between gap-4">
+          <p className="text-sm text-white/65">{area.categories.map((c) => c.title).join(' · ')}</p>
+          <span className="flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand transition-all duration-300 group-hover:gap-2.5">
+            Ansehen
+            <ArrowRight size={16} />
+          </span>
+        </div>
+      )}
+    </div>
+  );
+
+  const shell = 'relative block w-full overflow-hidden rounded-xl text-left aspect-[4/3] lg:aspect-[3/4]';
+
+  if (empty) {
+    return (
+      <div className={`${shell} glass-card`} aria-disabled="true">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.04),transparent_60%)]" />
+        {label}
+      </div>
+    );
+  }
+
+  return (
+    <button type="button" onClick={onOpen} className={`group ${shell} glass-card glass-card-interactive`}>
+      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.03]">
+        {area.previews.map((src, i) =>
+          i <= reached.current + 1 ? (
+            <img
+              key={src}
+              src={optimizedSrc(src, 900)}
+              srcSet={optimizedSrcSet(src, [480, 900, 1400])}
+              sizes="(min-width: 1024px) 33vw, 100vw"
+              alt=""
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out ${
+                i === active ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          ) : null,
+        )}
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-brand/30 via-brand/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      {label}
+    </button>
+  );
+}
+
+// Kleine Leiste innerhalb eines Bereichs: zurück zur Übersicht oder direkt
+// in einen anderen Bereich, ohne über die großen Karten zu gehen.
+function AreaBar({
+  areas,
+  active,
+  onChange,
+  onOverview,
+}: {
+  areas: GalleryAreaCard[];
+  active: string;
+  onChange: (slug: string) => void;
+  onOverview: () => void;
+}) {
+  return (
+    <div className="flex justify-center">
+      <div
+        className="inline-flex max-w-full items-center gap-0.5 sm:gap-1 overflow-x-auto [scrollbar-width:none] rounded-full border border-white/10 bg-black/60 p-1"
+        role="group"
+        aria-label="Bereich"
+      >
+        <button
+          type="button"
+          onClick={onOverview}
+          aria-label="Übersicht"
+          className="flex shrink-0 items-center gap-1.5 rounded-full px-2.5 sm:px-4 py-2 text-sm font-medium text-white/60 transition-colors hover:bg-white/5 hover:text-white"
+        >
+          <LayoutGrid size={15} />
+          <span className="hidden sm:inline">Übersicht</span>
+        </button>
+        <span className="mx-0.5 sm:mx-1 h-5 w-px shrink-0 bg-white/10" aria-hidden="true" />
+        {areas.map((a) => {
+          const on = a.slug === active;
+          const empty = a.categories.length === 0;
+          return (
+            <button
+              key={a.slug}
+              type="button"
+              disabled={empty}
+              aria-pressed={on}
+              title={empty ? 'Bald verfügbar' : undefined}
+              onClick={() => onChange(a.slug)}
+              className={`shrink-0 rounded-full px-3 sm:px-5 py-2 text-[13px] sm:text-sm font-semibold transition-colors ${
+                on
+                  ? 'bg-brand text-black'
+                  : empty
+                    ? 'cursor-default text-white/25'
+                    : 'text-white/70 hover:bg-brand/15 hover:text-white'
+              }`}
+            >
+              {a.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Auswahl steht in der Adresse (?bereich=…&kategorie=…): Zurück-Taste führt
+// zur Übersicht, und Links auf einen Bereich funktionieren direkt.
+export default function Gallery() {
+  const [params, setParams] = useSearchParams();
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+
+  const area = galleryAreaCards.find((a) => a.slug === params.get('bereich') && a.categories.length > 0) ?? null;
+  const categoryParam = params.get('kategorie');
+  const categoryId = area?.categories.some((c) => c.id === categoryParam) ? categoryParam! : ALL;
+
   const shownCategories: GalleryCategory[] = area
     ? area.categories.filter((c) => categoryId === ALL || c.id === categoryId)
     : [];
   // Lightbox blättert durch alles, was gerade angezeigt wird
   const galleryItems: GalleryItem[] = shownCategories.flatMap((c) => c.items);
 
-  const chooseArea = (name: string) => {
-    setAreaName(name);
-    setCategoryId(ALL);
-    setSelectedIndex(null);
-  };
+  const areaSlugParam = area?.slug;
+  useEffect(() => setSelectedIndex(null), [areaSlugParam, categoryId]);
 
-  const chooseCategory = (id: string) => {
-    setCategoryId(id);
-    setSelectedIndex(null);
-  };
+  // Beim Öffnen eines Bereichs nach oben zur Leiste, falls man weiter unten war
+  useEffect(() => {
+    if (!areaSlugParam) return;
+    const el = barRef.current;
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - getNavHeight() - 24;
+    if (window.scrollY > top + 8) window.scrollTo({ top, behavior: 'smooth' });
+  }, [areaSlugParam]);
+
+  const chooseArea = (slug: string) => setParams({ bereich: slug }, { preventScrollReset: true });
+  const showOverview = () => setParams({}, { preventScrollReset: true });
+  const chooseCategory = (id: string) =>
+    setParams(id === ALL ? { bereich: area!.slug } : { bereich: area!.slug, kategorie: id }, {
+      replace: true,
+      preventScrollReset: true,
+    });
 
   const handleNext = () => {
     if (selectedIndex !== null && selectedIndex < galleryItems.length - 1) {
@@ -306,31 +474,29 @@ export default function Gallery() {
           </div>
         </BlurFade>
 
-        {(galleryAreas.length > 1 || (area && area.categories.length > 1)) && (
-          <div className="space-y-4 mb-10 sm:mb-14">
-            <FilterBar
-              label="Bereich"
-              size="lg"
-              active={area?.name ?? ''}
-              onChange={chooseArea}
-              options={galleryAreas.map((a) => ({ id: a.name, label: a.name }))}
-            />
-            {area && area.categories.length > 1 && (
-              <FilterBar
-                label="Kategorie"
-                size="sm"
-                active={categoryId}
-                onChange={chooseCategory}
-                options={[{ id: ALL, label: 'Alle' }, ...area.categories.map((c) => ({ id: c.id, label: c.title }))]}
-              />
-            )}
-          </div>
-        )}
+        {!area ? (
+          <BlurFade delay={0.5} inView sessionKey="gallery-areas">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+              {galleryAreaCards.map((a, i) => (
+                <AreaCard key={a.slug} area={a} index={i} onOpen={() => chooseArea(a.slug)} />
+              ))}
+            </div>
+          </BlurFade>
+        ) : (
+          <>
+            <div ref={barRef} className="space-y-4 mb-10 sm:mb-14">
+              <AreaBar areas={galleryAreaCards} active={area.slug} onChange={chooseArea} onOverview={showOverview} />
+              {area.categories.length > 1 && (
+                <FilterBar
+                  label="Kategorie"
+                  size="sm"
+                  active={categoryId}
+                  onChange={chooseCategory}
+                  options={[{ id: ALL, label: 'Alle' }, ...area.categories.map((c) => ({ id: c.id, label: c.title }))]}
+                />
+              )}
+            </div>
 
-        <BlurFade delay={0.5} inView sessionKey="gallery-grid">
-          {shownCategories.length === 0 ? (
-            <p className="text-center text-gray-400 py-16">Bald gibt es hier neue Arbeiten zu sehen.</p>
-          ) : (
             <div className="space-y-12 sm:space-y-16">
               {shownCategories.map((category) => {
                 const start = offset;
@@ -345,9 +511,8 @@ export default function Gallery() {
                 );
               })}
             </div>
-          )}
-        </BlurFade>
-
+          </>
+        )}
       </div>
 
       {selectedIndex !== null && galleryItems[selectedIndex] && (
