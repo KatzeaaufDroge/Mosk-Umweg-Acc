@@ -40,7 +40,7 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 max-w-5xl mx-auto">
             <button
               onClick={handlePrivateCustomers}
-              className="group relative bg-[#171717] hover:bg-gradient-to-br hover:from-[#242424] hover:to-[#1c1c1c] rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-brand/10 p-8 sm:p-12 text-left"
+              className="group relative glass-card glass-card-interactive rounded-xl overflow-hidden hover:scale-[1.03] p-8 sm:p-12 text-left"
             >
               <div className="relative z-10">
                 <div className="bg-brand w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform duration-300">
@@ -62,7 +62,7 @@ export default function ServicesPage() {
 
             <button
               onClick={handleBusinessCustomers}
-              className="group relative bg-[#171717] hover:bg-gradient-to-br hover:from-[#242424] hover:to-[#1c1c1c] rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-brand/10 p-8 sm:p-12 text-left"
+              className="group relative glass-card glass-card-interactive rounded-xl overflow-hidden hover:scale-[1.03] p-8 sm:p-12 text-left"
             >
               <div className="relative z-10">
                 <div className="bg-brand w-16 h-16 sm:w-20 sm:h-20 rounded-lg flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform duration-300">
@@ -85,7 +85,7 @@ export default function ServicesPage() {
         </BlurFade>
 
         <BlurFade delay={0.75} inView={showInitialAnimation} sessionKey="services-info">
-          <div className="bg-black p-6 sm:p-8 lg:p-12 rounded-xl text-center mt-12 sm:mt-16 lg:mt-20">
+          <div className="glass-card p-6 sm:p-8 lg:p-12 rounded-xl text-center mt-12 sm:mt-16 lg:mt-20">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
               Nicht sicher, welcher Bereich zu Ihnen passt?
             </h2>
