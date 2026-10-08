@@ -1,4 +1,5 @@
-import { Mail, Phone, MapPin, Send, Clock, Loader2, MessageCircle, X } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Clock, Loader2, X } from 'lucide-react';
+import { siWhatsapp } from 'simple-icons';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { ContactPrefill } from '../hooks/useScrollToContact';
@@ -7,6 +8,19 @@ type Kundentyp = 'Privatperson' | 'Unternehmen';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_SUBMIT_DELAY_MS = 2500;
+
+// Belgische Mobilnummer (0472 80 44 61) im internationalen Format, ohne +.
+// Gilt für WhatsApp (wa.me) und den Anruf-Link.
+const WHATSAPP_NUMBER = '32472804461';
+const PHONE_DISPLAY = '+32 472 80 44 61';
+
+function WhatsAppIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d={siWhatsapp.path} />
+    </svg>
+  );
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -111,26 +125,45 @@ export default function Contact() {
     });
   };
 
+  const field =
+    'w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-sm sm:text-base text-white placeholder:text-white/30 outline-none transition-colors hover:border-white/20 focus:border-brand/70 focus:bg-white/[0.06] disabled:opacity-60';
+  const label = 'mb-2 block text-sm font-medium text-white/70';
+
   return (
-    <section id="contact" className="py-24 bg-[#262626]">
+    <section id="contact" className="relative isolate overflow-hidden bg-[#111211] py-24 sm:py-32">
+      {/* Hintergrund: eigenes Eventfoto, stark abgedunkelt und entsättigt */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10">
+        <img
+          src="/images/kontakt-hintergrund.webp"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full scale-105 object-cover opacity-90 blur-[2px] brightness-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#111211] via-[#111211]/15 to-[#111211]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#111211]/50 via-transparent to-[#111211]/50" />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-5xl sm:text-6xl md:text-7xl font-display font-normal text-brand mb-3 sm:mb-4 tracking-wide">Kontakt aufnehmen</h2>
+        <div className="mb-12 sm:mb-16 text-center">
+          <h2 className="font-display font-normal text-5xl sm:text-6xl md:text-7xl tracking-wide text-white">
+            Kontakt aufnehmen
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          <div>
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-16">
+          <div className="glass-card rounded-2xl p-5 sm:p-8 lg:p-10">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               {leistung && (
                 <div className="flex items-center justify-between gap-3 rounded-lg border border-brand/40 bg-brand/10 px-4 py-3">
                   <p className="text-sm sm:text-base text-white">
-                    <span className="text-gray-400">Anfrage für: </span>
+                    <span className="text-white/60">Anfrage für: </span>
                     <span className="font-semibold">{leistung}</span>
                   </p>
                   <button
                     type="button"
                     onClick={() => setLeistung('')}
-                    className="shrink-0 rounded-md p-1 text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                    className="shrink-0 rounded-md p-1 text-white/50 hover:text-white hover:bg-white/10 transition-colors"
                     aria-label="Service-Auswahl entfernen"
                   >
                     <X size={16} />
@@ -149,123 +182,139 @@ export default function Contact() {
                 className="absolute -left-[9999px] w-px h-px overflow-hidden"
               />
 
-              {/* Kundentyp Select */}
+              {/* Kundentyp als Umschalter */}
               <div>
-                <label htmlFor="kundentyp" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Kundentyp *</label>
-                <select
-                  id="kundentyp"
-                  name="kundentyp"
-                  value={formData.kundentyp}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
-                  disabled={isSubmitting}
+                <span id="kundentyp-label" className={label}>Ich bin</span>
+                <div
+                  role="radiogroup"
+                  aria-labelledby="kundentyp-label"
+                  className="grid grid-cols-2 gap-1 rounded-lg border border-white/10 bg-white/[0.03] p-1"
                 >
-                  <option value="Privatperson">Privatperson</option>
-                  <option value="Unternehmen">Unternehmen</option>
-                </select>
+                  {(['Privatperson', 'Unternehmen'] as Kundentyp[]).map((typ) => {
+                    const on = formData.kundentyp === typ;
+                    return (
+                      <button
+                        key={typ}
+                        type="button"
+                        role="radio"
+                        aria-checked={on}
+                        disabled={isSubmitting}
+                        onClick={() => setFormData((prev) => ({ ...prev, kundentyp: typ }))}
+                        className={`rounded-md py-2.5 text-sm font-semibold transition-colors ${
+                          on ? 'bg-brand text-black' : 'text-white/60 hover:bg-white/5 hover:text-white'
+                        }`}
+                      >
+                        {typ}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Conditional Fields - Privatperson */}
-              {formData.kundentyp === 'Privatperson' && (
-                <>
+              {formData.kundentyp === 'Privatperson' ? (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4">
                   <div>
-                    <label htmlFor="vorname" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Vorname *</label>
+                    <label htmlFor="vorname" className={label}>Vorname *</label>
                     <input
                       type="text"
                       id="vorname"
                       name="vorname"
+                      autoComplete="given-name"
                       value={formData.vorname}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
+                      className={field}
                       placeholder="Ihr Vorname"
                       disabled={isSubmitting}
                     />
                   </div>
                   <div>
-                    <label htmlFor="nachname" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Nachname *</label>
+                    <label htmlFor="nachname" className={label}>Nachname *</label>
                     <input
                       type="text"
                       id="nachname"
                       name="nachname"
+                      autoComplete="family-name"
                       value={formData.nachname}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
+                      className={field}
                       placeholder="Ihr Nachname"
                       disabled={isSubmitting}
                     />
                   </div>
-                </>
-              )}
-
-              {/* Conditional Fields - Unternehmen */}
-              {formData.kundentyp === 'Unternehmen' && (
-                <>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4">
                   <div>
-                    <label htmlFor="unternehmensname" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Name des Unternehmens *</label>
+                    <label htmlFor="unternehmensname" className={label}>Unternehmen *</label>
                     <input
                       type="text"
                       id="unternehmensname"
                       name="unternehmensname"
+                      autoComplete="organization"
                       value={formData.unternehmensname}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
-                      placeholder="Unternehmensname"
+                      className={field}
+                      placeholder="Name des Unternehmens"
                       disabled={isSubmitting}
                     />
                   </div>
                   <div>
-                    <label htmlFor="ansprechpartner" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Ansprechpartner *</label>
+                    <label htmlFor="ansprechpartner" className={label}>Ansprechpartner *</label>
                     <input
                       type="text"
                       id="ansprechpartner"
                       name="ansprechpartner"
+                      autoComplete="name"
                       value={formData.ansprechpartner}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
+                      className={field}
                       placeholder="Ihr Name"
                       disabled={isSubmitting}
                     />
                   </div>
-                </>
+                </div>
               )}
 
-              {/* Always Visible Fields */}
-              <div>
-                <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">E-Mail Adresse *</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
-                  placeholder="ihre@email.de"
-                  disabled={isSubmitting}
-                />
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-4">
+                <div>
+                  <label htmlFor="email" className={label}>E-Mail *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className={field}
+                    placeholder="ihre@email.de"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="telefonnummer" className={label}>
+                    Telefon <span className="font-normal text-white/40">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="telefonnummer"
+                    name="telefonnummer"
+                    autoComplete="tel"
+                    value={formData.telefonnummer}
+                    onChange={handleChange}
+                    className={field}
+                    placeholder="+32 …"
+                    disabled={isSubmitting}
+                  />
+                </div>
               </div>
 
               <div>
-                <label htmlFor="telefonnummer" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Telefonnummer</label>
-                <input
-                  type="tel"
-                  id="telefonnummer"
-                  name="telefonnummer"
-                  value={formData.telefonnummer}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none text-sm sm:text-base"
-                  placeholder="Optional"
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">Nachricht *</label>
+                <label htmlFor="message" className={label}>Nachricht *</label>
                 <textarea
                   ref={messageRef}
                   id="message"
@@ -273,15 +322,22 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  rows={4}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-300 bg-[#171717] text-white focus:border-brand outline-none resize-none text-sm sm:text-base"
-                  placeholder="Ihre Nachricht..."
+                  rows={5}
+                  className={`${field} resize-none`}
+                  placeholder="Worum geht es? Datum, Ort, Umfang …"
                   disabled={isSubmitting}
                 ></textarea>
               </div>
 
               {status.message && (
-                <div className={`p-3 sm:p-4 rounded-lg text-sm sm:text-base ${status.type === 'success' ? 'bg-green-900/50 text-green-200' : 'bg-red-900/50 text-red-200'}`}>
+                <div
+                  role="status"
+                  className={`rounded-lg border px-4 py-3 text-sm sm:text-base ${
+                    status.type === 'success'
+                      ? 'border-brand/40 bg-brand/10 text-white'
+                      : 'border-red-500/40 bg-red-500/10 text-red-200'
+                  }`}
+                >
                   {status.message}
                 </div>
               )}
@@ -289,7 +345,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group w-full bg-brand text-black px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-brand-light transition-all flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-50"
+                className="group flex w-full items-center justify-center gap-2 sm:gap-3 rounded-lg bg-brand px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base lg:text-lg font-bold text-black transition-all hover:bg-brand-light active:scale-[0.99] disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -304,9 +360,9 @@ export default function Contact() {
                 )}
               </button>
 
-              <p className="text-xs sm:text-sm text-gray-400 text-center leading-relaxed">
+              <p className="text-center text-xs sm:text-sm leading-relaxed text-white/45">
                 Mit dem Absenden des Formulars erkläre ich mich mit der Verarbeitung meiner personenbezogenen Daten zur Bearbeitung meiner Anfrage gemäß der{' '}
-                <Link to="/datenschutz" className="text-brand hover:text-brand-dark underline transition-colors">
+                <Link to="/datenschutz" className="text-brand hover:text-brand-light underline transition-colors">
                   Datenschutzerklärung
                 </Link>{' '}
                 einverstanden
@@ -314,31 +370,62 @@ export default function Contact() {
             </form>
           </div>
 
-          <div>
-             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-6 sm:mb-8">KONTAKTINFORMATIONEN</h3>
-             <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12">
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><Mail className="text-brand" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">E-MAIL</h4><a href="mailto:d.mamon@moskunlimited.be" className="text-gray-400 hover:text-brand text-xs sm:text-sm break-all">d.mamon@moskunlimited.be</a></div>
-                </div>
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><Phone className="text-brand" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">TELEFON</h4><a href="tel:+32472804461" className="text-gray-400 hover:text-brand text-xs sm:text-sm">(+32) 0472 80 44 61</a></div>
-                </div>
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><MessageCircle className="text-brand" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">WHATSAPP</h4><a href="https://wa.me/32472804461" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand text-xs sm:text-sm">Chat starten</a></div>
-                </div>
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-brand/15 ring-1 ring-inset ring-brand/30 w-10 sm:w-12 h-10 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"><MapPin className="text-brand" size={20} /></div>
-                  <div><h4 className="font-semibold text-gray-300 mb-1 text-sm sm:text-base">STANDORT</h4><p className="text-gray-400 text-xs sm:text-sm">Bahnhofstraße 16/1<br />4780 St. Vith<br />Belgien</p></div>
-                </div>
-             </div>
-             <div className="bg-black p-6 sm:p-8 rounded-xl">
-               <h4 className="text-lg sm:text-2xl font-bold text-white mb-3 sm:mb-4">Starten wir Ihr Projekt.</h4>
-               <p className="text-white mb-4 sm:mb-6 text-sm sm:text-base">Egal ob Fotografie, Videoproduktion oder professionelle Videobearbeitung-ich setze Ihr Projekt zuverlässig um.</p>
-               <div className="flex items-center gap-2 text-brand font-semibold text-sm sm:text-base"><Clock size={18} /><span>Antwort innerhalb von 48 Stunden</span></div>
-             </div>
+          {/* Direkter Kontakt */}
+          <div className="flex flex-col lg:pt-4">
+            <h3 className="text-xl sm:text-2xl font-semibold text-white">Lieber direkt?</h3>
+            <p className="mt-2 text-sm sm:text-base leading-relaxed text-white/60">
+              Egal ob Fotografie, Videoproduktion oder professionelle Videobearbeitung – ich setze Ihr Projekt zuverlässig um.
+            </p>
+
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2.5 rounded-lg bg-brand px-5 py-3.5 font-bold text-black transition-all hover:bg-brand-light active:scale-[0.98]"
+              >
+                <WhatsAppIcon className="h-5 w-5" />
+                WhatsApp
+              </a>
+              <a
+                href={`tel:+${WHATSAPP_NUMBER}`}
+                className="flex items-center justify-center gap-2.5 rounded-lg border border-white/15 bg-white/[0.03] px-5 py-3.5 font-semibold text-white transition-colors hover:border-brand/60 hover:bg-brand/10 active:scale-[0.98]"
+              >
+                <Phone size={18} />
+                Anrufen
+              </a>
+            </div>
+
+            <dl className="mt-8 divide-y divide-white/10 border-y border-white/10">
+              <div className="flex items-start gap-4 py-4">
+                <dt className="sr-only">Telefon</dt>
+                <Phone className="mt-0.5 shrink-0 text-brand" size={18} />
+                <dd>
+                  <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-white/80 transition-colors hover:text-brand">
+                    {PHONE_DISPLAY}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex items-start gap-4 py-4">
+                <dt className="sr-only">E-Mail</dt>
+                <Mail className="mt-0.5 shrink-0 text-brand" size={18} />
+                <dd>
+                  <a href="mailto:d.mamon@moskunlimited.be" className="break-all text-white/80 transition-colors hover:text-brand">
+                    d.mamon@moskunlimited.be
+                  </a>
+                </dd>
+              </div>
+              <div className="flex items-start gap-4 py-4">
+                <dt className="sr-only">Standort</dt>
+                <MapPin className="mt-0.5 shrink-0 text-brand" size={18} />
+                <dd className="text-white/80">Bahnhofstraße 16/1, 4780 St. Vith, Belgien</dd>
+              </div>
+            </dl>
+
+            <p className="mt-6 flex items-center gap-2 text-sm font-medium text-brand">
+              <Clock size={16} />
+              Antwort innerhalb von 48 Stunden
+            </p>
           </div>
         </div>
       </div>
