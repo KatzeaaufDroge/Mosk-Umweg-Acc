@@ -11,14 +11,14 @@
       "groesse": "gross"
     },
     {
-      "bild": "/gallery/1000054179.jpg",
+      "bild": "/gallery/1000054197.jpg",
       "beschreibung": "big G Konzert",
       "groesse": "hoch"
     },
     {
-      "bild": "/gallery/1000054197.jpg",
-      "beschreibung": "big G Konzert",
-      "groesse": "breit"
+      "bild": "/gallery/1000054204.jpg",
+      "beschreibung": "big G Konzert ",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/dunkelrave.webp",
@@ -26,9 +26,9 @@
       "groesse": "hoch"
     },
     {
-      "bild": "/gallery/1000054204.jpg",
-      "beschreibung": "big G Konzert ",
-      "groesse": "normal"
+      "bild": "/gallery/1000054179.jpg",
+      "beschreibung": "big G Konzert",
+      "groesse": "hoch"
     },
     {
       "bild": "/gallery/DampfVerbessertRR.webp",
@@ -58,7 +58,7 @@
     {
       "bild": "/gallery/DJ2VerbessertRR.webp",
       "beschreibung": "OOC",
-      "groesse": "hoch"
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/darkrave.webp",
