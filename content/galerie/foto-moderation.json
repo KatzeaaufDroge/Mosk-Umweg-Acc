@@ -3,19 +3,22 @@
   "bereich": "Fotografie",
   "reihenfolge": 20,
   "sichtbar": true,
-  "layout": "mosaik",
+  "layout": "highlight",
   "bilder": [
     {
       "bild": "/gallery/3hd05059.jpg",
-      "beschreibung": "Christina Feltes Moderation"
-    },
-    {
-      "bild": "/gallery/1hd02616.jpg",
-      "beschreibung": "födekam - Vivo 2026"
+      "beschreibung": "Christina Feltes Moderation",
+      "groesse": "gross"
     },
     {
       "bild": "/gallery/1hd02244.jpg",
-      "beschreibung": "födekam - Vivo 2026"
+      "beschreibung": "födekam - Vivo 2026",
+      "groesse": "gross"
+    },
+    {
+      "bild": "/gallery/1hd02616.jpg",
+      "beschreibung": "födekam - Vivo 2026",
+      "groesse": "breit"
     }
   ]
 }
