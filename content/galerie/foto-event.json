@@ -7,22 +7,16 @@
   "bilder": [
     {
       "bild": "/gallery/msk_bigg_38-bearbeitet.jpg",
-      "beschreibung": "big G Konzert"
-    },
-    {
-      "bild": "/gallery/msk_bigg_33-bearbeitet.jpg",
-      "beschreibung": "big G Konzert"
-    },
-    {
       "beschreibung": "big G Konzert",
-      "bild": "/gallery/msk_bigg_31-bearbeitet.jpg"
+      "groesse": "normal"
     },
     {
-      "beschreibung": "big G Konzert",
-      "bild": "/gallery/msk_bigg_10-bearbeitet.jpg"
+      "bild": "/gallery/1000054204.jpg",
+      "beschreibung": "big G Konzert ",
+      "groesse": "gross"
     },
     {
-      "bild": "/gallery/1000054192.jpg",
+      "bild": "/gallery/20251115-msk01531-verbessert-rr.jpg",
       "beschreibung": "big G Konzert ",
       "groesse": "gross"
     },
@@ -32,13 +26,23 @@
       "groesse": "hoch"
     },
     {
-      "bild": "/gallery/1000054204.jpg",
-      "beschreibung": "big G Konzert ",
+      "beschreibung": "big G Konzert",
+      "bild": "/gallery/msk_bigg_31-bearbeitet.jpg",
       "groesse": "normal"
     },
     {
       "bild": "/gallery/1000054179.jpg",
       "beschreibung": "big G Konzert",
+      "groesse": "hoch"
+    },
+    {
+      "bild": "/gallery/msk_bigg_33-bearbeitet.jpg",
+      "beschreibung": "big G Konzert",
+      "groesse": "normal"
+    },
+    {
+      "beschreibung": "big G Konzert",
+      "bild": "/gallery/msk_bigg_10-bearbeitet.jpg",
       "groesse": "hoch"
     }
   ]
