@@ -18,7 +18,7 @@ const contentByLanguage: Record<Language, ContentData> = {
     title: 'Allgemeine Geschäftsbedingungen',
     description: 'Stand Januar 2026',
     content: [
-      '1. Geltungsbereich: Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen MOSK unlimited, Bahnhofstraße 16/1, 4780 St. Vith, Belgien (nachfolgend "Auftragnehmer") und ihren Kunden ("Auftraggeber"), sowohl im B2B- als auch im B2C-Bereich.',
+      '1. Geltungsbereich: Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen MOSK unlimited, Weissenbrücke 2, 4770 Amel, Belgien (nachfolgend "Auftragnehmer") und ihren Kunden ("Auftraggeber"), sowohl im B2B- als auch im B2C-Bereich.',
       '2. Leistungen: Der Auftragnehmer erbringt kreative Dienstleistungen, insbesondere in den Bereichen Fotografie, Videoproduktion, Grafik- und Logodesign, Webdesign, Online- und Social-Media-Marketing, Druck- und Werbetechnik sowie damit verbundene Beratungs- und Koordinationsleistungen. Der Auftragnehmer ist berechtigt, zur Vertragserfüllung Dritte einzusetzen.',
       '3. Vertragsabschluss: Angebote sind, sofern nicht anders angegeben, 7 Tage gültig. Ein Vertrag kommt erst durch schriftliche Auftragsbestätigung oder Beginn der Leistungserbringung zustande.',
       '4. Preise und Anzahlung: Alle Preise verstehen sich zuzüglich der gesetzlichen Mehrwertsteuer, sofern anwendbar. Bei Auftragserteilung ist eine Anzahlung von 25 % des vereinbarten Gesamtpreises fällig, sofern nichts anderes schriftlich vereinbart wurde.',
@@ -34,7 +34,7 @@ const contentByLanguage: Record<Language, ContentData> = {
     title: 'Terms and Conditions',
     description: 'Valid from January 2026',
     content: [
-      '1. Scope: These terms apply to all contracts between MOSK unlimited, Bahnhofstraße 16/1, 4780 St. Vith, Belgium and its clients (B2B and B2C).',
+      '1. Scope: These terms apply to all contracts between MOSK unlimited, Weissenbrücke 2, 4770 Amel, Belgium and its clients (B2B and B2C).',
       '2. Services: MOSK unlimited provides creative services including photography, video production, graphic and logo design, web design, online and social media marketing, printing and signage, and related services. Third parties may be engaged.',
       '3. Contract formation: Offers are valid for 7 days unless stated otherwise. A contract is concluded upon written confirmation or commencement of services.',
       '4. Prices and down payment: A 25% down payment is due upon order unless agreed otherwise.',
@@ -50,7 +50,7 @@ const contentByLanguage: Record<Language, ContentData> = {
     title: 'Conditions Générales',
     description: 'Valable à partir de janvier 2026',
     content: [
-      '1. Champ d\'application: Les présentes conditions générales s\'appliquent à tous les contrats conclus entre MOSK unlimited, Bahnhofstraße 16/1, 4780 St. Vith, Belgique et ses clients, tant en B2B qu\'en B2C.',
+      '1. Champ d\'application: Les présentes conditions générales s\'appliquent à tous les contrats conclus entre MOSK unlimited, Weissenbrücke 2, 4770 Amel, Belgique et ses clients, tant en B2B qu\'en B2C.',
       '2. Prestations: MOSK unlimited fournit des services créatifs, notamment en photographie, production vidéo, design graphique et de logo, création de sites web, marketing en ligne et sur les réseaux sociaux, impression et signalétique, ainsi que des services connexes. Elle peut faire appel à des tiers.',
       '3. Conclusion du contrat: Les offres sont valables 7 jours, sauf indication contraire. Le contrat est conclu après confirmation écrite ou début d\'exécution.',
       '4. Prix et acompte: Sauf accord contraire, un acompte de 25 % est exigible à la commande.',
@@ -79,7 +79,7 @@ export default function AGBPage() {
     <div className="min-h-screen bg-neutral-950 pt-24 sm:pt-32 pb-12 sm:pb-16">
       <Seo
         title="AGB – Mosk Unlimited"
-        description="Allgemeine Geschäftsbedingungen von Mosk Unlimited, St. Vith, Belgien."
+        description="Allgemeine Geschäftsbedingungen von Mosk Unlimited, Amel, Belgien."
         path="/agb"
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

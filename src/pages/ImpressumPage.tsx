@@ -6,7 +6,7 @@ export default function ImpressumPage() {
     <div className="min-h-screen bg-neutral-950 pt-24 sm:pt-32 pb-12 sm:pb-16">
       <Seo
         title="Impressum – Mosk Unlimited"
-        description="Impressum und rechtliche Angaben zu Mosk Unlimited, St. Vith, Belgien."
+        description="Impressum und rechtliche Angaben zu Mosk Unlimited, Amel, Belgien."
         path="/impressum"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,8 +23,8 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Geschäftssitz</h2>
             <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>Bahnhofstraße 16/1</p>
-              <p>4780 St. Vith</p>
+              <p>Weissenbrücke 2</p>
+              <p>4770 Amel</p>
               <p>Belgien</p>
             </div>
           </section>

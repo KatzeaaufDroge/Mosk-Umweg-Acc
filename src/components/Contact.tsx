@@ -418,7 +418,7 @@ export default function Contact() {
               <div className="flex items-start gap-4 py-4">
                 <dt className="sr-only">Standort</dt>
                 <MapPin className="mt-0.5 shrink-0 text-brand" size={18} />
-                <dd className="text-white/80">Bahnhofstraße 16/1, 4780 St. Vith, Belgien</dd>
+                <dd className="text-white/80">Weissenbrücke 2, 4770 Amel, Belgien</dd>
               </div>
             </dl>
 
