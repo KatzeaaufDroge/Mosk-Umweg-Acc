@@ -11,7 +11,7 @@ export default function PortfolioPage() {
     <GalleryBackdrop>
       <Seo
         title="Galerie – Mosk Unlimited"
-        description="Ein Einblick in die besten Arbeiten von Mosk Unlimited: Event-Fotografie und mehr aus St. Vith, Belgien."
+        description="Ein Einblick in die besten Arbeiten von Mosk Unlimited: Event-Fotografie und mehr aus Amel, Belgien."
         path="/portfolio"
       />
       <Gallery />
