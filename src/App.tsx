@@ -30,8 +30,8 @@ function App() {
                 element={
                   <>
                     <Seo
-                      title="Mosk Unlimited – Fotografie, Video & Editing in Amel"
-                      description="Professionelle Fotografie, Videoproduktion und Editing für Privatkunden und Unternehmen in Amel, Belgien. Jetzt unverbindlich anfragen."
+                      title="Mosk Unlimited – Fotografie, Video & Editing in Ostbelgien – Amel"
+                      description="Professionelle Fotografie, Videoproduktion und Editing für Privatkunden und Unternehmen in Ostbelgien – Amel. Jetzt unverbindlich anfragen."
                       path="/"
                     />
                     <Hero />

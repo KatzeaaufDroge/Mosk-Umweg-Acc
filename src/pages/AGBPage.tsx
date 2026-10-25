@@ -79,7 +79,7 @@ export default function AGBPage() {
     <div className="min-h-screen bg-neutral-950 pt-24 sm:pt-32 pb-12 sm:pb-16">
       <Seo
         title="AGB – Mosk Unlimited"
-        description="Allgemeine Geschäftsbedingungen von Mosk Unlimited, Amel, Belgien."
+        description="Allgemeine Geschäftsbedingungen von Mosk Unlimited, Ostbelgien – Amel."
         path="/agb"
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

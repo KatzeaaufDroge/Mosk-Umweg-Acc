@@ -6,7 +6,7 @@ export default function ImpressumPage() {
     <div className="min-h-screen bg-neutral-950 pt-24 sm:pt-32 pb-12 sm:pb-16">
       <Seo
         title="Impressum – Mosk Unlimited"
-        description="Impressum und rechtliche Angaben zu Mosk Unlimited, Amel, Belgien."
+        description="Impressum und rechtliche Angaben zu Mosk Unlimited, Ostbelgien – Amel."
         path="/impressum"
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

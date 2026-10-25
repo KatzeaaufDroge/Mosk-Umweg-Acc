@@ -6,7 +6,7 @@ export default function AboutPage() {
     <div className="pt-32 bg-black min-h-screen flex items-center justify-center px-4">
       <Seo
         title="Über mich – Mosk Unlimited"
-        description="Erfahren Sie mehr über Mosk Unlimited aus Amel, Belgien."
+        description="Erfahren Sie mehr über Mosk Unlimited aus Ostbelgien – Amel."
         path="/about"
       />
       <div className="w-full max-w-3xl">
