@@ -6,6 +6,22 @@
   "layout": "raster",
   "bilder": [
     {
+      "bild": "/gallery/msk_55.jpg",
+      "beschreibung": "MASSEN Modenshow"
+    },
+    {
+      "bild": "/gallery/msk_40.jpg",
+      "beschreibung": "MASSEN Modenshow"
+    },
+    {
+      "bild": "/gallery/msk_12.jpg",
+      "beschreibung": "MASSEN Modenshow"
+    },
+    {
+      "bild": "/gallery/msk_42.jpg",
+      "beschreibung": "MASSEN Modenshow"
+    },
+    {
       "bild": "/gallery/msk_bigg_38-bearbeitet.jpg",
       "beschreibung": "big G Konzert",
       "groesse": "normal"
