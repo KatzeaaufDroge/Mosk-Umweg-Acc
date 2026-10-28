@@ -6,20 +6,19 @@
   "layout": "raster",
   "bilder": [
     {
-      "bild": "/gallery/msk_55.jpg",
-      "beschreibung": "MASSEN Modenshow"
+      "bild": "/gallery/20251115-msk01531-verbessert-rr.jpg",
+      "beschreibung": "big G Konzert ",
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/msk_40.jpg",
-      "beschreibung": "MASSEN Modenshow"
+      "beschreibung": "MASSEN Modenshow",
+      "groesse": "hoch"
     },
     {
-      "bild": "/gallery/msk_12.jpg",
-      "beschreibung": "MASSEN Modenshow"
-    },
-    {
-      "bild": "/gallery/msk_42.jpg",
-      "beschreibung": "MASSEN Modenshow"
+      "beschreibung": "big G Konzert",
+      "bild": "/gallery/msk_bigg_10-bearbeitet.jpg",
+      "groesse": "hoch"
     },
     {
       "bild": "/gallery/msk_bigg_38-bearbeitet.jpg",
@@ -27,14 +26,23 @@
       "groesse": "normal"
     },
     {
-      "bild": "/gallery/20251115-msk01531-verbessert-rr.jpg",
-      "beschreibung": "big G Konzert ",
-      "groesse": "gross"
+      "bild": "/gallery/msk_12.jpg",
+      "beschreibung": "MASSEN Modenshow",
+      "groesse": "hoch"
+    },
+    {
+      "bild": "/gallery/msk_55.jpg",
+      "beschreibung": "MASSEN Modenshow"
+    },
+    {
+      "bild": "/gallery/msk_42.jpg",
+      "beschreibung": "MASSEN Modenshow",
+      "groesse": "hoch"
     },
     {
       "bild": "/gallery/1000054192.jpg",
       "beschreibung": "big G Konzert",
-      "groesse": "hoch"
+      "groesse": "normal"
     },
     {
       "beschreibung": "big G Konzert",
@@ -44,7 +52,7 @@
     {
       "bild": "/gallery/1000054179.jpg",
       "beschreibung": "big G Konzert",
-      "groesse": "hoch"
+      "groesse": "normal"
     },
     {
       "bild": "/gallery/1000054204.jpg",
@@ -54,11 +62,6 @@
     {
       "bild": "/gallery/msk_bigg_33-bearbeitet.jpg",
       "beschreibung": "big G Konzert",
-      "groesse": "normal"
-    },
-    {
-      "beschreibung": "big G Konzert",
-      "bild": "/gallery/msk_bigg_10-bearbeitet.jpg",
       "groesse": "hoch"
     }
   ]
