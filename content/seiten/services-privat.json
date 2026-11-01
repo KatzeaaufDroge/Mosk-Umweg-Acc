@@ -1,0 +1,83 @@
+{
+  "titel": "Event Services",
+  "untertitel": "Professionelle Eventdokumentation mit starken Momenten und modernem Look. Perfekt für Festivals, Konzerte und Firmenevents.",
+  "karten": [
+    {
+      "titel": "Fotografie",
+      "beschreibung": "Erinnerungen, die bleiben – in ruhigen, klaren Bildern. Ich begleite deinen Anlass dezent und fokussiere mich auf echte Momente, Details und Stimmung.",
+      "bild": "/gallery/service-privat-fotografie.webp",
+      "symbol": "fotografie",
+      "anlaesse": [
+        {
+          "titel": "Geburtstage & private Feiern",
+          "text": "Ich halte die Stimmung eurer Feier fest – vom Anstoßen bis zur Tanzfläche, unaufdringlich und ohne gestellte Posen."
+        },
+        {
+          "titel": "Verlobungen & Jubiläen",
+          "text": "Für die Momente, die man nur einmal erlebt: der Antrag, die Rede, die Umarmung danach – festgehalten in ruhigen, klaren Bildern."
+        },
+        {
+          "titel": "Familien- & Paarfotos",
+          "text": "Entspannte Fotos von euch, drinnen oder draußen. Wir suchen gemeinsam einen Ort, an dem ihr euch wohlfühlt."
+        },
+        {
+          "titel": "Taufen & besondere Anlässe",
+          "text": "Ich begleite die Zeremonie dezent im Hintergrund und fange die Details und Momente des Tages ein."
+        }
+      ]
+    },
+    {
+      "titel": "Videografie",
+      "beschreibung": "Bewegte Bilder, die Atmosphäre und Emotionen authentisch einfangen. Ich dokumentiere private Anlässe unaufdringlich und mit Fokus auf natürliche Abläufe, Stimmung und Details.",
+      "bild": "/gallery/service-privat-videografie.webp",
+      "symbol": "videografie",
+      "anlaesse": [
+        {
+          "titel": "Geburtstage & private Feiern",
+          "text": "Ein Video, das die Atmosphäre eurer Feier einfängt – als kurzer Clip oder als längerer Film zum Wiederanschauen."
+        },
+        {
+          "titel": "Verlobungen & Jubiläen",
+          "text": "Bewegte Erinnerungen an euren besonderen Tag, mit Reden, Stimmen und den Emotionen des Moments."
+        },
+        {
+          "titel": "Familienmomente & Paare",
+          "text": "Natürliche Aufnahmen von euch, die zeigen, wie ihr wirklich seid – ruhig geschnitten und mit passender Musik."
+        },
+        {
+          "titel": "Besondere Anlässe",
+          "text": "Ob Taufe, Abschluss oder ein anderes Fest: Ich dokumentiere den Ablauf und die schönsten Augenblicke."
+        }
+      ]
+    },
+    {
+      "titel": "Editing",
+      "beschreibung": "Nachbearbeitung für Event-Fotos und Event-Videos.\nSaubere Farben, ruhige Schnitte und Optimierungen, damit euer Eventmaterial gut aussieht und direkt nutzbar ist.",
+      "bild": "/gallery/service-privat-editing.webp",
+      "symbol": "editing",
+      "anlaesse": [
+        {
+          "titel": "Aftermovies",
+          "text": "Aus eurem Rohmaterial wird ein Aftermovie mit Rhythmus, stimmigen Farben und passender Musik."
+        },
+        {
+          "titel": "Konzert- & Festivalvideos",
+          "text": "Schnitt und Farbkorrektur für Live-Aufnahmen, damit Bühne, Licht und Publikum so wirken wie vor Ort."
+        },
+        {
+          "titel": "Social-Media-Clips",
+          "text": "Kurze, hochkant geschnittene Clips für Instagram, TikTok & Co. – aus eurem vorhandenen Material."
+        },
+        {
+          "titel": "Event-Fotos",
+          "text": "Bearbeitung eurer Eventfotos: Farben, Licht und Auswahl, damit die ganze Serie einheitlich wirkt."
+        }
+      ]
+    }
+  ],
+  "abschluss": {
+    "titel": "Starten wir Ihr Projekt!",
+    "text": "Kontaktieren Sie mich für ein unverbindliches Erstgespräch und lassen Sie uns gemeinsam Ihre Vision verwirklichen.",
+    "button": "Jetzt Beratung anfragen"
+  }
+}

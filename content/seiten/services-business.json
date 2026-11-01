@@ -1,0 +1,83 @@
+{
+  "titel": "Business Services",
+  "untertitel": "Hochwertige Business-Portraits, Produktfotos, Imagefilme und Website-Content für Ihr Unternehmen. Professionell, modern und sofort einsatzbereit.",
+  "karten": [
+    {
+      "titel": "Fotografie",
+      "beschreibung": "Professionelle Fotografie für Unternehmen, Marken und Veranstaltungen. Ich liefere klare, konsistente Bilder, die dein Business authentisch repräsentieren und vielseitig einsetzbar sind – online wie offline.",
+      "bild": "/gallery/service-business-fotografie.jpg",
+      "symbol": "fotografie",
+      "anlaesse": [
+        {
+          "titel": "Firmenveranstaltungen & Business-Events",
+          "text": "Fotos von eurem Event für Website, Social Media und Presse – von der Begrüßung bis zum Networking."
+        },
+        {
+          "titel": "Konferenzen & Messen",
+          "text": "Dokumentation von Vorträgen, Ständen und Gesprächen, damit ihr euren Auftritt später zeigen könnt."
+        },
+        {
+          "titel": "Corporate Portraits & Teams",
+          "text": "Einheitliche Portraits für euer Team – für Website, LinkedIn und Unternehmensunterlagen."
+        },
+        {
+          "titel": "Branding-, Presse- & Dokumentationsfotos",
+          "text": "Bilder, die eure Marke, eure Räume und eure Arbeit zeigen – passend zu eurem Auftritt."
+        }
+      ]
+    },
+    {
+      "titel": "Videografie",
+      "beschreibung": "Sachliche, wirkungsvolle Videos für Unternehmen und professionelle Auftritte. Ich setze Inhalte strukturiert um und lege Wert auf eine klare Bildsprache sowie einen professionellen Produktionsablauf.",
+      "bild": "https://images.pexels.com/photos/4970330/pexels-photo-4970330.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "symbol": "videografie",
+      "anlaesse": [
+        {
+          "titel": "Firmen- & Eventvideos",
+          "text": "Ein Video von eurer Veranstaltung oder eurem Unternehmen, das ihr intern und extern nutzen könnt."
+        },
+        {
+          "titel": "Image- & Brandingvideos",
+          "text": "Ein Film, der zeigt, wer ihr seid und was euch ausmacht – mit klarer Bildsprache und Struktur."
+        },
+        {
+          "titel": "Social-Media- & Webcontent",
+          "text": "Kurze Videos für eure Kanäle und eure Website, abgestimmt auf Format und Plattform."
+        },
+        {
+          "titel": "Dokumentationen & Recaps",
+          "text": "Zusammenfassungen von Projekten, Events oder Abläufen – sachlich und gut nachvollziehbar."
+        }
+      ]
+    },
+    {
+      "titel": "Editing",
+      "beschreibung": "Professionelle Postproduktion für bestehendes Videomaterial. Ich übernehme Schnitt, Farbkorrektur und Feinschliff – abgestimmt auf Zielgruppe, Plattform und Einsatzzweck.",
+      "bild": "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "symbol": "editing",
+      "anlaesse": [
+        {
+          "titel": "Schnitt von vorhandenem Material",
+          "text": "Ihr habt Material, aber keine Zeit zum Schneiden? Ich mache daraus ein fertiges Video."
+        },
+        {
+          "titel": "Social-Media- & Onlinevideos",
+          "text": "Ich bringe eure Videos in die passenden Formate für Instagram, LinkedIn, YouTube & Co."
+        },
+        {
+          "titel": "Image- & Unternehmensvideos",
+          "text": "Feinschliff für eure Imagefilme: Schnitt, Farbkorrektur und ein stimmiger Gesamteindruck."
+        },
+        {
+          "titel": "Optimierung für Web & Präsentationen",
+          "text": "Ich passe eure Videos für Website und Präsentationen an – Länge, Format und Dateigröße."
+        }
+      ]
+    }
+  ],
+  "abschluss": {
+    "titel": "Starten wir Ihr Projekt!",
+    "text": "Kontaktieren Sie mich für ein unverbindliches Erstgespräch und lassen Sie uns gemeinsam Ihre Vision verwirklichen.",
+    "button": "Jetzt Beratung anfragen"
+  }
+}

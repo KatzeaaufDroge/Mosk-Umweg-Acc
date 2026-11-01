@@ -6,6 +6,7 @@ import { useAnimation } from '../context/AnimationContext';
 import { useScrollToContact } from '../hooks/useScrollToContact';
 import { Seo } from '../components/Seo';
 import KineticGrid from '../components/ui/kinetic-grid';
+import { servicesUebersicht as seite } from '../data/seiten';
 
 export default function ServicesPage() {
   const navigate = useNavigate();
@@ -31,8 +32,8 @@ export default function ServicesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <BlurFade delay={0.25} inView={showInitialAnimation} sessionKey="services-hero">
           <ServiceHero
-            title="ALLES AUS EINER HAND."
-            subtitle="Wählen Sie den passenden Service-Bereich für Ihre Bedürfnisse."
+            title={seite.titel}
+            subtitle={seite.untertitel}
           />
         </BlurFade>
 
@@ -47,13 +48,13 @@ export default function ServicesPage() {
                   <Users className="text-black" size={32} />
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-brand transition-colors duration-300">
-                  Für Privatkunden
+                  {seite.privat.titel}
                 </h2>
                 <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8">
-                  Event-Fotografie, Event-Videografie und professionelles Editing für Festivals, Konzerte, Hochzeiten und private Veranstaltungen.
+                  {seite.privat.text}
                 </p>
                 <div className="inline-flex items-center gap-2 text-brand font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
-                  Services ansehen
+                  {seite.link_text}
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </div>
@@ -69,13 +70,13 @@ export default function ServicesPage() {
                   <Briefcase className="text-black" size={32} />
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4 group-hover:text-brand transition-colors duration-300">
-                  Für Unternehmen
+                  {seite.business.titel}
                 </h2>
                 <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8">
-                  Business-Fotografie, Imagefilme, Werbevideos und professionelle Nachbearbeitung für Ihr Unternehmen und Ihre Marke.
+                  {seite.business.text}
                 </p>
                 <div className="inline-flex items-center gap-2 text-brand font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
-                  Services ansehen
+                  {seite.link_text}
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </div>
@@ -87,16 +88,16 @@ export default function ServicesPage() {
         <BlurFade delay={0.75} inView={showInitialAnimation} sessionKey="services-info">
           <div className="glass-card p-6 sm:p-8 lg:p-12 rounded-xl text-center mt-12 sm:mt-16 lg:mt-20">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3 lg:mb-4">
-              Nicht sicher, welcher Bereich zu Ihnen passt?
+              {seite.hinweis.titel}
             </h2>
             <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-4 sm:mb-6 lg:mb-8 max-w-2xl mx-auto">
-              Kontaktieren Sie mich für eine kostenlose Beratung. Gemeinsam finden wir die perfekte Lösung für Ihr Projekt.
+              {seite.hinweis.text}
             </p>
             <button
               onClick={scrollToContact}
               className="group inline-flex items-center gap-2 sm:gap-3 bg-brand text-black px-5 sm:px-8 py-2 sm:py-4 rounded-lg font-bold text-sm sm:text-base lg:text-lg hover:bg-brand-light transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
             >
-              Jetzt Beratung anfragen
+              {seite.hinweis.button}
               <ArrowRight className="group-hover:translate-x-1 transition-transform duration-300" size={18} />
             </button>
           </div>

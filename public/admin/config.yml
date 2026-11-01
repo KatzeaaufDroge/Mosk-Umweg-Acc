@@ -362,3 +362,198 @@ collections:
                 label: Muster
                 widget: vorlage-muster
                 default: 'gross,normal,normal,normal,normal,breit'
+
+  - name: seiten
+    label: Seiten
+    description: >
+      Texte und Bilder der Website. Aufbau, Farben und Schriften bleiben fest –
+      hier änderst du nur die Inhalte. Nach „Veröffentlichen“ ca. 1–2 Minuten live.
+    editor:
+      preview: false
+    files:
+      - name: startseite
+        label: Startseite
+        file: content/seiten/startseite.json
+        fields:
+          - { name: titel, label: Große Überschrift, widget: string }
+          - { name: untertitel, label: Text darunter, widget: string }
+          - { name: button, label: Button-Text, widget: string, hint: Führt zu den Services. }
+          - name: bilder
+            label: Hintergrundbilder
+            label_singular: Bild
+            widget: list
+            min: 1
+            collapsed: false
+            hint: Wechseln alle 5 Sekunden, in dieser Reihenfolge. Am besten Querformat.
+            fields:
+              - { name: bild, label: Bild, widget: image }
+      - name: services
+        label: Services – Auswahl
+        file: content/seiten/services.json
+        fields:
+          - { name: titel, label: Große Überschrift, widget: string }
+          - { name: untertitel, label: Text darunter, widget: string }
+          - name: privat
+            label: Karte „Privatkunden“
+            widget: object
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: text, label: Text, widget: text }
+          - name: business
+            label: Karte „Unternehmen“
+            widget: object
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: text, label: Text, widget: text }
+          - { name: link_text, label: Link-Text auf beiden Karten, widget: string }
+          - name: hinweis
+            label: Kasten unten
+            widget: object
+            fields:
+              - { name: titel, label: Überschrift, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: button, label: Button-Text, widget: string, hint: Springt zum Kontaktformular. }
+      - name: services-privat
+        label: Services – Privatkunden
+        file: content/seiten/services-privat.json
+        fields: &servicefelder
+          - { name: titel, label: Große Überschrift, widget: string }
+          - { name: untertitel, label: Text darunter, widget: text }
+          - name: karten
+            label: Service-Karten
+            label_singular: Service-Karte
+            widget: list
+            min: 1
+            collapsed: true
+            summary: '{{fields.titel}}'
+            hint: Karten hinzufügen, löschen oder per Ziehen neu anordnen. Neue Karten sehen automatisch aus wie die anderen.
+            fields:
+              - { name: titel, label: Titel, widget: string, hint: 'z.B. „Fotografie“. Steht auch im Kontaktformular, wenn jemand die Karte auswählt.' }
+              - name: symbol
+                label: Symbol
+                widget: select
+                required: false
+                options:
+                  - { label: Kamera (Fotografie), value: fotografie }
+                  - { label: Videokamera (Videografie), value: videografie }
+                  - { label: Schnitt (Editing), value: editing }
+                hint: Leer lassen = kein Symbol.
+              - { name: bild, label: Bild, widget: image }
+              - { name: beschreibung, label: Beschreibung, widget: text }
+              - name: anlaesse
+                label: Ideal für
+                label_singular: Anlass
+                widget: list
+                collapsed: true
+                summary: '{{fields.titel}}'
+                hint: Erscheinen als Liste auf der Karte und klappen nach dem Anklicken als eigene Auswahl auf.
+                fields:
+                  - { name: titel, label: Anlass, widget: string }
+                  - { name: text, label: Kurzer Text beim Aufklappen, widget: text }
+          - name: abschluss
+            label: Kasten unten
+            widget: object
+            fields:
+              - { name: titel, label: Überschrift, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: button, label: Button-Text, widget: string, hint: Springt zum Kontaktformular. }
+      - name: services-business
+        label: Services – Unternehmen
+        file: content/seiten/services-business.json
+        fields: *servicefelder
+      - name: kontakt
+        label: Kontakt
+        file: content/seiten/kontakt.json
+        fields:
+          - { name: ueberschrift, label: Überschrift, widget: string }
+          - { name: hintergrund, label: Hintergrundbild, widget: image, hint: Wird stark abgedunkelt. }
+          - { name: direkt_titel, label: Überschrift rechts, widget: string }
+          - { name: direkt_text, label: Text rechts, widget: text }
+          - { name: telefon, label: Telefon / WhatsApp, widget: string, hint: 'Mit Landesvorwahl, z.B. „+32 472 80 44 61“. Gilt auch für den WhatsApp- und Anrufen-Button.' }
+          - { name: email, label: E-Mail, widget: string }
+          - { name: adresse, label: Adresse, widget: string }
+          - { name: antwortzeit, label: Hinweis Antwortzeit, widget: string }
+      - name: footer
+        label: Footer (unten auf jeder Seite)
+        file: content/seiten/footer.json
+        fields:
+          - { name: name, label: Name, widget: string, hint: Überschrift und Copyright-Zeile. }
+          - { name: text, label: Text, widget: text }
+          - { name: instagram, label: Instagram-Link, widget: string, required: false, hint: Leer lassen = kein Instagram-Symbol. }
+  - name: rechtliches
+    label: Rechtliches
+    description: >
+      Impressum, Datenschutz und AGB. Achtung: Diese Texte sind rechtlich
+      verbindlich – nur ändern, wenn du dir sicher bist.
+    editor:
+      preview: false
+    files:
+      - name: impressum
+        label: Impressum
+        file: content/seiten/impressum.json
+        fields:
+          - name: abschnitte
+            label: Abschnitte
+            label_singular: Abschnitt
+            widget: list
+            collapsed: true
+            summary: '{{fields.titel}}'
+            fields:
+              - { name: titel, label: Überschrift, widget: string }
+              - { name: text, label: Text, widget: text, hint: Jede Zeile wird eine eigene Zeile. E-Mail-Adressen werden automatisch klickbar. }
+      - name: datenschutz
+        label: Datenschutz
+        file: content/seiten/datenschutz.json
+        fields: &rechtstext
+          - name: de
+            label: Deutsch
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: stand, label: Stand, widget: string, hint: 'z.B. „Stand: Januar 2026“' }
+              - name: absaetze
+                label: Absätze
+                label_singular: Absatz
+                widget: list
+                collapsed: true
+                summary: '{{fields.ueberschrift}}'
+                fields:
+                  - { name: ueberschrift, label: Überschrift, widget: string, required: false }
+                  - { name: text, label: Text, widget: text }
+          - name: en
+            label: English
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: stand, label: Stand, widget: string, hint: 'z.B. „Stand: Januar 2026“' }
+              - name: absaetze
+                label: Absätze
+                label_singular: Absatz
+                widget: list
+                collapsed: true
+                summary: '{{fields.ueberschrift}}'
+                fields:
+                  - { name: ueberschrift, label: Überschrift, widget: string, required: false }
+                  - { name: text, label: Text, widget: text }
+          - name: fr
+            label: Français
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titel, label: Titel, widget: string }
+              - { name: stand, label: Stand, widget: string, hint: 'z.B. „Stand: Januar 2026“' }
+              - name: absaetze
+                label: Absätze
+                label_singular: Absatz
+                widget: list
+                collapsed: true
+                summary: '{{fields.ueberschrift}}'
+                fields:
+                  - { name: ueberschrift, label: Überschrift, widget: string, required: false }
+                  - { name: text, label: Text, widget: text }
+      - name: agb
+        label: AGB
+        file: content/seiten/agb.json
+        fields: *rechtstext

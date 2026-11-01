@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
-import type { IdealFor } from '../../data/services';
+import type { IdealFor } from '../../data/seiten';
+import { optimizedSrc, optimizedSrcSet } from '../../lib/images';
 
 interface ServiceCardProps {
   title: string;
@@ -16,7 +17,9 @@ export function ServiceCard({ title, description, idealFor, image, icon, expande
     <div className="group rounded-xl overflow-hidden bg-[#171717] hover:shadow-2xl hover:shadow-brand/10 transition-shadow duration-300 h-full flex flex-col">
       <div className="aspect-video overflow-hidden bg-gray-900">
         <img
-          src={image}
+          src={optimizedSrc(image, 900)}
+          srcSet={optimizedSrcSet(image, [480, 900, 1400])}
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           alt={title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
@@ -31,12 +34,16 @@ export function ServiceCard({ title, description, idealFor, image, icon, expande
         {!expanded && (
           <>
             <div className="text-gray-300 text-sm sm:text-base leading-relaxed flex-1">
-              <p className="mb-1">Ideal für:</p>
-              <ul>
-                {idealFor.map((item) => (
-                  <li key={item.title}>• {item.title}</li>
-                ))}
-              </ul>
+              {idealFor.length > 0 && (
+                <>
+                  <p className="mb-1">Ideal für:</p>
+                  <ul>
+                    {idealFor.map((item) => (
+                      <li key={item.title}>• {item.title}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
             <span className="inline-flex items-center gap-2 pt-2 text-brand font-semibold text-sm sm:text-base group-hover:gap-3 transition-all duration-300">
               Auswählen

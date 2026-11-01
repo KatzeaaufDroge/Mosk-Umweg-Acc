@@ -1,0 +1,19 @@
+{
+  "titel": "FOTOS. VIDEOS. EDITING.",
+  "untertitel": "Ihre Vision. Mein Handwerk. Ein Ergebnis, das überzeugt.",
+  "button": "Starten",
+  "bilder": [
+    {
+      "bild": "/gallery/startseite-1.webp"
+    },
+    {
+      "bild": "/gallery/startseite-2.webp"
+    },
+    {
+      "bild": "/gallery/startseite-3.webp"
+    },
+    {
+      "bild": "/gallery/startseite-4.webp"
+    }
+  ]
+}

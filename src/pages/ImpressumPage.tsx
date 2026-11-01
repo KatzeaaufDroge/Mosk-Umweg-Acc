@@ -1,5 +1,23 @@
 import { Link } from 'react-router-dom';
 import { Seo } from '../components/Seo';
+import { impressum } from '../data/seiten';
+
+// E-Mail-Adressen im Text werden automatisch klickbar
+function MitLinks({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\S+@\S+\.\w+)/).map((teil, i) =>
+        i % 2 ? (
+          <a key={i} href={`mailto:${teil}`} className="text-brand hover:text-brand-light">
+            {teil}
+          </a>
+        ) : (
+          teil
+        ),
+      )}
+    </>
+  );
+}
 
 export default function ImpressumPage() {
   return (
@@ -13,57 +31,18 @@ export default function ImpressumPage() {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-normal text-white lg:text-7xl mb-8 sm:mb-12">Impressum</h1>
 
         <div className="prose prose-invert max-w-none space-y-6 sm:space-y-8">
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Unternehmen</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>MOSK unlimited – Einzelunternehmer</p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Geschäftssitz</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>Weissenbrücke 2</p>
-              <p>4770 Amel</p>
-              <p>Belgien</p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Rechtliche Vertretung</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>Dmitriy Mamon</p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Unternehmensnummer (BCE/KBO)</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>BE1029443083</p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Umsatzsteuer-Identifikationsnummer</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>BE1029443083</p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Kontakt</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>E-Mail: <a href="mailto:d.mamon@moskunlimited.be" className="text-brand hover:text-brand-light">d.mamon@moskunlimited.be</a></p>
-              <p>Telefon: +32 472 80 44 61</p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">Zuständige Aufsichtsbehörde</h2>
-            <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <p>SPF Économie / FOD Economie – Belgien</p>
-            </div>
-          </section>
+          {impressum.abschnitte.map((abschnitt, index) => (
+            <section key={index}>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-4">{abschnitt.titel}</h2>
+              <div className="text-gray-300 space-y-1 sm:space-y-2 text-sm sm:text-base">
+                {abschnitt.text.split('\n').map((zeile, i) => (
+                  <p key={i}>
+                    <MitLinks text={zeile} />
+                  </p>
+                ))}
+              </div>
+            </section>
+          ))}
 
           <section className="pt-6 sm:pt-8 border-t border-gray-700">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4">Weitere Informationen</h2>

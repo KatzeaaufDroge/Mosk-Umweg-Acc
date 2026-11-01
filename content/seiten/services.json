@@ -1,0 +1,18 @@
+{
+  "titel": "ALLES AUS EINER HAND.",
+  "untertitel": "Wählen Sie den passenden Service-Bereich für Ihre Bedürfnisse.",
+  "privat": {
+    "titel": "Für Privatkunden",
+    "text": "Event-Fotografie, Event-Videografie und professionelles Editing für Festivals, Konzerte, Hochzeiten und private Veranstaltungen."
+  },
+  "business": {
+    "titel": "Für Unternehmen",
+    "text": "Business-Fotografie, Imagefilme, Werbevideos und professionelle Nachbearbeitung für Ihr Unternehmen und Ihre Marke."
+  },
+  "link_text": "Services ansehen",
+  "hinweis": {
+    "titel": "Nicht sicher, welcher Bereich zu Ihnen passt?",
+    "text": "Kontaktieren Sie mich für eine kostenlose Beratung. Gemeinsam finden wir die perfekte Lösung für Ihr Projekt.",
+    "button": "Jetzt Beratung anfragen"
+  }
+}

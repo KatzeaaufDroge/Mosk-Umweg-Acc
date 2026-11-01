@@ -3,16 +3,12 @@ import { siWhatsapp } from 'simple-icons';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { ContactPrefill } from '../hooks/useScrollToContact';
+import { kontakt, kontaktNummer } from '../data/seiten';
 
 type Kundentyp = 'Privatperson' | 'Unternehmen';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_SUBMIT_DELAY_MS = 2500;
-
-// Belgische Mobilnummer (0472 80 44 61) im internationalen Format, ohne +.
-// Gilt für WhatsApp (wa.me) und den Anruf-Link.
-const WHATSAPP_NUMBER = '32472804461';
-const PHONE_DISPLAY = '+32 472 80 44 61';
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -134,7 +130,7 @@ export default function Contact() {
       {/* Hintergrund: eigenes Eventfoto, stark abgedunkelt und entsättigt */}
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         <img
-          src="/images/kontakt-hintergrund.webp"
+          src={kontakt.hintergrund}
           alt=""
           loading="lazy"
           decoding="async"
@@ -147,7 +143,7 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 sm:mb-16 text-center">
           <h2 className="font-display font-normal text-5xl sm:text-6xl md:text-7xl tracking-wide text-white">
-            Kontakt aufnehmen
+            {kontakt.ueberschrift}
           </h2>
         </div>
 
@@ -372,14 +368,14 @@ export default function Contact() {
 
           {/* Direkter Kontakt */}
           <div className="flex flex-col lg:pt-4">
-            <h3 className="text-xl sm:text-2xl font-semibold text-white">Lieber direkt?</h3>
+            <h3 className="text-xl sm:text-2xl font-semibold text-white">{kontakt.direkt_titel}</h3>
             <p className="mt-2 text-sm sm:text-base leading-relaxed text-white/60">
-              Egal ob Fotografie, Videoproduktion oder professionelle Videobearbeitung – ich setze Ihr Projekt zuverlässig um.
+              {kontakt.direkt_text}
             </p>
 
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                href={`https://wa.me/${kontaktNummer}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2.5 rounded-lg bg-brand px-5 py-3.5 font-bold text-black transition-all hover:bg-brand-light active:scale-[0.98]"
@@ -388,7 +384,7 @@ export default function Contact() {
                 WhatsApp
               </a>
               <a
-                href={`tel:+${WHATSAPP_NUMBER}`}
+                href={`tel:+${kontaktNummer}`}
                 className="flex items-center justify-center gap-2.5 rounded-lg border border-white/15 bg-white/[0.03] px-5 py-3.5 font-semibold text-white transition-colors hover:border-brand/60 hover:bg-brand/10 active:scale-[0.98]"
               >
                 <Phone size={18} />
@@ -401,8 +397,8 @@ export default function Contact() {
                 <dt className="sr-only">Telefon</dt>
                 <Phone className="mt-0.5 shrink-0 text-brand" size={18} />
                 <dd>
-                  <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-white/80 transition-colors hover:text-brand">
-                    {PHONE_DISPLAY}
+                  <a href={`tel:+${kontaktNummer}`} className="text-white/80 transition-colors hover:text-brand">
+                    {kontakt.telefon}
                   </a>
                 </dd>
               </div>
@@ -410,21 +406,21 @@ export default function Contact() {
                 <dt className="sr-only">E-Mail</dt>
                 <Mail className="mt-0.5 shrink-0 text-brand" size={18} />
                 <dd>
-                  <a href="mailto:d.mamon@moskunlimited.be" className="break-all text-white/80 transition-colors hover:text-brand">
-                    d.mamon@moskunlimited.be
+                  <a href={`mailto:${kontakt.email}`} className="break-all text-white/80 transition-colors hover:text-brand">
+                    {kontakt.email}
                   </a>
                 </dd>
               </div>
               <div className="flex items-start gap-4 py-4">
                 <dt className="sr-only">Standort</dt>
                 <MapPin className="mt-0.5 shrink-0 text-brand" size={18} />
-                <dd className="text-white/80">Weissenbrücke 2, 4770 Amel, Belgien</dd>
+                <dd className="text-white/80">{kontakt.adresse}</dd>
               </div>
             </dl>
 
             <p className="mt-6 flex items-center gap-2 text-sm font-medium text-brand">
               <Clock size={16} />
-              Antwort innerhalb von 48 Stunden
+              {kontakt.antwortzeit}
             </p>
           </div>
         </div>

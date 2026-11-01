@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { AnimatePresence, LayoutGroup, MotionConfig, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
-import type { IdealFor, Service } from '../../data/services';
+import type { IdealFor, Service } from '../../data/seiten';
 import { ServiceCard } from './service-card';
 import { useContactWithPrefill, type ContactPrefill } from '../../hooks/useScrollToContact';
 import { getNavHeight } from '../../lib/utils';

@@ -270,6 +270,7 @@
   .mg-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.07);color:#cfd5ce}
   .mg-dlink{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#55a041;text-decoration:none}
   .mg-dlink:hover{text-decoration:underline}
+  .mg-seiten{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
   .mg-tip{font-size:13px;color:#cfd5ce;line-height:1.5;margin:0}
   .mg-stand{font-size:12px;color:#8d968c}
   @media (max-width:820px){.mg-dash-grid{grid-template-columns:1fr}.mg-dash-head h1{font-size:24px}.mg-thumbs img:nth-child(n+3),.mg-thumbs span:nth-child(n+3){display:none}}
@@ -1544,6 +1545,42 @@
         ),
       );
 
+      // Texte & Bilder der Seiten (Sammlungen "seiten" und "rechtliches")
+      var seitenLinks = [
+        ['seiten', 'startseite', 'Startseite'],
+        ['seiten', 'services', 'Services – Auswahl'],
+        ['seiten', 'services-privat', 'Services – Privatkunden'],
+        ['seiten', 'services-business', 'Services – Unternehmen'],
+        ['seiten', 'kontakt', 'Kontakt'],
+        ['seiten', 'footer', 'Footer'],
+        ['rechtliches', 'impressum', 'Impressum, Datenschutz & AGB'],
+      ];
+      var seiten = h(
+        'section',
+        { className: 'mg-glass' },
+        h('h2', null, 'Seiten'),
+        h('p', { className: 'mg-sub2' }, 'Texte und Bilder ändern. Das Design bleibt gleich.'),
+        h(
+          'div',
+          { className: 'mg-seiten' },
+          seitenLinks.map(function (l) {
+            var target = '#/collections/' + l[0] + '/entries/' + l[1];
+            return h(
+              'a',
+              {
+                key: l[1],
+                className: 'mg-dlink',
+                href: l[1] === 'impressum' ? '#/collections/rechtliches' : target,
+                onClick: l[1] === 'impressum' ? undefined : function (e) {
+                  openEntry(e, target);
+                },
+              },
+              l[2] + ' ›',
+            );
+          }),
+        ),
+      );
+
       var tipp = h(
         'section',
         { className: 'mg-glass' },
@@ -1574,7 +1611,7 @@
             st && st.stand ? h('div', { className: 'mg-stand' }, 'Stand der Website: ' + formatStand(st.stand)) : null,
           ),
         ),
-        h('div', { className: 'mg-dash-grid' }, galerie, h('div', { className: 'mg-side2' }, besucher, layouts, tipp)),
+        h('div', { className: 'mg-dash-grid' }, galerie, h('div', { className: 'mg-side2' }, besucher, seiten, layouts, tipp)),
       );
     },
   });
