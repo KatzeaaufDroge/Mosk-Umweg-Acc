@@ -129,7 +129,9 @@
   [class*="-ControlContainer"]:has(> div > .mg-hidden-field),[class*="-ControlContainer"]:has(> .mg-hidden-field){display:none!important}
   .mg-ghead{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-bottom:14px}
   .mg-ghead .mg-meta{flex:1 1 160px}
-  .mg-ghead .mg-btn--ghost{color:var(--ink);border-color:var(--line);opacity:1}
+  .mg-ghead .mg-meta b{color:#fff}
+  .mg-ghead .mg-meta small{color:#8d968c}
+  .mg-ghead .mg-btn--ghost{color:#e9ece8;border-color:rgba(255,255,255,.16);opacity:1}
   .mg-ghead .mg-btn--ghost:hover{border-color:var(--g)}
   .mg-glist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
   .mg-gitem{display:flex;flex-direction:column;gap:6px;cursor:grab}
@@ -137,9 +139,13 @@
   .mg-gimg img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
   .mg-x{position:absolute;top:6px;right:6px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:18px;line-height:28px;padding:0;opacity:.85}
   .mg-x:hover{background:#c0392b;opacity:1}
-  .mg-ginput{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-size:13px;font-family:inherit;color:var(--ink);background:#fff}
+  .mg-ginput{width:100%;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit;color:#e9ece8;background:#0f130f}
+  .mg-ginput::placeholder{color:#5f685e}
   .mg-ginput:focus{outline:none;border-color:var(--g)}
-  .mg-gempty{padding:28px 12px;text-align:center;color:var(--mut);font-size:14px;border:2px dashed var(--line);border-radius:10px}
+  .mg-gempty{padding:28px 12px;text-align:center;color:#8d968c;font-size:14px;border:1px dashed rgba(255,255,255,.16);border-radius:10px}
+  .mg-gimg{outline:1px solid rgba(255,255,255,.06)}
+  .mg-gitem:hover .mg-gimg{outline-color:rgba(85,160,65,.55)}
+  .mg-formnote{color:#8d968c}
   @media (max-width:600px){.mg-glist{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mg-card{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:18px}
   .mg-strip{display:flex;gap:4px;flex:0 0 auto}

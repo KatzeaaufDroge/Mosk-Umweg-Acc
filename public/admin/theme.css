@@ -278,13 +278,24 @@ section[class*="AuthenticationPage"] form[class*="AuthForm"] {
   display: none !important;
 }
 
-/* ---------- Editor-Formulare: ruhig und aufgeräumt ----------
+/* ---------- Editor-Formulare: dunkel wie die Website ----------
    Gilt für alle Bearbeitungsseiten (nicht die Übersicht, body.mg-dash).
-   Decap-Standard: graue Etiketten in Großbuchstaben, graue Balken -> hier
-   normale Beschriftungen, weiße Felder, Listen als Karten. */
+   Schwarz/Anthrazit wie moskunlimited.be, Logo-Grün nur als Akzent
+   (Fokus, Knöpfe, aktive Elemente). */
+body:not(.mg-dash) {
+  --ed-bg: #0c0f0c;
+  --ed-card: #141814;
+  --ed-field: #0f130f;
+  --ed-item: #191e19;
+  --ed-line: rgba(255, 255, 255, 0.08);
+  --ed-line2: rgba(255, 255, 255, 0.14);
+  --ed-text: #e9ece8;
+  --ed-mut: #8d968c;
+}
+
 body:not(.mg-dash) [class*="EditorContainer"],
 body:not(.mg-dash) [class*="NoPreviewContainer"] {
-  background: #f4f5f2 !important;
+  background: radial-gradient(1200px 500px at 50% -200px, rgba(85, 160, 65, 0.08), transparent 70%), var(--ed-bg) !important;
   box-shadow: none !important;
 }
 
@@ -292,7 +303,7 @@ body:not(.mg-dash) [class*="ControlPaneContainer"] {
   max-width: 780px;
   margin: 0 auto;
   padding: 28px 20px 60px !important;
-  color: #1d2a1f;
+  color: var(--ed-text);
 }
 
 /* Beschriftung über dem Feld */
@@ -302,7 +313,7 @@ body:not(.mg-dash) [class*="-ControlContainer"] {
 
 body:not(.mg-dash) [class*="FieldLabel"] {
   background: none !important;
-  color: #1d2a1f !important;
+  color: #fff !important;
   text-transform: none !important;
   font-size: 14px !important;
   font-weight: 600 !important;
@@ -317,8 +328,12 @@ body:not(.mg-dash) [class*="FieldLabel"]::after {
   display: none !important;
 }
 
+body:not(.mg-dash) [class*="-ControlContainer"]:focus-within > [class*="ControlTopbar"] [class*="FieldLabel"] {
+  color: #8fd17a !important;
+}
+
 body:not(.mg-dash) [class*="ControlHint"] {
-  color: #7a8379 !important;
+  color: var(--ed-mut) !important;
   font-size: 13px !important;
   margin-top: 6px !important;
   line-height: 1.45;
@@ -326,26 +341,79 @@ body:not(.mg-dash) [class*="ControlHint"] {
 
 /* Feld selbst (Text, Textbereich, Box um Schalter/Bild/Liste) */
 body:not(.mg-dash) [class*="-ControlContainer"] > :not([class*="ControlTopbar"]):not([class*="ControlHint"]):not(.mg-hidden-field) {
-  border: 1px solid #dfe3dc !important;
-  border-radius: 10px !important;
-  background: #fff;
+  border: 1px solid var(--ed-line) !important;
+  border-radius: 12px !important;
+  background: var(--ed-card) !important;
+  color: var(--ed-text) !important;
   box-shadow: none !important;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 body:not(.mg-dash) [class*="-ControlContainer"] > input,
 body:not(.mg-dash) [class*="-ControlContainer"] > textarea {
+  background: var(--ed-field) !important;
   padding: 12px 14px !important;
   font-size: 15px !important;
-  color: #1d2a1f !important;
+  caret-color: var(--mk-g);
+}
+
+body:not(.mg-dash) [class*="-ControlContainer"] input::placeholder,
+body:not(.mg-dash) [class*="-ControlContainer"] textarea::placeholder {
+  color: #5f685e;
+}
+
+body:not(.mg-dash) [class*="-ControlContainer"] > input:hover,
+body:not(.mg-dash) [class*="-ControlContainer"] > textarea:hover {
+  border-color: var(--ed-line2) !important;
 }
 
 body:not(.mg-dash) [class*="-ControlContainer"] > input:focus,
 body:not(.mg-dash) [class*="-ControlContainer"] > textarea:focus,
-body:not(.mg-dash) [class*="-ControlContainer"]:focus-within > :not([class*="ControlTopbar"]):not([class*="ControlHint"]) {
-  border-color: var(--mk-g) !important;
+body:not(.mg-dash) [class*="-ControlContainer"]:focus-within > :not([class*="ControlTopbar"]):not([class*="ControlHint"]):not(.mg-hidden-field) {
+  border-color: rgba(85, 160, 65, 0.7) !important;
   box-shadow: 0 0 0 3px rgba(85, 160, 65, 0.15) !important;
   outline: none;
+}
+
+/* Verschachtelte Felder (in Karten, Kasten unten …) etwas heller absetzen */
+body:not(.mg-dash) [class*="-ControlContainer"] [class*="-ControlContainer"] > input,
+body:not(.mg-dash) [class*="-ControlContainer"] [class*="-ControlContainer"] > textarea {
+  background: var(--ed-field) !important;
+}
+
+/* Auswahlfelder (Symbol) */
+body:not(.mg-dash) [class*="-control"] {
+  background: var(--ed-field) !important;
+  border-color: var(--ed-line) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+body:not(.mg-dash) [class*="-singleValue"],
+body:not(.mg-dash) [class*="-ValueContainer"] input {
+  color: var(--ed-text) !important;
+}
+
+body:not(.mg-dash) [class*="-menu"] {
+  background: #1a1f1a !important;
+  border: 1px solid var(--ed-line2);
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+body:not(.mg-dash) [class*="-option"] {
+  background: transparent !important;
+  color: var(--ed-text) !important;
+}
+
+body:not(.mg-dash) [class*="-option"]:hover,
+body:not(.mg-dash) [class*="-option"][aria-selected='true'] {
+  background: rgba(85, 160, 65, 0.16) !important;
+}
+
+/* Schalter */
+body:not(.mg-dash) [class*="ToggleBackground"] {
+  background: #2a302a !important;
 }
 
 /* ---------- Listen (Service-Karten, Bausteine, Absätze …) ---------- */
@@ -356,16 +424,16 @@ body:not(.mg-dash) [class*="TopBarContainer"] {
 }
 
 body:not(.mg-dash) [class*="ExpandButtonContainer"] {
-  color: #7a8379;
+  color: var(--ed-mut) !important;
   font-size: 13px;
   text-transform: none;
 }
 
 body:not(.mg-dash) [class*="AddButton"],
 body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"] {
-  background: transparent !important;
-  color: var(--mk-g2) !important;
-  border: 1px solid rgba(85, 160, 65, 0.45) !important;
+  background: rgba(85, 160, 65, 0.1) !important;
+  color: #8fd17a !important;
+  border: 1px solid rgba(85, 160, 65, 0.35) !important;
   border-radius: 999px !important;
   padding: 6px 14px !important;
   font-weight: 600 !important;
@@ -374,20 +442,50 @@ body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"] {
 
 body:not(.mg-dash) [class*="AddButton"]:hover,
 body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"]:hover {
-  background: rgba(85, 160, 65, 0.1) !important;
+  background: rgba(85, 160, 65, 0.2) !important;
+  border-color: rgba(85, 160, 65, 0.6) !important;
+}
+
+body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"] {
+  padding-right: 32px !important;
+}
+
+body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"]::after {
+  border-top-color: currentColor !important;
+}
+
+/* Menü "Baustein hinzufügen" */
+body:not(.mg-dash) [class*="DropdownList"] {
+  background: #1a1f1a !important;
+  border: 1px solid var(--ed-line2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+body:not(.mg-dash) [class*="DropdownList"] [class*="dropdownItem"] {
+  color: var(--ed-text) !important;
+  background: transparent !important;
+  border-bottom-color: var(--ed-line) !important;
+}
+
+body:not(.mg-dash) [class*="DropdownList"] [class*="dropdownItem"]:hover,
+body:not(.mg-dash) [class*="DropdownList"] [class*="dropdownItem"]:focus {
+  background: rgba(85, 160, 65, 0.16) !important;
+  color: #fff !important;
 }
 
 /* Ein Eintrag = eine Karte; Kopfzeile und Titel teilen sich eine Zeile */
 body:not(.mg-dash) [class*="SortableListItem"] {
   margin-top: 10px !important;
-  background: #f8f9f7 !important;
-  border: 1px solid #e3e7e0 !important;
+  background: var(--ed-item) !important;
+  border: 1px solid var(--ed-line) !important;
   border-radius: 10px !important;
   overflow: hidden;
+  transition: border-color 0.15s;
 }
 
 body:not(.mg-dash) [class*="SortableListItem"]:hover {
-  border-color: #c9d6c2 !important;
+  border-color: rgba(85, 160, 65, 0.4) !important;
 }
 
 body:not(.mg-dash) [class*="StyledListItemTopBar"] {
@@ -404,49 +502,70 @@ body:not(.mg-dash) [class*="NestedObjectLabel"] {
   padding: 13px 90px 13px 44px !important;
   font-size: 15px;
   font-weight: 600;
-  color: #1d2a1f !important;
+  color: #fff !important;
   pointer-events: none;
   border: 0 !important;
 }
 
+/* Zieh-Griff neben das ×, statt mitten über dem Titel */
+body:not(.mg-dash) [class*="StyledListItemTopBar"] > div:has([class*="DragIconContainer"]) {
+  margin-left: auto;
+  margin-right: 2px;
+}
+
 body:not(.mg-dash) [class*="TopBarButton"],
 body:not(.mg-dash) [class*="ExpandButton"] {
-  color: #8a9388 !important;
+  color: var(--ed-mut) !important;
+  background: transparent !important;
 }
 
 body:not(.mg-dash) [class*="TopBarButton"]:hover,
 body:not(.mg-dash) [class*="ExpandButton"]:hover {
-  color: var(--mk-g2) !important;
+  color: #8fd17a !important;
 }
 
-/* Aufgeklappter Eintrag: Felder auf Weiß */
+/* Aufgeklappter Eintrag */
 body:not(.mg-dash) [class*="SortableListItem"] > div:last-child {
-  background: #fff;
+  background: transparent;
+  border-color: transparent !important;
+}
+
+/* Kasten um verschachtelte Felder (z.B. "Kasten unten", Sprachen) */
+body:not(.mg-dash) [class*="ObjectControl"],
+body:not(.mg-dash) [class*="-ControlContainer"] [class*="-ControlContainer"] > :not([class*="ControlTopbar"]):not([class*="ControlHint"]):not(input):not(textarea):not(.mg-hidden-field) {
+  background: var(--ed-item) !important;
 }
 
 /* ---------- Bild-Felder ---------- */
 body:not(.mg-dash) [class*="FileWidgetButton"] {
   display: inline-flex !important;
   margin: 10px 8px 0 0 !important;
-  background: #fff !important;
-  color: #1d2a1f !important;
-  border: 1px solid #dfe3dc !important;
+  background: transparent !important;
+  color: var(--ed-text) !important;
+  border: 1px solid var(--ed-line2) !important;
   border-radius: 999px !important;
   padding: 6px 14px !important;
   font-weight: 600 !important;
 }
 
 body:not(.mg-dash) [class*="FileWidgetButton"]:hover {
-  border-color: var(--mk-g) !important;
+  border-color: rgba(85, 160, 65, 0.6) !important;
+  color: #fff !important;
 }
 
 body:not(.mg-dash) [class*="FileWidgetButtonRemove"] {
-  color: #b23b2e !important;
+  color: #e58b80 !important;
+}
+
+body:not(.mg-dash) [class*="FileWidgetButtonRemove"]:hover {
+  border-color: rgba(229, 139, 128, 0.6) !important;
 }
 
 body:not(.mg-dash) [class*="ImageWrapper"] {
+  border: 1px solid var(--ed-line) !important;
   border-radius: 8px;
   overflow: hidden;
+  background: #000 !important;
 }
 
 /* Eigene Bild-Felder (galerie-widget.js) innerhalb der Feld-Box */
@@ -454,18 +573,11 @@ body:not(.mg-dash) [class*="-ControlContainer"] > .mg {
   padding: 16px;
 }
 
-body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"]::after {
-  border-top-color: currentColor !important;
-}
-
-body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"] {
-  padding-right: 32px !important;
-}
-
-/* Zieh-Griff neben das ×, statt mitten über dem Titel */
-body:not(.mg-dash) [class*="StyledListItemTopBar"] > div:has([class*="DragIconContainer"]) {
-  margin-left: auto;
-  margin-right: 2px;
+/* ---------- Kopfleiste im Editor ---------- */
+[class*="ToolbarButton"][class*="PublishedButton"] {
+  background: rgba(85, 160, 65, 0.14) !important;
+  color: #8fd17a !important;
+  border-radius: 8px !important;
 }
 
 @media (max-width: 600px) {
