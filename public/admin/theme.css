@@ -1,6 +1,6 @@
 /*
-  Mosk-Look für das Admin-Panel (Decap CMS): dunkel, Logo-Grün, Glas-Karten
-  über dem Beams-Hintergrund (beams.js).
+  Mosk-Look für das Admin-Panel (Decap CMS): dunkel, Logo-Grün, schlichte
+  Karten auf ruhigem Hintergrund.
 
   Decap nutzt generierte Klassen wie "css-1a2b3c-AppHeader". Die Selektoren
   greifen per [class*="…"] auf den lesbaren Teil zu. Nach einem Decap-Update
@@ -12,7 +12,7 @@
   --mk-g3: #3e7530;
   --mk-gs: rgba(85, 160, 65, 0.14);
   --mk-bg: #0c0f0c;
-  --mk-glass: rgba(20, 24, 20, 0.72);
+  --mk-glass: #141814;
   --mk-line: rgba(255, 255, 255, 0.08);
   --mk-text: #e9ece8;
   --mk-mut: #9aa39a;
@@ -22,22 +22,9 @@ body {
   background: var(--mk-bg) !important;
 }
 
-.mg-beams {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  /* hinter allem; Decaps Container nicht anfassen (Editor nutzt absolute Positionierung) */
-  z-index: -1;
-  pointer-events: none;
-  filter: blur(15px);
-}
-
 /* ---------- Kopfzeile ---------- */
 header[class*="AppHeader"] {
   background: rgba(12, 15, 12, 0.78) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   box-shadow: none !important;
   border-bottom: 1px solid var(--mk-line);
 }
@@ -101,8 +88,6 @@ header[class*="AppHeader"] {
   background: var(--mk-glass) !important;
   border: 1px solid var(--mk-line) !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   color: var(--mk-text);
   border-radius: 14px !important;
 }
@@ -246,8 +231,6 @@ section[class*="AuthenticationPage"] [class*="AuthForm"] {
   border: 1px solid var(--mk-line);
   border-radius: 16px;
   padding: 24px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
 }
 

@@ -222,58 +222,39 @@
   body.mg-dash [class*="ControlContainer"] > [class*="FieldLabel"],body.mg-dash [class*="ControlTopbar"],body.mg-dash label[class*="FieldLabel"]{display:none!important}
   body.mg-dash [class*="ControlPaneContainer"]{max-width:980px;margin:0 auto}
   .mg-dash-wrap{color:#e9ece8;padding:8px 0 40px}
-  .mg-dash-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:22px}
-  .mg-dash-head h1{margin:0;font-size:30px;font-weight:800;color:#fff;letter-spacing:-.01em}
+  .mg-dash-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:20px}
+  .mg-dash-head h1{margin:0;font-size:28px;font-weight:800;color:#fff;letter-spacing:-.01em}
   .mg-dash-head p{margin:6px 0 0;color:#9aa39a;font-size:14px}
-  .mg-dash-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;align-items:start}
-  .mg-glass{background:rgba(20,24,20,.74);border:1px solid rgba(255,255,255,.08);border-radius:16px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 10px 30px rgba(0,0,0,.35);padding:18px}
-  .mg-glass h2{margin:0 0 4px;font-size:16px;font-weight:700;color:#fff}
-  .mg-glass .mg-sub2{margin:0 0 14px;font-size:13px;color:#9aa39a}
-  .mg-area{margin-top:14px}
-  .mg-area h3{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8d968c;font-weight:700}
-  .mg-row{display:flex;align-items:center;gap:14px;padding:10px;border-radius:12px;text-decoration:none;color:inherit;border:1px solid transparent;transition:background .15s,border-color .15s}
-  .mg-row:hover{background:rgba(255,255,255,.04);border-color:rgba(85,160,65,.45)}
+  .mg-dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start;margin-bottom:16px}
+  .mg-box{background:#141814;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px}
+  .mg-box h2{margin:0 0 10px;font-size:16px;font-weight:700;color:#fff}
+  .mg-muted{font-size:13px;color:#9aa39a;margin:0}
+  .mg-row{display:flex;align-items:center;gap:14px;padding:10px;margin:0 -10px;border-radius:10px;text-decoration:none;color:inherit;transition:background .15s}
+  .mg-row:hover{background:rgba(255,255,255,.05)}
+  .mg-row:hover b{color:#8fd17a}
+  .mg-row--text{padding:9px 10px}
   .mg-thumbs{display:flex;gap:3px;flex:0 0 auto}
-  .mg-thumbs img,.mg-thumbs span{width:40px;height:40px;border-radius:7px;object-fit:cover;background:#1e241e;display:block}
-  .mg-thumbs span{border:1px dashed rgba(255,255,255,.14);background:transparent}
+  .mg-thumbs img{width:40px;height:40px;border-radius:7px;object-fit:cover;background:#1e241e;display:block}
   .mg-rowtxt{flex:1;min-width:0}
-  .mg-rowtxt b{display:block;font-size:14px;color:#fff}
+  .mg-rowtxt b{display:block;font-size:14px;color:#fff;transition:color .15s}
   .mg-rowtxt small{display:block;font-size:12px;color:#9aa39a;margin-top:2px}
   .mg-pill{flex:0 0 auto;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
-  .mg-pill.on{background:rgba(85,160,65,.16);color:#8fd17a}
-  .mg-pill.off{background:rgba(255,255,255,.06);color:#9aa39a}
   .mg-pill.hid{background:rgba(255,196,0,.12);color:#e8c35a}
-  .mg-go{flex:0 0 auto;color:#55a041;font-weight:700;font-size:13px}
-  .mg-side2{display:flex;flex-direction:column;gap:16px}
-  .mg-soon{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-  .mg-soon .mg-bars{display:flex;align-items:flex-end;gap:5px;height:48px;margin:4px 0 2px}
-  .mg-soon .mg-bars i{width:14px;border-radius:3px 3px 0 0;background:rgba(85,160,65,.25)}
-  .mg-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 14px}
-  .mg-kpi{background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px}
-  .mg-kpi b{display:block;font-size:24px;font-weight:800;color:#fff;line-height:1.1;font-variant-numeric:tabular-nums}
-  .mg-kpi small{display:block;font-size:11px;color:#9aa39a;margin-top:3px}
-  .mg-chart{position:relative;height:84px;display:flex;align-items:flex-end;gap:2px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:4px}
-  .mg-bar{flex:1;display:flex;align-items:flex-end;height:100%;cursor:default}
-  .mg-bar i{display:block;width:100%;min-height:2px;background:#55a041;border-radius:4px 4px 0 0;transition:filter .12s}
-  .mg-bar:hover i{filter:brightness(1.25)}
-  .mg-bar.zero i{background:rgba(255,255,255,.14)}
-  .mg-axis{display:flex;justify-content:space-between;font-size:10px;color:#8d968c;margin-bottom:12px}
-  .mg-tip2{position:absolute;bottom:100%;transform:translate(-50%,-6px);background:#0c0f0c;border:1px solid rgba(255,255,255,.12);color:#e9ece8;font-size:11px;padding:4px 7px;border-radius:6px;white-space:nowrap;pointer-events:none}
-  .mg-pages{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
-  .mg-pages li{font-size:12px;color:#cfd5ce}
-  .mg-pages .mg-prow{display:flex;justify-content:space-between;gap:8px;margin-bottom:3px}
-  .mg-pages .mg-prow span:last-child{color:#9aa39a;font-variant-numeric:tabular-nums}
-  .mg-pages .mg-track{height:3px;border-radius:2px;background:rgba(255,255,255,.07)}
-  .mg-pages .mg-track i{display:block;height:100%;border-radius:2px;background:#55a041}
-  .mg-h4{margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8d968c;font-weight:700}
-  .mg-note{font-size:11px;color:#8d968c;line-height:1.45;margin:0 0 8px}
-  .mg-tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.07);color:#cfd5ce}
+  .mg-go{flex:0 0 auto;color:#55a041;font-weight:700;font-size:15px}
+  .mg-leer{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+  .mg-leer small{display:block;font-size:12px;color:#9aa39a;margin-bottom:8px}
+  .mg-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .mg-chip{font-size:12px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.06);color:#cfd5ce;text-decoration:none}
+  .mg-chip:hover{background:rgba(85,160,65,.18);color:#fff}
+  .mg-foot{margin-top:14px}
   .mg-dlink{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#55a041;text-decoration:none}
   .mg-dlink:hover{text-decoration:underline}
-  .mg-seiten{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-  .mg-tip{font-size:13px;color:#cfd5ce;line-height:1.5;margin:0}
-  .mg-stand{font-size:12px;color:#8d968c}
-  @media (max-width:820px){.mg-dash-grid{grid-template-columns:1fr}.mg-dash-head h1{font-size:24px}.mg-thumbs img:nth-child(n+3),.mg-thumbs span:nth-child(n+3){display:none}}
+  .mg-besucher{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
+  .mg-besucher h2{margin:0}
+  .mg-kpis{display:flex;flex-wrap:wrap;gap:8px 22px;flex:1}
+  .mg-kpi{font-size:13px;color:#9aa39a}
+  .mg-kpi b{font-size:18px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums}
+  @media (max-width:820px){.mg-dash-grid{grid-template-columns:1fr}.mg-dash-head h1{font-size:24px}.mg-thumbs img:nth-child(n+3){display:none}}
 
   /* Decap erzwingt im Editor 800px Mindestbreite -> am Handy unbenutzbar */
   @media (max-width:820px){
@@ -1270,15 +1251,12 @@
 
   var BesucherCard = createClass({
     getInitialState: function () {
-      return { data: null, error: false, hover: null };
+      return { data: null, error: false };
     },
 
     componentDidMount: function () {
       var self = this;
       var now = Date.now();
-      var today = startOfDay(now);
-      var from14 = startOfDay(now - 13 * DAY);
-      var tz = encodeURIComponent('Europe/Brussels');
       fetch(UMAMI_API + '/share/' + UMAMI_SHARE_ID)
         .then(function (r) {
           if (!r.ok) throw new Error(r.status);
@@ -1290,34 +1268,14 @@
             return 'startAt=' + from + '&endAt=' + now;
           };
           return Promise.all([
-            umami('/websites/' + id + '/stats?' + range(today), share),
+            umami('/websites/' + id + '/stats?' + range(startOfDay(now)), share),
             umami('/websites/' + id + '/stats?' + range(startOfDay(now - 6 * DAY)), share),
             umami('/websites/' + id + '/stats?' + range(startOfDay(now - 29 * DAY)), share),
-            umami('/websites/' + id + '/pageviews?' + range(from14) + '&unit=day&timezone=' + tz, share),
-            umami('/websites/' + id + '/metrics?' + range(startOfDay(now - 29 * DAY)) + '&type=path&limit=5', share),
           ]);
         })
         .then(function (res) {
-          // Tage ohne Besuch fehlen in der Antwort -> mit 0 auffüllen
-          var sessions = (res[3] && (res[3].sessions || res[3].pageviews)) || [];
-          var byDay = {};
-          sessions.forEach(function (p) {
-            byDay[startOfDay(new Date(p.x).getTime())] = (byDay[startOfDay(new Date(p.x).getTime())] || 0) + num(p.y);
-          });
-          var days = [];
-          for (var i = 13; i >= 0; i--) {
-            var t = startOfDay(now - i * DAY);
-            days.push({ t: t, v: byDay[t] || 0 });
-          }
           self.setState({
-            data: {
-              heute: num(res[0].visitors),
-              woche: num(res[1].visitors),
-              monat: num(res[2].visitors),
-              aufrufe: num(res[2].pageviews),
-              days: days,
-              pages: Array.isArray(res[4]) ? res[4] : [],
-            },
+            data: { heute: num(res[0].visitors), woche: num(res[1].visitors), monat: num(res[2].visitors) },
           });
         })
         .catch(function () {
@@ -1325,104 +1283,32 @@
         });
     },
 
+    // Schmale Leiste: drei Zahlen, Details bei Umami
     render: function () {
-      var self = this;
       var d = this.state.data;
       var link = h(
         'a',
         { className: 'mg-dlink', href: UMAMI_SHARE_URL, target: '_blank', rel: 'noopener' },
-        'Alle Details ansehen ›',
+        'Details ›',
       );
-
-      if (this.state.error) {
-        return h(
-          'section',
-          { className: 'mg-glass' },
-          h('h2', null, 'Besucher'),
-          h('p', { className: 'mg-sub2' }, 'Die Statistik ist gerade nicht erreichbar.'),
-          link,
-        );
-      }
-      if (!d) {
-        return h('section', { className: 'mg-glass' }, h('h2', null, 'Besucher'), h('p', { className: 'mg-sub2' }, 'Wird geladen …'));
-      }
-
-      var max = Math.max.apply(null, d.days.map(function (x) { return x.v; }).concat([1]));
-      var hover = this.state.hover;
-      var dayFmt = function (t) {
-        return new Date(t).toLocaleDateString('de-BE', { weekday: 'short', day: '2-digit', month: '2-digit' });
-      };
-      var bars = d.days.map(function (x, i) {
-        return h(
-          'div',
-          {
-            key: x.t,
-            className: 'mg-bar' + (x.v ? '' : ' zero'),
-            onMouseEnter: function () { self.setState({ hover: i }); },
-            onMouseLeave: function () { self.setState({ hover: null }); },
-            'aria-label': dayFmt(x.t) + ': ' + x.v + ' Besucher',
-            role: 'img',
-          },
-          h('i', { style: { height: Math.max(2, (x.v / max) * 100) + '%' } }),
-        );
-      });
-      var tip =
-        hover !== null
-          ? h(
-              'div',
-              { className: 'mg-tip2', style: { left: ((hover + 0.5) / d.days.length) * 100 + '%' } },
-              dayFmt(d.days[hover].t) + ' · ' + d.days[hover].v + ' Besucher',
-            )
-          : null;
-
-      var pageMax = d.pages.reduce(function (m, p) { return Math.max(m, num(p.y)); }, 1);
-      var pageName = function (path) {
-        var names = { '/': 'Startseite', '/portfolio': 'Galerie', '/services': 'Services', '/services/event': 'Services – Privat', '/services/business': 'Services – Unternehmen', '/about': 'Über mich', '/impressum': 'Impressum', '/datenschutz': 'Datenschutz', '/agb': 'AGB' };
-        return names[path] || path;
-      };
-
-      return h(
-        'section',
-        { className: 'mg-glass' },
-        h('h2', null, 'Besucher'),
-        h(
-          'div',
-          { className: 'mg-kpis' },
-          h('div', { className: 'mg-kpi' }, h('b', null, fmt(d.heute)), h('small', null, 'heute')),
-          h('div', { className: 'mg-kpi' }, h('b', null, fmt(d.woche)), h('small', null, '7 Tage')),
-          h('div', { className: 'mg-kpi' }, h('b', null, fmt(d.monat)), h('small', null, '30 Tage')),
-        ),
-        h('div', { className: 'mg-h4' }, 'Besucher pro Tag'),
-        h('div', { className: 'mg-chart' }, bars, tip),
-        h('div', { className: 'mg-axis' }, h('span', null, dayFmt(d.days[0].t)), h('span', null, 'heute')),
-        d.pages.length
-          ? h(
-              'div',
-              null,
-              h('div', { className: 'mg-h4' }, 'Meistbesucht (30 Tage)'),
-              h(
-                'ul',
-                { className: 'mg-pages' },
-                d.pages.map(function (p) {
-                  return h(
-                    'li',
-                    { key: p.x },
-                    h('div', { className: 'mg-prow' }, h('span', null, pageName(p.x)), h('span', null, fmt(num(p.y)))),
-                    h('div', { className: 'mg-track' }, h('i', { style: { width: (num(p.y) / pageMax) * 100 + '%' } })),
-                  );
-                }),
-              ),
-            )
-          : null,
-        h('p', { className: 'mg-note' }, fmt(d.aufrufe) + ' Seitenaufrufe in 30 Tagen. Gezählt wird nur, wer im Cookie-Banner zustimmt – die echten Zahlen liegen höher.'),
-        link,
-      );
+      var inhalt = this.state.error
+        ? h('span', { className: 'mg-muted' }, 'Statistik gerade nicht erreichbar')
+        : !d
+          ? h('span', { className: 'mg-muted' }, 'Wird geladen …')
+          : [
+              ['heute', d.heute],
+              ['7 Tage', d.woche],
+              ['30 Tage', d.monat],
+            ].map(function (k) {
+              return h('span', { key: k[0], className: 'mg-kpi' }, h('b', null, fmt(k[1])), ' ' + k[0]);
+            });
+      return h('section', { className: 'mg-box mg-besucher' }, h('h2', null, 'Besucher'), h('div', { className: 'mg-kpis' }, inhalt), link);
     },
   });
 
   var UebersichtControl = createClass({
     getInitialState: function () {
-      return { status: null, error: false, vorlagen: null };
+      return { status: null, error: false };
     },
 
     componentDidMount: function () {
@@ -1439,33 +1325,16 @@
         .catch(function () {
           self.setState({ error: true });
         });
-      fetch(VORLAGEN_URL, { cache: 'no-store' })
-        .then(function (r) {
-          return r.ok ? r.json() : { vorlagen: [] };
-        })
-        .then(function (d) {
-          self.setState({ vorlagen: (d && d.vorlagen) || [] });
-        })
-        .catch(function () {});
     },
 
     renderRow: function (k) {
       var thumbs = [];
       for (var i = 0; i < 4; i++) {
         var src = k.vorschau[i];
-        thumbs.push(src ? h('img', { key: i, src: previewUrl(src, 120), alt: '' }) : h('span', { key: i }));
+        if (src) thumbs.push(h('img', { key: i, src: previewUrl(src, 120), alt: '' }));
       }
-      var pill, note;
-      if (k.ausgeblendet && k.anzahl > 0) {
-        pill = h('span', { className: 'mg-pill hid' }, 'Ausgeblendet');
-        note = k.anzahl + ' Inhalte, bewusst versteckt';
-      } else if (k.anzahl > 0) {
-        pill = h('span', { className: 'mg-pill on' }, 'Online');
-        note = k.anzahl + (k.anzahl === 1 ? ' Inhalt' : ' Inhalte') + (k.videos ? ' · davon ' + k.videos + ' Video' + (k.videos === 1 ? '' : 's') : '') + ' · Layout: ' + layoutName(k.layout);
-      } else {
-        pill = h('span', { className: 'mg-pill off' }, 'Leer');
-        note = 'Erscheint automatisch, sobald du etwas hinzufügst';
-      }
+      var pill = k.ausgeblendet ? h('span', { className: 'mg-pill hid' }, 'Ausgeblendet') : null;
+      var note = k.anzahl + (k.anzahl === 1 ? ' Inhalt' : ' Inhalte');
       return h(
         'a',
         {
@@ -1486,111 +1355,95 @@
     render: function () {
       var self = this;
       var st = this.state.status;
-      var areas = [];
-      if (st) {
-        st.kategorien.forEach(function (k) {
-          var a = areas.filter(function (x) {
-            return x.name === k.bereich;
-          })[0];
-          if (!a) areas.push((a = { name: k.bereich, items: [] }));
-          a.items.push(k);
-        });
-      }
-      var online = st
-        ? st.kategorien.filter(function (k) {
-            return k.anzahl > 0 && !k.ausgeblendet;
-          }).length
-        : 0;
+      var kategorien = st ? st.kategorien : [];
+      var gefuellt = kategorien.filter(function (k) {
+        return k.anzahl > 0;
+      });
+      var leer = kategorien.filter(function (k) {
+        return !k.anzahl;
+      });
 
       var galerie = h(
         'section',
-        { className: 'mg-glass' },
+        { className: 'mg-box' },
         h('h2', null, 'Galerie'),
-        h(
-          'p',
-          { className: 'mg-sub2' },
-          st
-            ? online + ' von ' + st.kategorien.length + ' Kategorien sind auf der Website zu sehen. Leere Kategorien bleiben unsichtbar, bis du etwas hinzufügst.'
-            : this.state.error
-              ? 'Der Galerie-Stand konnte nicht geladen werden. Bitte die Seite neu laden.'
-              : 'Wird geladen …',
-        ),
-        areas.map(function (a) {
-          return h('div', { key: a.name, className: 'mg-area' }, h('h3', null, a.name), a.items.map(self.renderRow));
-        }),
-      );
-
-      var besucher = h(BesucherCard, null);
-
-      var anzahlLayouts = this.state.vorlagen ? this.state.vorlagen.length : null;
-      var layouts = h(
-        'section',
-        { className: 'mg-glass' },
-        h('h2', null, 'Eigene Layouts'),
-        h(
-          'p',
-          { className: 'mg-sub2' },
-          anzahlLayouts === null ? '…' : anzahlLayouts === 1 ? '1 gespeichertes Layout' : anzahlLayouts + ' gespeicherte Layouts',
-        ),
+        !st
+          ? h('p', { className: 'mg-muted' }, this.state.error ? 'Konnte nicht geladen werden. Bitte Seite neu laden.' : 'Wird geladen …')
+          : null,
+        gefuellt.map(self.renderRow),
+        // Leere Kategorien nur als kleine Links, statt eigener Zeilen mit leeren Kästchen
+        leer.length
+          ? h(
+              'div',
+              { className: 'mg-leer' },
+              h('small', null, 'Noch leer (auf der Website unsichtbar):'),
+              h(
+                'div',
+                { className: 'mg-chips' },
+                leer.map(function (k) {
+                  var target = '#/collections/galerie/entries/' + k.id;
+                  return h(
+                    'a',
+                    {
+                      key: k.id,
+                      className: 'mg-chip',
+                      href: target,
+                      onClick: function (e) {
+                        openEntry(e, target);
+                      },
+                    },
+                    '+ ' + k.title,
+                  );
+                }),
+              ),
+            )
+          : null,
         h(
           'a',
           {
-            className: 'mg-dlink',
+            className: 'mg-dlink mg-foot',
             href: '#/collections/layouts/entries/vorlagen',
             onClick: function (e) {
               openEntry(e, '#/collections/layouts/entries/vorlagen');
             },
           },
-          'Layouts verwalten ›',
+          'Eigene Layouts verwalten ›',
         ),
       );
 
       // Texte & Bilder der Seiten (Sammlungen "seiten" und "rechtliches")
       var seitenLinks = [
         ['seiten', 'startseite', 'Startseite'],
-        ['seiten', 'services', 'Services – Auswahl'],
+        ['seiten', 'services', 'Services – Übersicht'],
         ['seiten', 'services-privat', 'Services – Privatkunden'],
         ['seiten', 'services-business', 'Services – Unternehmen'],
         ['seiten', 'ueber-mich', 'Über mich'],
         ['seiten', 'kontakt', 'Kontakt'],
         ['seiten', 'footer', 'Footer'],
-        ['rechtliches', 'impressum', 'Impressum, Datenschutz & AGB'],
+        ['rechtliches', null, 'Impressum, Datenschutz & AGB'],
       ];
       var seiten = h(
         'section',
-        { className: 'mg-glass' },
+        { className: 'mg-box' },
         h('h2', null, 'Seiten'),
-        h('p', { className: 'mg-sub2' }, 'Texte und Bilder ändern. Das Design bleibt gleich.'),
-        h(
-          'div',
-          { className: 'mg-seiten' },
-          seitenLinks.map(function (l) {
-            var target = '#/collections/' + l[0] + '/entries/' + l[1];
-            return h(
-              'a',
-              {
-                key: l[1],
-                className: 'mg-dlink',
-                href: l[1] === 'impressum' ? '#/collections/rechtliches' : target,
-                onClick: l[1] === 'impressum' ? undefined : function (e) {
-                  openEntry(e, target);
-                },
-              },
-              l[2] + ' ›',
-            );
-          }),
-        ),
-      );
-
-      var tipp = h(
-        'section',
-        { className: 'mg-glass' },
-        h('h2', null, 'Tipp'),
-        h(
-          'p',
-          { className: 'mg-tip' },
-          'Sammle deine Änderungen und klicke dann einmal auf „Veröffentlichen“. Jede Veröffentlichung braucht ca. 1–2 Minuten, bis sie live ist.',
-        ),
+        seitenLinks.map(function (l) {
+          var target = '#/collections/' + l[0] + (l[1] ? '/entries/' + l[1] : '');
+          return h(
+            'a',
+            {
+              key: l[2],
+              className: 'mg-row mg-row--text',
+              href: target,
+              onClick: l[1]
+                ? function (e) {
+                    openEntry(e, target);
+                  }
+                : undefined,
+            },
+            h('div', { className: 'mg-rowtxt' }, h('b', null, l[2])),
+            h('span', { className: 'mg-go', 'aria-hidden': true }, '›'),
+          );
+        }),
       );
 
       return h(
@@ -1603,16 +1456,12 @@
             'div',
             null,
             h('h1', null, 'Übersicht'),
-            h('p', null, 'Alles für deine Website an einem Ort.'),
+            h('p', null, 'Änderungen sammeln, dann einmal „Veröffentlichen“ – nach 1–2 Minuten live.'),
           ),
-          h(
-            'div',
-            { style: { textAlign: 'right' } },
-            h('a', { className: 'mg-dlink', href: '/', target: '_blank', rel: 'noopener' }, 'Website ansehen ›'),
-            st && st.stand ? h('div', { className: 'mg-stand' }, 'Stand der Website: ' + formatStand(st.stand)) : null,
-          ),
+          h('a', { className: 'mg-dlink', href: '/', target: '_blank', rel: 'noopener' }, 'Website ansehen ›'),
         ),
-        h('div', { className: 'mg-dash-grid' }, galerie, h('div', { className: 'mg-side2' }, besucher, seiten, layouts, tipp)),
+        h('div', { className: 'mg-dash-grid' }, galerie, seiten),
+        h(BesucherCard, null),
       );
     },
   });
