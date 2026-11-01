@@ -22,6 +22,16 @@
   // Layout-Feld und Galerie-Feld sprechen deshalb über Events miteinander.
   var LAYOUT_CHANGED = 'mosk-galerie-layout';
   var LAYOUT_SET = 'mosk-galerie-layout-set';
+  // Handy: Häkchen "handy_separat" und Vorlage "layout_handy" (Größen pro Bild
+  // in "groesse_handy"). Ohne Häkchen übernimmt das Handy das Computer-Layout.
+  var LAYOUT_HANDY_CHANGED = 'mosk-galerie-layout-handy';
+  var LAYOUT_HANDY_SET = 'mosk-galerie-layout-handy-set';
+  var HANDY_CHANGED = 'mosk-galerie-handy';
+  var HANDY_SET = 'mosk-galerie-handy-set';
+
+  function fire(name, detail) {
+    window.dispatchEvent(new CustomEvent(name, { detail: detail }));
+  }
 
   var LAYOUTS = [
     { id: 'mosaik', name: 'Mosaik', desc: 'Natürliche Formate, versetzt' },
@@ -56,10 +66,10 @@
       });
   }
 
-  function patternMatches(items, pattern) {
+  function patternMatches(items, pattern, key) {
     if (!pattern.length || !items.length) return false;
     return items.every(function (item, i) {
-      return (item.get('groesse') || 'normal') === pattern[i % pattern.length];
+      return (item.get(key || 'groesse') || 'normal') === pattern[i % pattern.length];
     });
   }
 
@@ -168,6 +178,11 @@
   .mg-h3row h3{margin-bottom:10px}
   .mg-refresh{margin-top:0;font-size:12px;cursor:pointer}
   .mg-formnote{font-size:12px;color:var(--mut);margin:8px 0 0}
+  .mg-toggle{display:flex;align-items:flex-start;gap:10px;cursor:pointer;line-height:1.35}
+  .mg-toggle input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--g);flex:0 0 auto;cursor:pointer}
+  .mg-toggle b{display:block;font-size:14px}
+  .mg-toggle small{display:block;font-size:12px;color:var(--mut)}
+  .mg-ov .mg-toggle small{color:#9aa39a}
   .mg-help{font-size:12px;color:#8d968c;line-height:1.5;margin:0}
   .mg-help b{color:#cfd5ce}
   .mg-stage{overflow:auto;padding:28px;display:flex;justify-content:center;align-items:flex-start;background:radial-gradient(circle at 50% 0,#1b221b,#101311 70%)}
@@ -321,13 +336,13 @@
     );
   }
 
-  function customCards(vorlagen, items, layout, onPick) {
+  function customCards(vorlagen, items, layout, onPick, key) {
     return h(
       'div',
       { className: 'mg-presets' },
       vorlagen.map(function (v, idx) {
         var pattern = parsePattern(v.muster);
-        var on = layout === 'raster' && patternMatches(items, pattern);
+        var on = layout === 'raster' && patternMatches(items, pattern, key);
         return h(
           'button',
           {
@@ -394,31 +409,114 @@
 
   /* ---------- Layout-Feld ---------- */
 
+  // Feldoption "ziel: handy" = Handy-Vorlage (nur sichtbar mit Häkchen)
   var LayoutControl = createClass({
+    getInitialState: function () {
+      var entry = this.props.entry;
+      return { separat: !!(entry && entry.getIn(['data', 'handy_separat'])) };
+    },
+    handy: function () {
+      return this.props.field && this.props.field.get('ziel') === 'handy';
+    },
     componentDidMount: function () {
       var self = this;
       this.onSet = function (e) {
         self.pick(e.detail);
       };
-      window.addEventListener(LAYOUT_SET, this.onSet);
+      this.onHandy = function (e) {
+        self.setState({ separat: !!e.detail });
+      };
+      window.addEventListener(this.handy() ? LAYOUT_HANDY_SET : LAYOUT_SET, this.onSet);
+      window.addEventListener(HANDY_CHANGED, this.onHandy);
     },
     componentWillUnmount: function () {
-      window.removeEventListener(LAYOUT_SET, this.onSet);
+      window.removeEventListener(this.handy() ? LAYOUT_HANDY_SET : LAYOUT_SET, this.onSet);
+      window.removeEventListener(HANDY_CHANGED, this.onHandy);
     },
     pick: function (id) {
       if (id === this.props.value) return;
       this.props.onChange(id);
-      window.dispatchEvent(new CustomEvent(LAYOUT_CHANGED, { detail: id }));
+      fire(this.handy() ? LAYOUT_HANDY_CHANGED : LAYOUT_CHANGED, id);
     },
     render: function () {
+      if (this.handy() && !this.state.separat) {
+        return h('div', { className: 'mg' }, h('p', { className: 'mg-formnote' }, 'Automatisch wie am Computer.'));
+      }
       return h(
         'div',
         { className: 'mg' },
         presetCards(this.props.value || 'mosaik', this.pick),
-        h('p', { className: 'mg-formnote' }, 'Eigene Layouts findest du unter „Layout bearbeiten“.'),
+        h(
+          'p',
+          { className: 'mg-formnote' },
+          this.handy()
+            ? 'Bildgrößen fürs Handy unter „Layout bearbeiten“ → Ansicht „Handy“.'
+            : 'Eigene Layouts findest du unter „Layout bearbeiten“.',
+        ),
       );
     },
   });
+
+  /* ---------- Häkchen: Handy getrennt einstellen ---------- */
+
+  var HandyControl = createClass({
+    // eigener Zustand: Decap zeichnet das Feld nach onChange nicht zuverlässig neu
+    getInitialState: function () {
+      return { on: !!this.props.value };
+    },
+    componentDidMount: function () {
+      var self = this;
+      this.onSet = function (e) {
+        self.set(!!e.detail);
+      };
+      window.addEventListener(HANDY_SET, this.onSet);
+    },
+    componentWillUnmount: function () {
+      window.removeEventListener(HANDY_SET, this.onSet);
+    },
+    set: function (on) {
+      if (on === this.state.on) return;
+      this.setState({ on: on });
+      this.props.onChange(on);
+      fire(HANDY_CHANGED, on);
+    },
+    render: function () {
+      var self = this;
+      return h(
+        'div',
+        { className: 'mg' },
+        handyToggle(this.state.on, function (on) {
+          self.set(on);
+        }),
+      );
+    },
+  });
+
+  function handyToggle(on, onToggle) {
+    return h(
+      'label',
+      { className: 'mg-toggle' },
+      h('input', {
+        type: 'checkbox',
+        checked: on,
+        onChange: function (e) {
+          onToggle(e.target.checked);
+        },
+      }),
+      h(
+        'span',
+        null,
+        h('b', null, 'Handy-Layout getrennt einstellen'),
+        h(
+          'small',
+          null,
+          on
+            ? 'Handy hat eine eigene Vorlage und eigene Bildgrößen. Reihenfolge bleibt gleich.'
+            : 'Aus: Das Handy übernimmt automatisch das Layout vom Computer.',
+        ),
+      ),
+    );
+  }
 
   /* ---------- Galerie-Feld ---------- */
 
@@ -432,6 +530,8 @@
         urls: {},
         vorlagen: [],
         layout: (entry && entry.getIn(['data', 'layout'])) || 'mosaik',
+        layoutHandy: (entry && entry.getIn(['data', 'layout_handy'])) || null,
+        separat: !!(entry && entry.getIn(['data', 'handy_separat'])),
       };
     },
 
@@ -440,10 +540,19 @@
       this.onLayout = function (e) {
         self.setState({ layout: e.detail || 'mosaik', selected: null });
       };
+      this.onLayoutHandy = function (e) {
+        self.setState({ layoutHandy: e.detail || null, selected: null });
+      };
+      this.onHandy = function (e) {
+        self.setState({ separat: !!e.detail, selected: null });
+        if (e.detail) self.initHandy();
+      };
       this.onKey = function (e) {
         if (e.key === 'Escape' && self.state.open) self.close();
       };
       window.addEventListener(LAYOUT_CHANGED, this.onLayout);
+      window.addEventListener(LAYOUT_HANDY_CHANGED, this.onLayoutHandy);
+      window.addEventListener(HANDY_CHANGED, this.onHandy);
       window.addEventListener('keydown', this.onKey);
       this.resolveUrls();
     },
@@ -455,6 +564,8 @@
 
     componentWillUnmount: function () {
       window.removeEventListener(LAYOUT_CHANGED, this.onLayout);
+      window.removeEventListener(LAYOUT_HANDY_CHANGED, this.onLayoutHandy);
+      window.removeEventListener(HANDY_CHANGED, this.onHandy);
       window.removeEventListener('keydown', this.onKey);
       if (this.sortable) this.sortable.destroy();
       document.body.style.overflow = '';
@@ -484,13 +595,45 @@
         .catch(function () {});
     },
 
+    // Häkchen frisch gesetzt: Handy startet als Kopie vom Computer-Layout
+    initHandy: function () {
+      if (!this.state.layoutHandy) fire(LAYOUT_HANDY_SET, this.state.layout);
+      var value = this.props.value;
+      if (!value || !value.size) return;
+      var hasHandy = value.some(function (item) {
+        return item && item.get('groesse_handy');
+      });
+      if (hasHandy) return;
+      this.props.onChange(
+        value.map(function (item) {
+          return item.get('groesse') ? item.set('groesse_handy', item.get('groesse')) : item;
+        }),
+      );
+    },
+
+    // In der Ansicht "Handy" mit Häkchen wird das Handy-Layout bearbeitet,
+    // ohne Häkchen zeigt sie nur, wie das Computer-Layout am Handy aussieht.
+    editsHandy: function () {
+      return this.state.mobile && this.state.separat;
+    },
+    handyLocked: function () {
+      return this.state.mobile && !this.state.separat;
+    },
+    sizeKey: function () {
+      return this.editsHandy() ? 'groesse_handy' : 'groesse';
+    },
+    currentLayout: function () {
+      return this.editsHandy() ? this.state.layoutHandy || this.state.layout : this.state.layout;
+    },
+
     // Eigenes Muster anwenden: Vorlage "Raster" + Größen der Reihe nach setzen
     applyPattern: function (pattern) {
       if (!pattern.length || !this.props.value) return;
-      window.dispatchEvent(new CustomEvent(LAYOUT_SET, { detail: 'raster' }));
+      var key = this.sizeKey();
+      fire(this.editsHandy() ? LAYOUT_HANDY_SET : LAYOUT_SET, 'raster');
       this.props.onChange(
         this.props.value.map(function (item, i) {
-          return item.set('groesse', pattern[i % pattern.length]);
+          return item.set(key, pattern[i % pattern.length]);
         }),
       );
       this.setState({ selected: null });
@@ -573,20 +716,21 @@
     },
 
     setSize: function (index, size) {
-      this.props.onChange(this.props.value.setIn([index, 'groesse'], size));
+      this.props.onChange(this.props.value.setIn([index, this.sizeKey()], size));
     },
 
     resetSizes: function () {
+      var key = this.sizeKey();
       this.props.onChange(
         this.props.value.map(function (item) {
-          return item.delete('groesse');
+          return item.delete(key);
         }),
       );
       this.setState({ selected: null });
     },
 
     pickLayout: function (id) {
-      window.dispatchEvent(new CustomEvent(LAYOUT_SET, { detail: id }));
+      fire(this.editsHandy() ? LAYOUT_HANDY_SET : LAYOUT_SET, id);
     },
 
     renderCard: function (items) {
@@ -608,7 +752,14 @@
           'div',
           { className: 'mg-meta' },
           h('b', null, items.length + (items.length === 1 ? ' Bild' : ' Bilder')),
-          h('small', null, 'Layout: ' + layoutName(this.state.layout)),
+          h(
+            'small',
+            null,
+            'Layout: ' +
+              layoutName(this.state.layout) +
+              ' · Handy: ' +
+              (this.state.separat ? layoutName(this.state.layoutHandy || this.state.layout) : 'automatisch'),
+          ),
         ),
         h(
           'button',
@@ -629,7 +780,7 @@
         );
       }
       var item = items[sel];
-      var current = effectiveSize(layout, sel, item.get('groesse'));
+      var current = effectiveSize(layout, sel, item.get(this.sizeKey()));
       return h(
         'div',
         { className: 'mg-panel' },
@@ -675,26 +826,28 @@
 
     renderOverlay: function (items) {
       var self = this;
-      var layout = this.state.layout;
+      var layout = this.currentLayout();
+      var key = this.sizeKey();
+      var locked = this.handyLocked();
       var mobile = this.state.mobile;
       var natural = layout === 'mosaik';
       var selected = this.state.selected;
       var entry = this.props.entry;
       var title = (entry && entry.getIn(['data', 'title'])) || '';
       var hasCustom = items.some(function (item) {
-        return item && item.get('groesse');
+        return item && item.get(key);
       });
 
       var tiles = items.map(function (item, i) {
         var path = item.get('bild');
-        var size = effectiveSize(layout, i, item.get('groesse'));
+        var size = effectiveSize(layout, i, item.get(key));
         return h(
           'div',
           {
             key: path + '-' + i,
             className: 'mg-tile mg-tile--' + size + (selected === i ? ' sel' : ''),
             onClick: function () {
-              self.setState({ selected: selected === i ? null : i });
+              if (!locked) self.setState({ selected: selected === i ? null : i });
             },
           },
           h('img', {
@@ -741,8 +894,20 @@
           h(
             'aside',
             { className: 'mg-side' },
-            h('section', null, h('h3', null, 'Vorlage'), presetCards(layout, this.pickLayout)),
-            h(
+            mobile
+              ? h(
+                  'section',
+                  null,
+                  h('h3', null, 'Handy'),
+                  handyToggle(this.state.separat, function (on) {
+                    fire(HANDY_SET, on);
+                  }),
+                )
+              : null,
+            locked ? null : h('section', null, h('h3', null, mobile ? 'Vorlage (Handy)' : 'Vorlage'), presetCards(layout, this.pickLayout)),
+            locked
+              ? null
+              : h(
               'section',
               null,
               h(
@@ -756,7 +921,7 @@
                 ),
               ),
               this.state.vorlagen.length
-                ? customCards(this.state.vorlagen, items, layout, this.applyPattern)
+                ? customCards(this.state.vorlagen, items, layout, this.applyPattern, key)
                 : h('p', { className: 'mg-empty-note' }, 'Noch keine eigenen Layouts.'),
               h(
                 'a',
@@ -769,7 +934,7 @@
                 '+ Eigene Layouts anlegen (neuer Tab)',
               ),
             ),
-            h('section', null, h('h3', null, 'Ausgewähltes Bild'), this.renderSelected(items, layout)),
+            locked ? null : h('section', null, h('h3', null, 'Ausgewähltes Bild'), this.renderSelected(items, layout)),
             h(
               'section',
               null,
@@ -780,8 +945,9 @@
                 'Bild ziehen (am Handy kurz gedrückt halten). ',
                 h('b', null, 'Lücken '),
                 'füllt die Website automatisch. Änderungen werden erst mit „Veröffentlichen“ live.',
+                this.state.separat ? ' Die Reihenfolge gilt für Computer und Handy.' : '',
               ),
-              hasCustom && !natural
+              hasCustom && !natural && !locked
                 ? h(
                     'button',
                     { type: 'button', className: 'mg-btn mg-btn--ghost', style: { marginTop: 12 }, onClick: this.resetSizes },
@@ -1417,4 +1583,5 @@
   CMS.registerWidget('galerie', GalerieControl, list.preview);
   CMS.registerWidget('vorlage-muster', MusterControl);
   CMS.registerWidget('galerie-layout', LayoutControl, select.preview);
+  CMS.registerWidget('galerie-handy', HandyControl);
 })();

@@ -6,6 +6,7 @@ import { BlurFade } from './ui/blur-fade';
 import { getNavHeight } from '../lib/utils';
 import {
   galleryAreaCards,
+  type GallerySize,
   optimizedSrc,
   optimizedSrcSet,
   type GalleryAreaCard,
@@ -14,6 +15,24 @@ import {
 } from '../data/gallery';
 
 const ALL = 'alle';
+
+// Handy = unter 640 px (gleiche Grenze wie im Admin, siehe src/data/gallery.ts)
+const HANDY_QUERY = '(max-width: 639px)';
+
+function useIsHandy() {
+  const [handy, setHandy] = useState(() => window.matchMedia(HANDY_QUERY).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(HANDY_QUERY);
+    const onChange = () => setHandy(mq.matches);
+    mq.addEventListener('change', onChange);
+    window.addEventListener('resize', onChange);
+    return () => {
+      mq.removeEventListener('change', onChange);
+      window.removeEventListener('resize', onChange);
+    };
+  }, []);
+  return handy;
+}
 
 interface LightboxProps {
   item: GalleryItem;
@@ -130,19 +149,20 @@ function Lightbox({ item, index, total, onClose, onNext, onPrev }: LightboxProps
 
 interface TileProps {
   item: GalleryItem;
+  size: GallerySize;
   onOpen: () => void;
   fill: boolean;
 }
 
 // Bild-Kachel. fill = Kachel füllt eine feste Rasterzelle (object-cover),
 // sonst natürliche Höhe (Mosaik).
-function Tile({ item, onOpen, fill }: TileProps) {
-  const big = item.size !== 'normal';
+function Tile({ item, size, onOpen, fill }: TileProps) {
+  const big = size !== 'normal';
   return (
     <div
       onClick={onOpen}
       className={`group relative overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-lg transition-shadow duration-300 ${
-        fill ? `gallery-tile gallery-tile--${item.size}` : 'mb-4 sm:mb-5 lg:mb-6'
+        fill ? `gallery-tile gallery-tile--${size}` : 'mb-4 sm:mb-5 lg:mb-6'
       }`}
     >
       <img
@@ -185,7 +205,11 @@ interface CategoryGridProps {
 }
 
 function CategoryGrid({ category, offset, onOpen }: CategoryGridProps) {
-  if (category.layout === 'mosaik') {
+  const handy = useIsHandy();
+  const layout = handy ? category.layoutHandy : category.layout;
+  const sizeOf = (item: GalleryItem) => (handy ? item.sizeHandy : item.size);
+
+  if (layout === 'mosaik') {
     return (
       <Masonry
         breakpointCols={{ default: 3, 1024: 2, 640: 1 }}
@@ -193,7 +217,7 @@ function CategoryGrid({ category, offset, onOpen }: CategoryGridProps) {
         columnClassName="masonry-grid-column"
       >
         {category.items.map((item, i) => (
-          <Tile key={`${item.src}-${i}`} item={item} fill={false} onOpen={() => onOpen(offset + i)} />
+          <Tile key={`${item.src}-${i}`} item={item} size="normal" fill={false} onOpen={() => onOpen(offset + i)} />
         ))}
       </Masonry>
     );
@@ -203,7 +227,7 @@ function CategoryGrid({ category, offset, onOpen }: CategoryGridProps) {
     <div className="gallery-grid-wrap">
       <div className="gallery-grid">
         {category.items.map((item, i) => (
-          <Tile key={`${item.src}-${i}`} item={item} fill onOpen={() => onOpen(offset + i)} />
+          <Tile key={`${item.src}-${i}`} item={item} size={sizeOf(item)} fill onOpen={() => onOpen(offset + i)} />
         ))}
       </div>
     </div>

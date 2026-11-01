@@ -12,6 +12,10 @@
 // - raster:    quadratisches Raster, einzelne Bilder können größer sein
 // - highlight: wie raster, aber das erste Bild ist standardmäßig groß
 // Die Regeln sind in public/admin/galerie-widget.js gespiegelt (Admin-Vorschau).
+//
+// Handy (< 640 px): ohne Häkchen "handy_separat" gilt automatisch das Layout
+// vom Computer. Mit Häkchen gelten "layout_handy" und pro Bild "groesse_handy"
+// (Reihenfolge und Bilder bleiben gleich).
 export type GalleryLayout = 'mosaik' | 'raster' | 'highlight';
 export type GallerySize = 'normal' | 'breit' | 'hoch' | 'gross';
 
@@ -24,7 +28,9 @@ interface GalleryFile {
   reihenfolge?: number;
   sichtbar?: boolean;
   layout?: string;
-  bilder?: { bild: string; beschreibung?: string; groesse?: string; video?: string }[];
+  handy_separat?: boolean;
+  layout_handy?: string;
+  bilder?: { bild: string; beschreibung?: string; groesse?: string; groesse_handy?: string; video?: string }[];
 }
 
 export interface GalleryItem {
@@ -32,6 +38,7 @@ export interface GalleryItem {
   alt: string;
   category: string;
   size: GallerySize;
+  sizeHandy: GallerySize;
   // Einbettbare Video-URL (YouTube-nocookie / Vimeo), lädt erst nach Klick
   video?: string;
 }
@@ -41,6 +48,7 @@ export interface GalleryCategory {
   bereich: string;
   title: string;
   layout: GalleryLayout;
+  layoutHandy: GalleryLayout;
   items: GalleryItem[];
 }
 
@@ -54,6 +62,10 @@ function effectiveSize(layout: GalleryLayout, index: number, chosen?: string): G
   if (layout === 'mosaik') return 'normal';
   if (chosen && (SIZES as string[]).includes(chosen)) return chosen as GallerySize;
   return layout === 'highlight' && index === 0 ? 'gross' : 'normal';
+}
+
+function toLayout(value: string | undefined, fallback: GalleryLayout): GalleryLayout {
+  return (LAYOUTS as string[]).includes(value ?? '') ? (value as GalleryLayout) : fallback;
 }
 
 // YouTube/Vimeo-Link -> datensparsame Einbett-URL (null = kein gültiges Video)
@@ -75,9 +87,9 @@ const files = import.meta.glob<GalleryFile>('/content/galerie/*.json', {
 const allCategories: (GalleryCategory & { order: number; hidden: boolean })[] = Object.entries(files)
   .map(([path, file]) => {
     const id = path.split('/').pop()!.replace(/\.json$/, '');
-    const layout: GalleryLayout = (LAYOUTS as string[]).includes(file.layout ?? '')
-      ? (file.layout as GalleryLayout)
-      : 'mosaik';
+    const layout = toLayout(file.layout, 'mosaik');
+    const separat = file.handy_separat === true;
+    const layoutHandy = separat ? toLayout(file.layout_handy, layout) : layout;
     return {
       id,
       bereich: file.bereich || 'Fotografie',
@@ -85,6 +97,7 @@ const allCategories: (GalleryCategory & { order: number; hidden: boolean })[] = 
       order: file.reihenfolge ?? 999,
       hidden: file.sichtbar === false,
       layout,
+      layoutHandy,
       items: (file.bilder ?? [])
         .filter((b) => b.bild)
         .map((b, i) => ({
@@ -92,6 +105,7 @@ const allCategories: (GalleryCategory & { order: number; hidden: boolean })[] = 
           alt: b.beschreibung || file.title,
           category: file.title,
           size: effectiveSize(layout, i, b.groesse),
+          sizeHandy: effectiveSize(layoutHandy, i, separat ? b.groesse_handy : b.groesse),
           video: embedUrl(b.video),
         })),
     };
