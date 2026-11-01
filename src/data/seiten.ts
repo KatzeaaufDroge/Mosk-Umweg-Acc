@@ -107,16 +107,10 @@ export const kontaktNummer = kontakt.telefon.replace(/\D/g, '');
 
 export const footer = footerJson;
 
+// Bausteine (Decap-Liste mit Typen): Überschrift, Text oder Bild
 export const ueberMich = ueberMichJson as {
-  titel: string;
-  name: string;
-  rolle?: string;
-  einleitung: string;
-  portrait?: string;
-  geschichte: { titel: string; text?: string };
-  werte: { titel: string; punkte?: { titel: string; text: string }[] };
-  bilder?: { bild: string; beschreibung?: string }[];
-  abschluss: { titel: string; text: string; button: string };
+  platzhalter: string;
+  inhalt?: { type: 'ueberschrift' | 'text' | 'bild'; text?: string; bild?: string; beschreibung?: string }[];
 };
 
 export const impressum = impressumJson as { abschnitte: { titel: string; text: string }[] };
