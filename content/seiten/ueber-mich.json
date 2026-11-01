@@ -1,0 +1,47 @@
+{
+  "titel": "ÜBER MICH",
+  "name": "Dmitriy Mamon",
+  "rolle": "Fotograf, Videograf & Editor – Mosk Unlimited",
+  "einleitung": "Ich bin Dima, der Kopf hinter Mosk Unlimited aus Amel in Ostbelgien. Ich fotografiere, filme und schneide – für Privatkunden und Unternehmen in Belgien, Luxemburg und Deutschland.",
+  "portrait": "/gallery/startseite-2.webp",
+  "geschichte": {
+    "titel": "Wie alles angefangen hat",
+    "text": "[Platzhalter – Text von Dima] Wie bist du zur Fotografie und zum Film gekommen? Was war dein erstes Projekt?\n\n[Platzhalter – Text von Dima] Was treibt dich heute an, und was sollen Kunden über dich wissen, bevor sie dich anfragen?"
+  },
+  "werte": {
+    "titel": "Was mir wichtig ist",
+    "punkte": [
+      {
+        "titel": "Echte Momente",
+        "text": "Ich begleite Anlässe dezent im Hintergrund und konzentriere mich auf echte Momente, Details und Stimmung."
+      },
+      {
+        "titel": "Alles aus einer Hand",
+        "text": "Fotografie, Videografie und Editing – von der Aufnahme bis zum fertigen Ergebnis bei einer Person."
+      },
+      {
+        "titel": "Privat wie Business",
+        "text": "Ob private Feier, Konzert oder Firmenevent: Ich passe Bildsprache und Ablauf an Ihren Anlass an."
+      }
+    ]
+  },
+  "bilder": [
+    {
+      "bild": "/gallery/20251115-msk01531-verbessert-rr.jpg",
+      "beschreibung": "big G Konzert"
+    },
+    {
+      "bild": "/gallery/msk_40.jpg",
+      "beschreibung": "MASSEN Modenshow"
+    },
+    {
+      "bild": "/gallery/3hd05059.jpg",
+      "beschreibung": "Christina Feltes Moderation"
+    }
+  ],
+  "abschluss": {
+    "titel": "Lernen wir uns kennen!",
+    "text": "Erzählen Sie mir von Ihrem Projekt – ich melde mich innerhalb von 48 Stunden.",
+    "button": "Jetzt Kontakt aufnehmen"
+  }
+}

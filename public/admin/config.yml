@@ -461,6 +461,53 @@ collections:
         label: Services – Unternehmen
         file: content/seiten/services-business.json
         fields: *servicefelder
+      - name: ueber-mich
+        label: Über mich
+        file: content/seiten/ueber-mich.json
+        fields:
+          - { name: titel, label: Große Überschrift, widget: string }
+          - { name: name, label: Name, widget: string }
+          - { name: rolle, label: Zeile unter dem Namen, widget: string, required: false, hint: 'z.B. „Fotograf, Videograf & Editor“. Leer lassen = keine Zeile.' }
+          - { name: einleitung, label: Kurze Vorstellung, widget: text, hint: 'Zwei, drei Sätze neben dem Foto.' }
+          - { name: portrait, label: Foto von dir, widget: image, required: false, hint: 'Am besten Hochformat. Leer lassen = Text über die ganze Breite.' }
+          - name: geschichte
+            label: Deine Geschichte
+            widget: object
+            fields:
+              - { name: titel, label: Überschrift, widget: string }
+              - { name: text, label: Text, widget: text, hint: 'Leerzeile = neuer Absatz. Leer lassen = Abschnitt ausgeblendet.', required: false }
+          - name: werte
+            label: Was mir wichtig ist
+            widget: object
+            fields:
+              - { name: titel, label: Überschrift, widget: string }
+              - name: punkte
+                label: Punkte
+                label_singular: Punkt
+                widget: list
+                collapsed: true
+                summary: '{{fields.titel}}'
+                hint: Am schönsten mit 3 oder 6 Punkten. Keine Punkte = Abschnitt ausgeblendet.
+                fields:
+                  - { name: titel, label: Titel, widget: string }
+                  - { name: text, label: Text, widget: text }
+          - name: bilder
+            label: Bilder unten
+            label_singular: Bild
+            widget: list
+            collapsed: false
+            required: false
+            hint: Am schönsten mit 3 Bildern (Hochformat). Keine Bilder = Abschnitt ausgeblendet.
+            fields:
+              - { name: bild, label: Bild, widget: image }
+              - { name: beschreibung, label: Kurzbeschreibung, widget: string, required: false }
+          - name: abschluss
+            label: Kasten unten
+            widget: object
+            fields:
+              - { name: titel, label: Überschrift, widget: string }
+              - { name: text, label: Text, widget: text }
+              - { name: button, label: Button-Text, widget: string, hint: Gilt auch für den Button oben. Springt zum Kontaktformular. }
       - name: kontakt
         label: Kontakt
         file: content/seiten/kontakt.json

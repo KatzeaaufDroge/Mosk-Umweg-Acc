@@ -1551,6 +1551,7 @@
         ['seiten', 'services', 'Services – Auswahl'],
         ['seiten', 'services-privat', 'Services – Privatkunden'],
         ['seiten', 'services-business', 'Services – Unternehmen'],
+        ['seiten', 'ueber-mich', 'Über mich'],
         ['seiten', 'kontakt', 'Kontakt'],
         ['seiten', 'footer', 'Footer'],
         ['rechtliches', 'impressum', 'Impressum, Datenschutz & AGB'],

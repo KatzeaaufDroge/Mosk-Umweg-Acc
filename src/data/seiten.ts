@@ -13,6 +13,7 @@ import servicesPrivatJson from '../../content/seiten/services-privat.json';
 import servicesBusinessJson from '../../content/seiten/services-business.json';
 import kontaktJson from '../../content/seiten/kontakt.json';
 import footerJson from '../../content/seiten/footer.json';
+import ueberMichJson from '../../content/seiten/ueber-mich.json';
 import impressumJson from '../../content/seiten/impressum.json';
 import datenschutzJson from '../../content/seiten/datenschutz.json';
 import agbJson from '../../content/seiten/agb.json';
@@ -105,6 +106,18 @@ export const kontakt = kontaktJson;
 export const kontaktNummer = kontakt.telefon.replace(/\D/g, '');
 
 export const footer = footerJson;
+
+export const ueberMich = ueberMichJson as {
+  titel: string;
+  name: string;
+  rolle?: string;
+  einleitung: string;
+  portrait?: string;
+  geschichte: { titel: string; text?: string };
+  werte: { titel: string; punkte?: { titel: string; text: string }[] };
+  bilder?: { bild: string; beschreibung?: string }[];
+  abschluss: { titel: string; text: string; button: string };
+};
 
 export const impressum = impressumJson as { abschnitte: { titel: string; text: string }[] };
 
