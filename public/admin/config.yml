@@ -20,6 +20,9 @@ backend:
 locale: de
 site_url: https://moskunlimited.be
 display_url: https://moskunlimited.be
+# Aus: Decap 3.16 baut sonst beim Öffnen eines Eintrags einen Vorschau-Link,
+# bevor der Eintrag geladen ist -> Fehlermeldung "reading 'get'".
+show_preview_links: false
 logo_url: https://moskunlimited.be/Logo.png
 
 # Hochgeladene Originale landen hier; live werden sie automatisch über

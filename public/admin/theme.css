@@ -288,3 +288,9 @@ section[class*="AuthenticationPage"] p {
 section[class*="AuthenticationPage"] form[class*="AuthForm"] {
   margin-top: 40px !important;
 }
+
+/* Vorschau-Links sind aus (config.yml: show_preview_links). Decap zeigt in der
+   Editor-Leiste trotzdem "Überprüfen ob eine Vorschau vorhanden ist" -> weg. */
+[class*="ToolbarSectionMain"] [class*="ToolbarSubSectionFirst-ToolbarSubSectionLast"] {
+  display: none !important;
+}
