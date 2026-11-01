@@ -15,7 +15,6 @@
   var createClass = window.createClass;
   var Sortable = window.Sortable;
   var list = CMS.getWidget('list');
-  var ListControl = list.control;
   var select = CMS.getWidget('select');
 
   // Decap rendert ein Feld nicht neu, wenn sich ein Nachbarfeld ändert.
@@ -126,7 +125,22 @@
   .mg-dia i{background:#8a8f88;border-radius:2px}
   .mg-preset.on .mg-dia i{background:var(--g)}
 
-  /* Übersichtskarte im Formular */
+  /* Galerie im Formular: Kopfzeile + Kacheln */
+  [class*="-ControlContainer"]:has(> div > .mg-hidden-field),[class*="-ControlContainer"]:has(> .mg-hidden-field){display:none!important}
+  .mg-ghead{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-bottom:14px}
+  .mg-ghead .mg-meta{flex:1 1 160px}
+  .mg-ghead .mg-btn--ghost{color:var(--ink);border-color:var(--line);opacity:1}
+  .mg-ghead .mg-btn--ghost:hover{border-color:var(--g)}
+  .mg-glist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .mg-gitem{display:flex;flex-direction:column;gap:6px;cursor:grab}
+  .mg-gimg{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#262626}
+  .mg-gimg img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+  .mg-x{position:absolute;top:6px;right:6px;width:28px;height:28px;border:0;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:18px;line-height:28px;padding:0;opacity:.85}
+  .mg-x:hover{background:#c0392b;opacity:1}
+  .mg-ginput{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-size:13px;font-family:inherit;color:var(--ink);background:#fff}
+  .mg-ginput:focus{outline:none;border-color:var(--g)}
+  .mg-gempty{padding:28px 12px;text-align:center;color:var(--mut);font-size:14px;border:2px dashed var(--line);border-radius:10px}
+  @media (max-width:600px){.mg-glist{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .mg-card{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:18px}
   .mg-strip{display:flex;gap:4px;flex:0 0 auto}
   .mg-strip img,.mg-strip span{width:46px;height:46px;border-radius:6px;object-fit:cover;background:#262626;display:block}
@@ -420,22 +434,10 @@
       this.props.onChange(id);
       fire(this.handy() ? LAYOUT_HANDY_CHANGED : LAYOUT_CHANGED, id);
     },
+    // Nicht im Formular sichtbar: Vorlage wird im Fenster "Anordnen & Layout"
+    // gewählt und kommt per Event hierher (pick), damit sie gespeichert wird.
     render: function () {
-      if (this.handy() && !this.state.separat) {
-        return h('div', { className: 'mg' }, h('p', { className: 'mg-formnote' }, 'Automatisch wie am Computer.'));
-      }
-      return h(
-        'div',
-        { className: 'mg' },
-        presetCards(this.props.value || 'mosaik', this.pick),
-        h(
-          'p',
-          { className: 'mg-formnote' },
-          this.handy()
-            ? 'Bildgrößen fürs Handy unter „Layout bearbeiten“ → Ansicht „Handy“.'
-            : 'Eigene Layouts findest du unter „Layout bearbeiten“.',
-        ),
-      );
+      return h('div', { className: 'mg-hidden-field' });
     },
   });
 
@@ -462,15 +464,9 @@
       this.props.onChange(on);
       fire(HANDY_CHANGED, on);
     },
+    // wie oben: Häkchen sitzt im Fenster "Anordnen & Layout" (Ansicht Handy)
     render: function () {
-      var self = this;
-      return h(
-        'div',
-        { className: 'mg' },
-        handyToggle(this.state.on, function (on) {
-          self.set(on);
-        }),
-      );
+      return h('div', { className: 'mg-hidden-field' });
     },
   });
 
@@ -504,17 +500,20 @@
 
   var GalerieControl = createClass({
     getInitialState: function () {
-      var entry = this.props.entry;
+      return Object.assign({ open: false, selected: null, mobile: false, urls: {}, vorlagen: [] }, this.entryState(this.props.entry));
+    },
+
+    entryState: function (entry) {
       return {
-        open: false,
-        selected: null,
-        mobile: false,
-        urls: {},
-        vorlagen: [],
         layout: (entry && entry.getIn(['data', 'layout'])) || 'mosaik',
         layoutHandy: (entry && entry.getIn(['data', 'layout_handy'])) || null,
         separat: !!(entry && entry.getIn(['data', 'handy_separat'])),
       };
+    },
+
+    entryKey: function (props) {
+      var entry = props.entry;
+      return entry ? entry.get('collection') + '/' + entry.get('slug') : '';
     },
 
     componentDidMount: function () {
@@ -537,11 +536,27 @@
       window.addEventListener(HANDY_CHANGED, this.onHandy);
       window.addEventListener('keydown', this.onKey);
       this.resolveUrls();
+      this.initListSortable();
+    },
+
+    // Decap zeichnet Widgets sonst nur bei neuem Wert neu -> das gewählte Bild
+    // aus der Mediathek (mediaPaths) käme nie an.
+    shouldComponentUpdate: function (nextProps, nextState) {
+      if (nextState && nextState !== this.state) return true;
+      if (nextProps.value !== this.props.value || nextProps.getAsset !== this.props.getAsset) return true;
+      if (nextProps.field !== this.props.field || this.entryKey(nextProps) !== this.entryKey(this.props)) return true;
+      return !!(this.controlID && nextProps.mediaPaths && nextProps.mediaPaths.get(this.controlID));
     },
 
     componentDidUpdate: function (prevProps) {
+      // Decap nutzt das Feld beim Wechsel zu einer anderen Galerie weiter
+      if (this.entryKey(prevProps) !== this.entryKey(this.props)) {
+        this.setState(Object.assign({ open: false, selected: null }, this.entryState(this.props.entry)));
+      }
       if (this.gridEl !== this.sortableEl) this.initSortable();
+      if (this.listEl !== this.listSortableEl) this.initListSortable();
       if (prevProps.value !== this.props.value) this.resolveUrls();
+      this.takeMedia();
     },
 
     componentWillUnmount: function () {
@@ -550,6 +565,8 @@
       window.removeEventListener(HANDY_CHANGED, this.onHandy);
       window.removeEventListener('keydown', this.onKey);
       if (this.sortable) this.sortable.destroy();
+      if (this.listSortable) this.listSortable.destroy();
+      if (this.controlID && this.props.onRemoveMediaControl) this.props.onRemoveMediaControl(this.controlID);
       document.body.style.overflow = '';
     },
 
@@ -715,21 +732,77 @@
       fire(this.editsHandy() ? LAYOUT_HANDY_SET : LAYOUT_SET, id);
     },
 
-    renderCard: function (items) {
-      var self = this;
-      var shown = items.slice(0, 5);
-      var rest = items.length - shown.length;
+    // Eigene Spalten der Bild-Einträge (z.B. "video" bei Videografie/Editing)
+    hasSubfield: function (name) {
+      var fields = this.props.field && this.props.field.get('fields');
+      return !!(
+        fields &&
+        fields.some(function (f) {
+          return f.get('name') === name;
+        })
+      );
+    },
+
+    // Bild aus der Mediathek holen; das Ergebnis kommt über mediaPaths zurück
+    addImage: function () {
+      if (!this.controlID) this.controlID = 'mg-add-' + Math.random().toString(36).slice(2);
+      this.props.onOpenMediaLibrary({
+        controlID: this.controlID,
+        forImage: true,
+        allowMultiple: false,
+        field: this.props.field,
+      });
+    },
+
+    takeMedia: function () {
+      var paths = this.props.mediaPaths;
+      var path = this.controlID && paths && paths.get(this.controlID);
+      if (!path) return;
+      this.props.onRemoveInsertedMedia(this.controlID);
+      var list = [].concat(path.toArray ? path.toArray() : path).filter(Boolean);
+      // Immutable-Map/List ohne eigenes Immutable: leere Kopien aus dem Feld-Schema
+      var emptyMap = this.props.field.clear();
+      var value = this.props.value || this.props.field.get('fields').clear();
+      list.reverse().forEach(function (p) {
+        value = value.unshift(emptyMap.set('bild', p));
+      });
+      this.props.onChange(value);
+    },
+
+    removeImage: function (i) {
+      if (!window.confirm('Dieses Bild aus der Galerie entfernen?')) return;
+      this.props.onChange(this.props.value.delete(i));
+    },
+
+    setText: function (i, key, text) {
+      this.props.onChange(this.props.value.setIn([i, key], text));
+    },
+
+    initListSortable: function () {
+      if (this.listSortable) {
+        this.listSortable.destroy();
+        this.listSortable = null;
+      }
+      this.listSortableEl = this.listEl;
+      if (!this.listEl || !Sortable) return;
+      this.listSortable = Sortable.create(this.listEl, {
+        animation: 160,
+        ghostClass: 'mg-ghost',
+        // Maus-Ziehen statt HTML5-Drag: verträgt sich mit den Eingabefeldern
+        forceFallback: true,
+        fallbackTolerance: 4,
+        filter: 'input,button',
+        preventOnFilter: false,
+        delay: 200,
+        delayOnTouchOnly: true,
+        onEnd: this.handleSortEnd,
+      });
+    },
+
+    renderHead: function (items) {
       return h(
         'div',
-        { className: 'mg-card' },
-        h(
-          'div',
-          { className: 'mg-strip' },
-          shown.map(function (item, i) {
-            return h('img', { key: i, src: self.src(item.get('bild'), 120), alt: '' });
-          }),
-          rest > 0 ? h('span', null, '+' + rest) : null,
-        ),
+        { className: 'mg-ghead' },
         h(
           'div',
           { className: 'mg-meta' },
@@ -739,15 +812,80 @@
             null,
             'Layout: ' +
               layoutName(this.state.layout) +
-              ' · Handy: ' +
-              (this.state.separat ? layoutName(this.state.layoutHandy || this.state.layout) : 'automatisch'),
+              (this.state.separat ? ' · Handy: ' + layoutName(this.state.layoutHandy || this.state.layout) : ''),
           ),
         ),
-        h(
-          'button',
-          { type: 'button', className: 'mg-btn mg-btn--primary', onClick: this.open },
-          'Layout bearbeiten',
-        ),
+        h('button', { type: 'button', className: 'mg-btn mg-btn--ghost', onClick: this.open }, 'Anordnen & Layout'),
+        h('button', { type: 'button', className: 'mg-btn mg-btn--primary', onClick: this.addImage }, '+ Bild hinzufügen'),
+      );
+    },
+
+    renderTiles: function (items) {
+      var self = this;
+      var mitVideo = this.hasSubfield('video');
+      if (!items.length) {
+        return h('div', { className: 'mg-gempty' }, 'Noch keine Bilder. Klicke auf „+ Bild hinzufügen“.');
+      }
+      return h(
+        'div',
+        {
+          className: 'mg-glist',
+          ref: function (el) {
+            self.listEl = el;
+          },
+        },
+        items.map(function (item, i) {
+          var path = item.get('bild');
+          return h(
+            'div',
+            { key: path + '-' + i, className: 'mg-gitem' },
+            h(
+              'div',
+              { className: 'mg-gimg' },
+              h('img', {
+                src: self.src(path, 500),
+                alt: '',
+                onError: function (e) {
+                  if (e.target.src.indexOf('/gallery/_w/') !== -1) e.target.src = path;
+                },
+              }),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  className: 'mg-x',
+                  title: 'Bild entfernen',
+                  'aria-label': 'Bild entfernen',
+                  onClick: function () {
+                    self.removeImage(i);
+                  },
+                },
+                '×',
+              ),
+              item.get('video') ? h('span', { className: 'mg-badge', style: { left: 6, right: 'auto', top: 'auto', bottom: 6 } }, '▶ Video') : null,
+            ),
+            h('input', {
+              type: 'text',
+              className: 'mg-ginput',
+              placeholder: 'Beschreibung (optional)',
+              value: item.get('beschreibung') || '',
+              onChange: function (e) {
+                self.setText(i, 'beschreibung', e.target.value);
+              },
+            }),
+            mitVideo
+              ? h('input', {
+                  type: 'url',
+                  className: 'mg-ginput',
+                  placeholder: 'Video-Link (optional)',
+                  value: item.get('video') || '',
+                  onChange: function (e) {
+                    self.setText(i, 'video', e.target.value);
+                  },
+                })
+              : null,
+          );
+        }),
       );
     },
 
@@ -945,7 +1083,7 @@
               'div',
               { className: 'mg-frame' + (mobile ? ' mobile' : '') },
               items.length === 0
-                ? h('div', { className: 'mg-none' }, 'Noch keine Bilder – schließe den Editor und lade unten Bilder hoch.')
+                ? h('div', { className: 'mg-none' }, 'Noch keine Bilder – schließe das Fenster und füge Bilder hinzu.')
                 : h(
                     'div',
                     { className: 'mg-wrap' },
@@ -974,10 +1112,10 @@
       return h(
         'div',
         { className: 'mg' },
-        this.renderCard(items),
+        this.renderHead(items),
+        this.renderTiles(items),
+        items.length > 1 ? h('p', { className: 'mg-formnote' }, 'Bilder ziehen, um die Reihenfolge zu ändern.') : null,
         this.state.open ? this.renderOverlay(items) : null,
-        h('div', { className: 'mg-sub' }, 'Bilder hochladen, beschreiben, löschen'),
-        h(ListControl, this.props),
       );
     },
   });

@@ -62,7 +62,7 @@ collections:
             label: Auf der Website anzeigen
             widget: boolean
             default: true
-            hint: Leere Kategorien sind automatisch unsichtbar und erscheinen, sobald Inhalte drin sind. Aus = trotz Inhalt verstecken.
+            hint: Aus = Kategorie verstecken, auch wenn Bilder drin sind.
           - name: layout
             label: Layout
             widget: galerie-layout
@@ -108,7 +108,7 @@ collections:
             label: Auf der Website anzeigen
             widget: boolean
             default: true
-            hint: Leere Kategorien sind automatisch unsichtbar und erscheinen, sobald Inhalte drin sind. Aus = trotz Inhalt verstecken.
+            hint: Aus = Kategorie verstecken, auch wenn Bilder drin sind.
           - name: layout
             label: Layout
             widget: galerie-layout
@@ -154,7 +154,7 @@ collections:
             label: Auf der Website anzeigen
             widget: boolean
             default: true
-            hint: Leere Kategorien sind automatisch unsichtbar und erscheinen, sobald Inhalte drin sind. Aus = trotz Inhalt verstecken.
+            hint: Aus = Kategorie verstecken, auch wenn Bilder drin sind.
           - name: layout
             label: Layout
             widget: galerie-layout
@@ -200,7 +200,7 @@ collections:
             label: Auf der Website anzeigen
             widget: boolean
             default: true
-            hint: Leere Kategorien sind automatisch unsichtbar und erscheinen, sobald Inhalte drin sind. Aus = trotz Inhalt verstecken.
+            hint: Aus = Kategorie verstecken, auch wenn Bilder drin sind.
           - name: layout
             label: Layout
             widget: galerie-layout
@@ -246,7 +246,7 @@ collections:
             label: Auf der Website anzeigen
             widget: boolean
             default: true
-            hint: Leere Kategorien sind automatisch unsichtbar und erscheinen, sobald Inhalte drin sind. Aus = trotz Inhalt verstecken.
+            hint: Aus = Kategorie verstecken, auch wenn Bilder drin sind.
           - name: layout
             label: Layout
             widget: galerie-layout
@@ -297,7 +297,7 @@ collections:
             label: Auf der Website anzeigen
             widget: boolean
             default: true
-            hint: Leere Kategorien sind automatisch unsichtbar und erscheinen, sobald Inhalte drin sind. Aus = trotz Inhalt verstecken.
+            hint: Aus = Kategorie verstecken, auch wenn Bilder drin sind.
           - name: layout
             label: Layout
             widget: galerie-layout
