@@ -381,12 +381,12 @@ collections:
           - name: bilder
             label: Hintergrundbilder
             label_singular: Bild
-            widget: list
+            widget: galerie
+            einfach: true
             min: 1
-            collapsed: false
             hint: Wechseln alle 5 Sekunden, in dieser Reihenfolge. Am besten Querformat.
             fields:
-              - { name: bild, label: Bild, widget: image }
+              - { name: bild, label: Bild, widget: image, choose_url: false }
       - name: services
         label: Services – Auswahl
         file: content/seiten/services.json
@@ -438,7 +438,7 @@ collections:
                   - { label: Videokamera (Videografie), value: videografie }
                   - { label: Schnitt (Editing), value: editing }
                 hint: Leer lassen = kein Symbol.
-              - { name: bild, label: Bild, widget: image }
+              - { name: bild, label: Bild, widget: image, choose_url: false }
               - { name: beschreibung, label: Beschreibung, widget: text }
               - name: anlaesse
                 label: Ideal für
@@ -493,15 +493,15 @@ collections:
                 widget: object
                 summary: '{{fields.beschreibung}}'
                 fields:
-                  - { name: bild, label: Bild, widget: image }
+                  - { name: bild, label: Bild, widget: image, choose_url: false }
                   - { name: beschreibung, label: Bildunterschrift, widget: string, required: false, hint: Leer lassen = keine Unterschrift. }
-          - { name: platzhalter, label: Bild solange die Seite leer ist, widget: image, hint: 'Aktuell das „Unter Konstruktion“-Bild.' }
+          - { name: platzhalter, label: Bild solange die Seite leer ist, widget: image, choose_url: false, hint: 'Aktuell das „Unter Konstruktion“-Bild.' }
       - name: kontakt
         label: Kontakt
         file: content/seiten/kontakt.json
         fields:
           - { name: ueberschrift, label: Überschrift, widget: string }
-          - { name: hintergrund, label: Hintergrundbild, widget: image, hint: Wird stark abgedunkelt. }
+          - { name: hintergrund, label: Hintergrundbild, widget: image, choose_url: false, hint: Wird stark abgedunkelt. }
           - { name: direkt_titel, label: Überschrift rechts, widget: string }
           - { name: direkt_text, label: Text rechts, widget: text }
           - { name: telefon, label: Telefon / WhatsApp, widget: string, hint: 'Mit Landesvorwahl, z.B. „+32 472 80 44 61“. Gilt auch für den WhatsApp- und Anrufen-Button.' }

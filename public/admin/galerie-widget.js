@@ -763,14 +763,20 @@
       // Immutable-Map/List ohne eigenes Immutable: leere Kopien aus dem Feld-Schema
       var emptyMap = this.props.field.clear();
       var value = this.props.value || this.props.field.get('fields').clear();
-      list.reverse().forEach(function (p) {
-        value = value.unshift(emptyMap.set('bild', p));
+      var oben = this.props.field.get('add_to_top');
+      (oben ? list.reverse() : list).forEach(function (p) {
+        value = oben ? value.unshift(emptyMap.set('bild', p)) : value.push(emptyMap.set('bild', p));
       });
       this.props.onChange(value);
     },
 
     removeImage: function (i) {
-      if (!window.confirm('Dieses Bild aus der Galerie entfernen?')) return;
+      var min = this.props.field.get('min') || 0;
+      if (this.props.value.size <= min) {
+        window.alert(min === 1 ? 'Mindestens ein Bild muss bleiben.' : 'Mindestens ' + min + ' Bilder müssen bleiben.');
+        return;
+      }
+      if (!window.confirm('Dieses Bild entfernen?')) return;
       this.props.onChange(this.props.value.delete(i));
     },
 
@@ -799,7 +805,13 @@
       });
     },
 
+    // "einfach: true" in der config: nur Bilder (z.B. Startseite), ohne Layout
+    einfach: function () {
+      return !!this.props.field.get('einfach');
+    },
+
     renderHead: function (items) {
+      var einfach = this.einfach();
       return h(
         'div',
         { className: 'mg-ghead' },
@@ -807,15 +819,17 @@
           'div',
           { className: 'mg-meta' },
           h('b', null, items.length + (items.length === 1 ? ' Bild' : ' Bilder')),
-          h(
-            'small',
-            null,
-            'Layout: ' +
-              layoutName(this.state.layout) +
-              (this.state.separat ? ' · Handy: ' + layoutName(this.state.layoutHandy || this.state.layout) : ''),
-          ),
+          einfach
+            ? null
+            : h(
+                'small',
+                null,
+                'Layout: ' +
+                  layoutName(this.state.layout) +
+                  (this.state.separat ? ' · Handy: ' + layoutName(this.state.layoutHandy || this.state.layout) : ''),
+              ),
         ),
-        h('button', { type: 'button', className: 'mg-btn mg-btn--ghost', onClick: this.open }, 'Anordnen & Layout'),
+        einfach ? null : h('button', { type: 'button', className: 'mg-btn mg-btn--ghost', onClick: this.open }, 'Anordnen & Layout'),
         h('button', { type: 'button', className: 'mg-btn mg-btn--primary', onClick: this.addImage }, '+ Bild hinzufügen'),
       );
     },
@@ -823,6 +837,7 @@
     renderTiles: function (items) {
       var self = this;
       var mitVideo = this.hasSubfield('video');
+      var mitText = this.hasSubfield('beschreibung');
       if (!items.length) {
         return h('div', { className: 'mg-gempty' }, 'Noch keine Bilder. Klicke auf „+ Bild hinzufügen“.');
       }
@@ -864,15 +879,17 @@
               ),
               item.get('video') ? h('span', { className: 'mg-badge', style: { left: 6, right: 'auto', top: 'auto', bottom: 6 } }, '▶ Video') : null,
             ),
-            h('input', {
-              type: 'text',
-              className: 'mg-ginput',
-              placeholder: 'Beschreibung (optional)',
-              value: item.get('beschreibung') || '',
-              onChange: function (e) {
-                self.setText(i, 'beschreibung', e.target.value);
-              },
-            }),
+            mitText
+              ? h('input', {
+                  type: 'text',
+                  className: 'mg-ginput',
+                  placeholder: 'Beschreibung (optional)',
+                  value: item.get('beschreibung') || '',
+                  onChange: function (e) {
+                    self.setText(i, 'beschreibung', e.target.value);
+                  },
+                })
+              : null,
             mitVideo
               ? h('input', {
                   type: 'url',

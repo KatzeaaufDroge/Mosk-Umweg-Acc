@@ -277,3 +277,204 @@ section[class*="AuthenticationPage"] form[class*="AuthForm"] {
 [class*="ToolbarSectionMain"] [class*="ToolbarSubSectionFirst-ToolbarSubSectionLast"] {
   display: none !important;
 }
+
+/* ---------- Editor-Formulare: ruhig und aufgeräumt ----------
+   Gilt für alle Bearbeitungsseiten (nicht die Übersicht, body.mg-dash).
+   Decap-Standard: graue Etiketten in Großbuchstaben, graue Balken -> hier
+   normale Beschriftungen, weiße Felder, Listen als Karten. */
+body:not(.mg-dash) [class*="EditorContainer"],
+body:not(.mg-dash) [class*="NoPreviewContainer"] {
+  background: #f4f5f2 !important;
+  box-shadow: none !important;
+}
+
+body:not(.mg-dash) [class*="ControlPaneContainer"] {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 20px 60px !important;
+  color: #1d2a1f;
+}
+
+/* Beschriftung über dem Feld */
+body:not(.mg-dash) [class*="-ControlContainer"] {
+  margin-top: 26px !important;
+}
+
+body:not(.mg-dash) [class*="FieldLabel"] {
+  background: none !important;
+  color: #1d2a1f !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  padding: 0 0 8px !important;
+  border: 0 !important;
+}
+
+/* Decaps Reiter-Ecke neben der Beschriftung */
+body:not(.mg-dash) [class*="FieldLabel"]::before,
+body:not(.mg-dash) [class*="FieldLabel"]::after {
+  display: none !important;
+}
+
+body:not(.mg-dash) [class*="ControlHint"] {
+  color: #7a8379 !important;
+  font-size: 13px !important;
+  margin-top: 6px !important;
+  line-height: 1.45;
+}
+
+/* Feld selbst (Text, Textbereich, Box um Schalter/Bild/Liste) */
+body:not(.mg-dash) [class*="-ControlContainer"] > :not([class*="ControlTopbar"]):not([class*="ControlHint"]):not(.mg-hidden-field) {
+  border: 1px solid #dfe3dc !important;
+  border-radius: 10px !important;
+  background: #fff;
+  box-shadow: none !important;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+body:not(.mg-dash) [class*="-ControlContainer"] > input,
+body:not(.mg-dash) [class*="-ControlContainer"] > textarea {
+  padding: 12px 14px !important;
+  font-size: 15px !important;
+  color: #1d2a1f !important;
+}
+
+body:not(.mg-dash) [class*="-ControlContainer"] > input:focus,
+body:not(.mg-dash) [class*="-ControlContainer"] > textarea:focus,
+body:not(.mg-dash) [class*="-ControlContainer"]:focus-within > :not([class*="ControlTopbar"]):not([class*="ControlHint"]) {
+  border-color: var(--mk-g) !important;
+  box-shadow: 0 0 0 3px rgba(85, 160, 65, 0.15) !important;
+  outline: none;
+}
+
+/* ---------- Listen (Service-Karten, Bausteine, Absätze …) ---------- */
+body:not(.mg-dash) [class*="TopBarContainer"] {
+  background: transparent !important;
+  padding: 12px 4px 4px !important;
+  border-radius: 0 !important;
+}
+
+body:not(.mg-dash) [class*="ExpandButtonContainer"] {
+  color: #7a8379;
+  font-size: 13px;
+  text-transform: none;
+}
+
+body:not(.mg-dash) [class*="AddButton"],
+body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"] {
+  background: transparent !important;
+  color: var(--mk-g2) !important;
+  border: 1px solid rgba(85, 160, 65, 0.45) !important;
+  border-radius: 999px !important;
+  padding: 6px 14px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+
+body:not(.mg-dash) [class*="AddButton"]:hover,
+body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"]:hover {
+  background: rgba(85, 160, 65, 0.1) !important;
+}
+
+/* Ein Eintrag = eine Karte; Kopfzeile und Titel teilen sich eine Zeile */
+body:not(.mg-dash) [class*="SortableListItem"] {
+  margin-top: 10px !important;
+  background: #f8f9f7 !important;
+  border: 1px solid #e3e7e0 !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+body:not(.mg-dash) [class*="SortableListItem"]:hover {
+  border-color: #c9d6c2 !important;
+}
+
+body:not(.mg-dash) [class*="StyledListItemTopBar"] {
+  background: transparent !important;
+  height: 46px !important;
+  padding: 0 6px !important;
+  align-items: center;
+}
+
+body:not(.mg-dash) [class*="NestedObjectLabel"] {
+  background: transparent !important;
+  margin-top: -46px;
+  min-height: 46px;
+  padding: 13px 90px 13px 44px !important;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d2a1f !important;
+  pointer-events: none;
+  border: 0 !important;
+}
+
+body:not(.mg-dash) [class*="TopBarButton"],
+body:not(.mg-dash) [class*="ExpandButton"] {
+  color: #8a9388 !important;
+}
+
+body:not(.mg-dash) [class*="TopBarButton"]:hover,
+body:not(.mg-dash) [class*="ExpandButton"]:hover {
+  color: var(--mk-g2) !important;
+}
+
+/* Aufgeklappter Eintrag: Felder auf Weiß */
+body:not(.mg-dash) [class*="SortableListItem"] > div:last-child {
+  background: #fff;
+}
+
+/* ---------- Bild-Felder ---------- */
+body:not(.mg-dash) [class*="FileWidgetButton"] {
+  display: inline-flex !important;
+  margin: 10px 8px 0 0 !important;
+  background: #fff !important;
+  color: #1d2a1f !important;
+  border: 1px solid #dfe3dc !important;
+  border-radius: 999px !important;
+  padding: 6px 14px !important;
+  font-weight: 600 !important;
+}
+
+body:not(.mg-dash) [class*="FileWidgetButton"]:hover {
+  border-color: var(--mk-g) !important;
+}
+
+body:not(.mg-dash) [class*="FileWidgetButtonRemove"] {
+  color: #b23b2e !important;
+}
+
+body:not(.mg-dash) [class*="ImageWrapper"] {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Eigene Bild-Felder (galerie-widget.js) innerhalb der Feld-Box */
+body:not(.mg-dash) [class*="-ControlContainer"] > .mg {
+  padding: 16px;
+}
+
+body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"]::after {
+  border-top-color: currentColor !important;
+}
+
+body:not(.mg-dash) [class*="TopBarContainer"] [class*="StyledDropdownButton"] {
+  padding-right: 32px !important;
+}
+
+/* Zieh-Griff neben das ×, statt mitten über dem Titel */
+body:not(.mg-dash) [class*="StyledListItemTopBar"] > div:has([class*="DragIconContainer"]) {
+  margin-left: auto;
+  margin-right: 2px;
+}
+
+@media (max-width: 600px) {
+  /* "3 service-karten" neben dem Knopf ist am Handy zu eng */
+  body:not(.mg-dash) [class*="ExpandButtonContainer"] {
+    font-size: 0 !important;
+  }
+
+  body:not(.mg-dash) [class*="ControlPaneContainer"] {
+    padding: 20px 14px 48px !important;
+  }
+}
