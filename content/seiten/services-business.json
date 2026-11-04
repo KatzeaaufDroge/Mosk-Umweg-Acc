@@ -4,8 +4,8 @@
   "karten": [
     {
       "titel": "Fotografie",
-      "beschreibung": "Professionelle Fotografie für Unternehmen, Marken und Veranstaltungen. Ich liefere klare, konsistente Bilder, die dein Business authentisch repräsentieren und vielseitig einsetzbar sind – online wie offline.",
-      "bild": "/gallery/service-business-fotografie.jpg",
+      "beschreibung": "Professionelle Fotografie für Unternehmen, Marken und Veranstaltungen. Ich liefere klare, konsistente Bilder, die dein Business oder deine Band authentisch repräsentieren und vielseitig einsetzbar sind – online wie offline.",
+      "bild": "/gallery/msk_40.jpg",
       "symbol": "fotografie",
       "anlaesse": [
         {
@@ -29,7 +29,7 @@
     {
       "titel": "Videografie",
       "beschreibung": "Sachliche, wirkungsvolle Videos für Unternehmen und professionelle Auftritte. Ich setze Inhalte strukturiert um und lege Wert auf eine klare Bildsprache sowie einen professionellen Produktionsablauf.",
-      "bild": "https://images.pexels.com/photos/4970330/pexels-photo-4970330.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "bild": "/gallery/startseite-2.webp",
       "symbol": "videografie",
       "anlaesse": [
         {
@@ -53,7 +53,7 @@
     {
       "titel": "Editing",
       "beschreibung": "Professionelle Postproduktion für bestehendes Videomaterial. Ich übernehme Schnitt, Farbkorrektur und Feinschliff – abgestimmt auf Zielgruppe, Plattform und Einsatzzweck.",
-      "bild": "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "bild": "/gallery/startseite-3.webp",
       "symbol": "editing",
       "anlaesse": [
         {
