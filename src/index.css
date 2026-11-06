@@ -1,6 +1,5 @@
 /* Schriftsystem: Bebas Neue = Seitentitel (font-display), Archivo = alles andere (font-sans).
    Definiert in tailwind.config.js -> fontFamily. */
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Bebas+Neue&display=swap');
 
 @tailwind base;
 @tailwind components;

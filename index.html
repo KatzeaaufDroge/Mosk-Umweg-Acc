@@ -40,7 +40,15 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Ersetzt React beim Start. Für Besucher ohne JavaScript und für Prüf-Tools,
+           die nur das rohe HTML lesen (Pflichtlinks müssen dort auffindbar sein). -->
+      <nav aria-label="Rechtliches" style="padding: 16px; font-family: system-ui, sans-serif; font-size: 13px">
+        <a href="/impressum" style="color: #9aa39a">Impressum</a> ·
+        <a href="/datenschutz" style="color: #9aa39a">Datenschutzerklärung</a> ·
+        <a href="/agb" style="color: #9aa39a">AGB</a>
+      </nav>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
