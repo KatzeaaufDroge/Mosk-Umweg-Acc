@@ -30,7 +30,7 @@ interface GalleryFile {
   layout?: string;
   handy_separat?: boolean;
   layout_handy?: string;
-  bilder?: { bild: string; beschreibung?: string; groesse?: string; groesse_handy?: string; video?: string }[];
+  bilder?: { bild: string; beschreibung?: string; groesse?: string; groesse_handy?: string; fokus?: string; video?: string }[];
 }
 
 export interface GalleryItem {
@@ -39,6 +39,8 @@ export interface GalleryItem {
   category: string;
   size: GallerySize;
   sizeHandy: GallerySize;
+  // Bildausschnitt aus dem Admin ("50% 12%"), siehe fokusStyle
+  fokus?: string;
   // Einbettbare Video-URL (YouTube-nocookie / Vimeo), lädt erst nach Klick
   video?: string;
 }
@@ -106,6 +108,7 @@ const allCategories: (GalleryCategory & { order: number; hidden: boolean })[] = 
           category: file.title,
           size: effectiveSize(layout, i, b.groesse),
           sizeHandy: effectiveSize(layoutHandy, i, separat ? b.groesse_handy : b.groesse),
+          fokus: b.fokus,
           video: embedUrl(b.video),
         })),
     };
@@ -133,7 +136,7 @@ const FIXED_AREAS = ['Fotografie', 'Videografie', 'Editing'];
 export interface GalleryAreaCard extends GalleryArea {
   slug: string;
   // Bilder, die auf der Karte langsam durchwechseln (bei Videos das Vorschaubild)
-  previews: string[];
+  previews: { src: string; fokus?: string }[];
 }
 
 export function areaSlug(name: string): string {
@@ -154,9 +157,9 @@ export const galleryAreaCards: GalleryAreaCard[] = [
     name,
     slug: areaSlug(name),
     categories,
-    previews: [...new Set(categories.flatMap((c) => c.items.map((i) => i.src)))],
+    previews: [...new Map(categories.flatMap((c) => c.items).map((i) => [i.src, { src: i.src, fokus: i.fokus }])).values()],
   };
 });
 
 // Verkleinerte Bildversionen: siehe src/lib/images.ts (auch für Seitenbilder)
-export { optimizedSrc, optimizedSrcSet } from '../lib/images';
+export { fokusStyle, optimizedSrc, optimizedSrcSet } from '../lib/images';

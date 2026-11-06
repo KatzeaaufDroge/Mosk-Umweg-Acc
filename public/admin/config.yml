@@ -97,6 +97,7 @@ collections:
                 hint: 'Was ist zu sehen? z.B. „DJ auf der Hauptbühne" – hilft bei Google.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
               - { name: groesse_handy, label: Größe am Handy, widget: hidden, required: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
       - name: foto-moderation
         label: 'Fotografie – Moderation'
         file: content/galerie/foto-moderation.json
@@ -143,6 +144,7 @@ collections:
                 hint: 'Was ist zu sehen? z.B. „DJ auf der Hauptbühne" – hilft bei Google.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
               - { name: groesse_handy, label: Größe am Handy, widget: hidden, required: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
       - name: foto-unternehmen
         label: 'Fotografie – Unternehmen'
         file: content/galerie/foto-unternehmen.json
@@ -189,6 +191,7 @@ collections:
                 hint: 'Was ist zu sehen? z.B. „DJ auf der Hauptbühne" – hilft bei Google.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
               - { name: groesse_handy, label: Größe am Handy, widget: hidden, required: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
       - name: foto-werbung
         label: 'Fotografie – Werbung / Marketing'
         file: content/galerie/foto-werbung.json
@@ -235,6 +238,7 @@ collections:
                 hint: 'Was ist zu sehen? z.B. „DJ auf der Hauptbühne" – hilft bei Google.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
               - { name: groesse_handy, label: Größe am Handy, widget: hidden, required: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
       - name: videografie
         label: 'Videografie'
         file: content/galerie/videografie.json
@@ -286,6 +290,7 @@ collections:
                 hint: 'YouTube- oder Vimeo-Link. Das Bild oben ist dann das Vorschaubild; das Video lädt erst, wenn jemand auf Play klickt.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
               - { name: groesse_handy, label: Größe am Handy, widget: hidden, required: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
       - name: editing
         label: 'Editing'
         file: content/galerie/editing.json
@@ -337,6 +342,7 @@ collections:
                 hint: 'YouTube- oder Vimeo-Link. Das Bild oben ist dann das Vorschaubild; das Video lädt erst, wenn jemand auf Play klickt.'
               - { name: groesse, label: Größe, widget: hidden, required: false }
               - { name: groesse_handy, label: Größe am Handy, widget: hidden, required: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
   - name: layouts
     label: Eigene Layouts
     description: >
@@ -387,6 +393,7 @@ collections:
             hint: Wechseln alle 5 Sekunden, in dieser Reihenfolge. Am besten Querformat.
             fields:
               - { name: bild, label: Bild, widget: image, choose_url: false }
+              - { name: fokus, label: Ausschnitt, widget: hidden, required: false }
       - name: services
         label: Services – Auswahl
         file: content/seiten/services.json

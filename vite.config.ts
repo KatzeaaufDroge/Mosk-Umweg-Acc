@@ -72,11 +72,18 @@ function galleryImages(): Plugin {
       for (const file of files) {
         for (const width of GALLERY_WIDTHS) {
           const target = path.join(dest, `${file}-${width}.webp`);
-          await sharp(path.join(src, file))
+          const image = sharp(path.join(src, file))
             .rotate() // Handy-Fotos: Ausrichtung aus EXIF übernehmen
-            .resize({ width, withoutEnlargement: true })
-            .webp({ quality: 78 })
-            .toFile(target);
+            .resize({ width, withoutEnlargement: true });
+          const { data, info } = await image
+            .clone()
+            .webp({ quality: 78, smartSubsample: true })
+            .toBuffer({ resolveWithObject: true });
+          // Dunkle, ruhige Bilder (Nachthimmel) werden sehr klein und zeigen
+          // dann Blöcke im Verlauf -> die bekommen höhere Qualität.
+          const ruhig = info.size / (info.width * info.height) < 0.03;
+          if (ruhig) await image.webp({ quality: 92, smartSubsample: true }).toFile(target);
+          else fs.writeFileSync(target, data);
           count++;
         }
       }

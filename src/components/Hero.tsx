@@ -4,10 +4,10 @@ import { InteractiveHoverButton } from './ui/interactive-hover-button';
 import { BlurFade } from './ui/blur-fade';
 import { useAnimation } from '../context/AnimationContext';
 import { startseite } from '../data/seiten';
-import { optimizedSrc, optimizedSrcSet } from '../lib/images';
+import { fokusStyle, optimizedSrc, optimizedSrcSet } from '../lib/images';
 
 // Hintergrundbilder kommen aus dem Admin (Seiten -> Startseite)
-const images = startseite.bilder.map((b) => b.bild).filter(Boolean);
+const images = startseite.bilder.filter((b) => b.bild);
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -30,13 +30,14 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-black pt-16 sm:pt-20 md:pt-0">
       {images.map((image, index) => (
-        <div key={`${index}-${image}`} className={`absolute inset-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-80' : 'opacity-0'}`}>
+        <div key={`${index}-${image.bild}`} className={`absolute inset-0 transition-opacity duration-1000 ${currentImageIndex === index ? 'opacity-80' : 'opacity-0'}`}>
           <img
-            src={optimizedSrc(image, 2000)}
-            srcSet={optimizedSrcSet(image, [900, 1400, 2000])}
+            src={optimizedSrc(image.bild, 2000)}
+            srcSet={optimizedSrcSet(image.bild, [900, 1400, 2000])}
             sizes="100vw"
             alt="Hero"
             className="w-full h-full object-cover"
+            style={fokusStyle(image.fokus)}
             loading={index === 0 ? "eager" : "lazy"}
             decoding="async"
           />

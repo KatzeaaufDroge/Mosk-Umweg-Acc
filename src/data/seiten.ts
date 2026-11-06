@@ -94,7 +94,7 @@ export const startseite = startseiteJson as {
   titel: string;
   untertitel: string;
   button: string;
-  bilder: { bild: string }[];
+  bilder: { bild: string; fokus?: string }[];
 };
 
 export const servicesUebersicht = servicesJson;

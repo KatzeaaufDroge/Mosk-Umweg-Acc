@@ -5,6 +5,7 @@ import Masonry from 'react-masonry-css';
 import { BlurFade } from './ui/blur-fade';
 import { getNavHeight } from '../lib/utils';
 import {
+  fokusStyle,
   galleryAreaCards,
   type GallerySize,
   optimizedSrc,
@@ -177,6 +178,7 @@ function Tile({ item, size, onOpen, fill }: TileProps) {
         className={`w-full transition-transform duration-300 group-hover:scale-105 ${
           fill ? 'h-full object-cover' : 'h-auto object-contain'
         }`}
+        style={fill ? fokusStyle(item.fokus) : undefined}
         loading="lazy"
         decoding="async"
       />
@@ -350,7 +352,7 @@ function AreaCard({ area, index, onOpen }: { area: GalleryAreaCard; index: numbe
   return (
     <button type="button" onClick={onOpen} className={`group ${shell} glass-card glass-card-interactive`}>
       <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.03]">
-        {area.previews.map((src, i) =>
+        {area.previews.map(({ src, fokus }, i) =>
           i <= reached.current + 1 ? (
             <img
               key={src}
@@ -363,6 +365,7 @@ function AreaCard({ area, index, onOpen }: { area: GalleryAreaCard; index: numbe
               className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1600ms] ease-in-out ${
                 i === active ? 'opacity-100' : 'opacity-0'
               }`}
+              style={fokusStyle(fokus)}
             />
           ) : null,
         )}

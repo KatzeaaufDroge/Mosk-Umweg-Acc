@@ -10,7 +10,8 @@
       "bild": "/gallery/1000054204.jpg"
     },
     {
-      "bild": "/gallery/msk_40.jpg"
+      "bild": "/gallery/msk_40.jpg",
+      "fokus": "50% 3%"
     },
     {
       "bild": "/gallery/startseite-2.webp"

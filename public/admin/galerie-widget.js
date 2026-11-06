@@ -4,7 +4,8 @@
   - "galerie-layout": Layout-Vorlage als anklickbare Karten statt Dropdown
   - "galerie": kompakte Übersicht + Vollbild-Editor (Overlay) zum Sortieren
     per Drag & Drop (Maus + Touch, SortableJS) und Größe pro Bild;
-    darunter die normale Decap-Liste zum Hochladen/Beschreiben/Löschen.
+    darunter Bild-Kacheln zum Hinzufügen/Beschreiben/Löschen und je Bild
+    "Ausschnitt" (Bild im Rahmen schieben, Feld "fokus" -> object-position).
 
   Die Layout-Regeln (Vorlagen, Größen, Raster) müssen zu src/data/gallery.ts
   und den .gallery-grid-Styles in src/index.css passen.
@@ -133,6 +134,28 @@
   .mg-ghead .mg-meta small{color:#8d968c}
   .mg-ghead .mg-btn--ghost{color:#e9ece8;border-color:rgba(255,255,255,.16);opacity:1}
   .mg-ghead .mg-btn--ghost:hover{border-color:var(--g)}
+  .mg-cropbtn{position:absolute;left:6px;bottom:6px;border:0;border-radius:999px;background:rgba(0,0,0,.68);color:#fff;font-size:12px;font-weight:600;padding:5px 10px;opacity:.9}
+  .mg-cropbtn:hover{background:var(--g2);opacity:1}
+  .mg-cropov{position:fixed;inset:0;z-index:100000;display:flex;flex-direction:column;gap:18px;padding:20px;background:#0c0f0c;color:#e9ece8;overflow:auto}
+  .mg-crophead h2{margin:0;font-size:20px;font-weight:700;color:#fff}
+  .mg-crophead p{margin:4px 0 0;font-size:14px;color:#9aa39a}
+  .mg-cropstage{flex:1;display:flex;align-items:center;justify-content:center;gap:20px;min-height:0}
+  .mg-cropstage.narrow{flex-direction:column;justify-content:flex-start;flex:none}
+  .mg-cropfig{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .mg-cropfig figcaption{font-size:13px;font-weight:600;color:#cfd5ce;text-align:center}
+  .mg-cropfig small{display:block;font-weight:400;font-size:12px;color:#8d968c}
+  .mg-cropframe{position:relative;overflow:hidden;border-radius:8px;background:#000;outline:2px solid var(--g);outline-offset:2px;cursor:grab;touch-action:none;user-select:none}
+  .mg-cropframe:active{cursor:grabbing}
+  .mg-cropframe:focus-visible{outline-color:#8fd17a;outline-width:3px}
+  .mg-cropframe img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+  .mg-cropframe.hero img{opacity:.8}
+  .mg-cropframe.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.8),rgba(0,0,0,.45),rgba(0,0,0,.8));pointer-events:none}
+  .mg-croptitle{position:absolute;z-index:1;left:0;right:0;top:50%;transform:translateY(-50%);padding:0 6%;text-align:center;line-height:1.1;font-weight:700;color:#55a041;pointer-events:none}
+  .mg-cropframe.whole{outline-color:rgba(255,255,255,.2);cursor:default}
+  .mg-cropfoot{display:flex;align-items:center;gap:10px}
+  .mg-cropfoot .mg-spacer{flex:1}
+  .mg-cropfoot .mg-link{margin:0;cursor:pointer}
+  .mg-cropfoot .mg-btn--ghost{color:#e9ece8}
   .mg-glist{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
   .mg-gitem{display:flex;flex-direction:column;gap:6px;cursor:grab}
   .mg-gimg{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#262626}
@@ -504,9 +527,21 @@
 
   /* ---------- Galerie-Feld ---------- */
 
+  // Seitenverhältnis der Kacheln im Raster (src/index.css, .gallery-tile--*)
+  var TILE_RATIO = { normal: 1, breit: 2, hoch: 0.5, gross: 1 };
+
+  function clampFokus(n) {
+    return Math.round(Math.min(100, Math.max(0, n)));
+  }
+
+  function parseFokus(value) {
+    var m = String(value || '').match(/^(\d+(?:\.\d+)?)% (\d+(?:\.\d+)?)%$/);
+    return m ? [clampFokus(+m[1]), clampFokus(+m[2])] : [50, 50];
+  }
+
   var GalerieControl = createClass({
     getInitialState: function () {
-      return Object.assign({ open: false, selected: null, mobile: false, urls: {}, vorlagen: [] }, this.entryState(this.props.entry));
+      return Object.assign({ open: false, selected: null, mobile: false, urls: {}, vorlagen: [], crop: null, cropFokus: [50, 50], cropNatural: null }, this.entryState(this.props.entry));
     },
 
     entryState: function (entry) {
@@ -535,7 +570,9 @@
         if (e.detail) self.initHandy();
       };
       this.onKey = function (e) {
-        if (e.key === 'Escape' && self.state.open) self.close();
+        if (e.key !== 'Escape') return;
+        if (self.state.crop !== null) self.closeCrop(false);
+        else if (self.state.open) self.close();
       };
       window.addEventListener(LAYOUT_CHANGED, this.onLayout);
       window.addEventListener(LAYOUT_HANDY_CHANGED, this.onLayoutHandy);
@@ -557,7 +594,7 @@
     componentDidUpdate: function (prevProps) {
       // Decap nutzt das Feld beim Wechsel zu einer anderen Galerie weiter
       if (this.entryKey(prevProps) !== this.entryKey(this.props)) {
-        this.setState(Object.assign({ open: false, selected: null }, this.entryState(this.props.entry)));
+        this.setState(Object.assign({ open: false, selected: null, crop: null }, this.entryState(this.props.entry)));
       }
       if (this.gridEl !== this.sortableEl) this.initSortable();
       if (this.listEl !== this.listSortableEl) this.initListSortable();
@@ -840,6 +877,199 @@
       );
     },
 
+    /* ----- Bildausschnitt: Rahmen wie auf der Website, Bild darin schieben ----- */
+
+    openCrop: function (i) {
+      document.body.style.overflow = 'hidden';
+      this.setState({ crop: i, cropFokus: parseFokus(this.props.value.getIn([i, 'fokus'])), cropNatural: null });
+    },
+
+    closeCrop: function (save) {
+      var i = this.state.crop;
+      document.body.style.overflow = '';
+      this.setState({ crop: null });
+      if (!save) return;
+      var f = this.state.cropFokus;
+      // Mitte = Standard, dann bleibt die Datei ohne Zusatzfeld
+      this.props.onChange(
+        f[0] === 50 && f[1] === 50 ? this.props.value.deleteIn([i, 'fokus']) : this.props.value.setIn([i, 'fokus'], f[0] + '% ' + f[1] + '%'),
+      );
+    },
+
+    // Rahmen wie auf der Website; ratio null = Mosaik, ganzes Bild ohne Zuschnitt
+    cropFrames: function (i, item) {
+      if (this.einfach()) {
+        return [
+          { label: 'Computer', ratio: 16 / 9 },
+          { label: 'Handy', ratio: 9 / 19.5 },
+        ];
+      }
+      var layout = this.state.layout;
+      var separat = this.state.separat;
+      var layoutHandy = separat ? this.state.layoutHandy || layout : layout;
+      var ratio = function (l, size) {
+        return l === 'mosaik' ? null : TILE_RATIO[effectiveSize(l, i, size)];
+      };
+      return [
+        { label: 'Galerie am Computer', ratio: ratio(layout, item.get('groesse')) },
+        { label: 'Galerie am Handy', ratio: ratio(layoutHandy, separat ? item.get('groesse_handy') : item.get('groesse')) },
+        // Karte Fotografie/Videografie/Editing (Gallery.tsx: aspect-[3/4])
+        { label: 'Bereichs-Karte', ratio: 3 / 4 },
+      ];
+    },
+
+    cropDrag: function (e) {
+      var nat = this.state.cropNatural;
+      if (!nat) return;
+      e.preventDefault();
+      var self = this;
+      var el = e.currentTarget;
+      var rect = el.getBoundingClientRect();
+      var scale = Math.max(rect.width / nat.w, rect.height / nat.h);
+      var overX = nat.w * scale - rect.width;
+      var overY = nat.h * scale - rect.height;
+      var startX = e.clientX;
+      var startY = e.clientY;
+      var start = this.state.cropFokus;
+      var move = function (ev) {
+        self.setState({
+          cropFokus: [
+            overX > 1 ? clampFokus(start[0] - ((ev.clientX - startX) / overX) * 100) : start[0],
+            overY > 1 ? clampFokus(start[1] - ((ev.clientY - startY) / overY) * 100) : start[1],
+          ],
+        });
+      };
+      var end = function () {
+        el.removeEventListener('pointermove', move);
+        el.removeEventListener('pointerup', end);
+        el.removeEventListener('pointercancel', end);
+      };
+      el.setPointerCapture(e.pointerId);
+      el.addEventListener('pointermove', move);
+      el.addEventListener('pointerup', end);
+      el.addEventListener('pointercancel', end);
+    },
+
+    cropKey: function (e) {
+      var d = { ArrowLeft: [-2, 0], ArrowRight: [2, 0], ArrowUp: [0, -2], ArrowDown: [0, 2] }[e.key];
+      if (!d) return;
+      e.preventDefault();
+      var f = this.state.cropFokus;
+      this.setState({ cropFokus: [clampFokus(f[0] + d[0]), clampFokus(f[1] + d[1])] });
+    },
+
+    renderCrop: function (items) {
+      var self = this;
+      var i = this.state.crop;
+      var item = items[i];
+      if (!item) return null;
+      var path = item.get('bild');
+      var nat = this.state.cropNatural;
+      var natRatio = nat ? nat.w / nat.h : 1;
+      var frames = this.cropFrames(i, item).map(function (f) {
+        return { label: f.label, ratio: f.ratio, whole: f.ratio === null, r: f.ratio === null ? natRatio : f.ratio };
+      });
+      var f = this.state.cropFokus;
+      var pos = f[0] + '% ' + f[1] + '%';
+      var hero = this.einfach() && this.props.entry ? this.props.entry.getIn(['data', 'titel']) || ' ' : null;
+
+      // Alle Rahmen gleich hoch nebeneinander, am Handy untereinander
+      var avail = Math.min(window.innerWidth - 40, 1100);
+      var narrow = window.innerWidth < 760;
+      var sum = frames.reduce(function (a, x) {
+        return a + x.r;
+      }, 0);
+      var height = Math.min(window.innerHeight - 230, (avail - (frames.length - 1) * 20) / sum);
+
+      return h(
+        'div',
+        { className: 'mg-cropov', role: 'dialog', 'aria-modal': true, 'aria-label': 'Bildausschnitt wählen' },
+        h(
+          'div',
+          { className: 'mg-crophead' },
+          h('div', null, h('h2', null, 'Ausschnitt wählen'), h('p', null, 'Schiebe das Bild im Rahmen. So erscheint es auf der Website.')),
+        ),
+        h(
+          'div',
+          { className: 'mg-cropstage' + (narrow ? ' narrow' : '') },
+          frames.map(function (fr) {
+            var w = narrow ? Math.min(avail, 320 * fr.r) : height * fr.r;
+            var hgt = w / fr.r;
+            return h(
+              'figure',
+              { key: fr.label, className: 'mg-cropfig' },
+              h(
+                'div',
+                {
+                  className: 'mg-cropframe' + (fr.whole ? ' whole' : '') + (hero ? ' hero' : ''),
+                  style: { width: w, height: hgt },
+                  tabIndex: fr.whole ? undefined : 0,
+                  role: fr.whole ? undefined : 'slider',
+                  'aria-label': fr.whole ? undefined : fr.label + ': Bild schieben',
+                  'aria-valuetext': fr.whole ? undefined : pos,
+                  onPointerDown: fr.whole ? undefined : self.cropDrag,
+                  onKeyDown: fr.whole ? undefined : self.cropKey,
+                },
+                h('img', {
+                  src: self.src(path, 1400),
+                  alt: '',
+                  draggable: false,
+                  style: { objectPosition: pos },
+                  onLoad: function (e) {
+                    if (!self.state.cropNatural) self.setState({ cropNatural: { w: e.target.naturalWidth, h: e.target.naturalHeight } });
+                  },
+                  onError: function (e) {
+                    if (e.target.src.indexOf('/gallery/_w/') !== -1) e.target.src = path;
+                  },
+                }),
+                // Startseite: Titel liegt auf dem Bild, soll beim Schieben sichtbar sein
+                hero ? h('span', { className: 'mg-croptitle', style: { fontSize: hgt * 0.08 } }, hero) : null,
+              ),
+              h('figcaption', null, fr.label, fr.whole ? h('small', null, 'Ganzes Bild, nichts wird abgeschnitten') : null),
+            );
+          }),
+        ),
+        h(
+          'div',
+          { className: 'mg-cropfoot' },
+          h(
+            'button',
+            {
+              type: 'button',
+              className: 'mg-link',
+              onClick: function () {
+                self.setState({ cropFokus: [50, 50] });
+              },
+            },
+            'Zurück zur Mitte',
+          ),
+          h('div', { className: 'mg-spacer' }),
+          h(
+            'button',
+            {
+              type: 'button',
+              className: 'mg-btn mg-btn--ghost',
+              onClick: function () {
+                self.closeCrop(false);
+              },
+            },
+            'Abbrechen',
+          ),
+          h(
+            'button',
+            {
+              type: 'button',
+              className: 'mg-btn mg-btn--primary',
+              onClick: function () {
+                self.closeCrop(true);
+              },
+            },
+            'Fertig',
+          ),
+        ),
+      );
+    },
+
     renderTiles: function (items) {
       var self = this;
       var mitVideo = this.hasSubfield('video');
@@ -866,10 +1096,22 @@
               h('img', {
                 src: self.src(path, 500),
                 alt: '',
+                style: item.get('fokus') ? { objectPosition: item.get('fokus') } : null,
                 onError: function (e) {
                   if (e.target.src.indexOf('/gallery/_w/') !== -1) e.target.src = path;
                 },
               }),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  className: 'mg-cropbtn',
+                  onClick: function () {
+                    self.openCrop(i);
+                  },
+                },
+                'Ausschnitt',
+              ),
               h(
                 'button',
                 {
@@ -996,6 +1238,7 @@
           h('img', {
             src: self.src(path, size === 'normal' ? 500 : 1000),
             alt: item.get('beschreibung') || '',
+            style: !natural && item.get('fokus') ? { objectPosition: item.get('fokus') } : null,
             onError: function (e) {
               if (e.target.src.indexOf('/gallery/_w/') !== -1) e.target.src = path;
             },
@@ -1139,6 +1382,7 @@
         this.renderTiles(items),
         items.length > 1 ? h('p', { className: 'mg-formnote' }, 'Bilder ziehen, um die Reihenfolge zu ändern.') : null,
         this.state.open ? this.renderOverlay(items) : null,
+        this.state.crop !== null ? this.renderCrop(items) : null,
       );
     },
   });

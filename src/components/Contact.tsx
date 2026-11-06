@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { ContactPrefill } from '../hooks/useScrollToContact';
 import { kontakt, kontaktNummer } from '../data/seiten';
+import { optimizedSrc, optimizedSrcSet } from '../lib/images';
 
 type Kundentyp = 'Privatperson' | 'Unternehmen';
 
@@ -127,14 +128,16 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative isolate overflow-hidden bg-[#111211] py-24 sm:py-32">
-      {/* Hintergrund: eigenes Eventfoto, stark abgedunkelt und entsättigt */}
+      {/* Hintergrund aus dem Admin (Seiten -> Kontakt) */}
       <div aria-hidden="true" className="absolute inset-0 -z-10">
         <img
-          src={kontakt.hintergrund}
+          src={optimizedSrc(kontakt.hintergrund, 2000)}
+          srcSet={optimizedSrcSet(kontakt.hintergrund, [900, 1400, 2000])}
+          sizes="100vw"
           alt=""
           loading="lazy"
           decoding="async"
-          className="h-full w-full scale-105 object-cover opacity-90 blur-[2px] brightness-125"
+          className="h-full w-full object-cover opacity-90"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#111211] via-[#111211]/15 to-[#111211]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#111211]/50 via-transparent to-[#111211]/50" />

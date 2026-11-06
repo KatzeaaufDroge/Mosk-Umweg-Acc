@@ -7,6 +7,12 @@ function isGalleryImage(src: string) {
   return src.startsWith('/gallery/') && !src.startsWith('/gallery/_w/');
 }
 
+// Bildausschnitt aus dem Admin ("50% 12%"): welcher Teil sichtbar bleibt, wenn
+// object-cover das Bild zuschneidet. Ohne Angabe bleibt es mittig.
+export function fokusStyle(fokus?: string): { objectPosition: string } | undefined {
+  return fokus && /^\d{1,3}(\.\d+)?% \d{1,3}(\.\d+)?%$/.test(fokus) ? { objectPosition: fokus } : undefined;
+}
+
 export function optimizedSrc(src: string, width: number): string {
   if (!import.meta.env.PROD || !isGalleryImage(src)) return src;
   const w = GALLERY_WIDTHS.find((x) => x >= width) ?? GALLERY_WIDTHS[GALLERY_WIDTHS.length - 1];
