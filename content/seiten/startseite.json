@@ -11,10 +11,11 @@
     },
     {
       "bild": "/gallery/msk_40.jpg",
-      "fokus": "50% 3%"
+      "fokus": "51% 10%"
     },
     {
-      "bild": "/gallery/startseite-2.webp"
+      "bild": "/gallery/startseite-2.webp",
+      "fokus": "52% 100%"
     },
     {
       "bild": "/gallery/startseite-4.webp"
