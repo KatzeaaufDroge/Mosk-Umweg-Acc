@@ -4,28 +4,34 @@
   "button": "Starten",
   "bilder": [
     {
+      "bild": "/gallery/startseite-2.webp",
+      "fokus": "58% 100%"
+    },
+    {
       "bild": "/gallery/1hd02244.jpg"
     },
     {
-      "bild": "/gallery/1000054204.jpg"
+      "bild": "/gallery/1000054204.jpg",
+      "fokus": "37% 50%"
     },
     {
       "bild": "/gallery/msk_40.jpg",
-      "fokus": "51% 10%"
+      "fokus": "51% 15%"
     },
     {
-      "bild": "/gallery/startseite-2.webp",
-      "fokus": "52% 100%"
+      "bild": "/gallery/startseite-4.webp",
+      "fokus": "75% 63%"
     },
     {
-      "bild": "/gallery/startseite-4.webp"
-    },
-    {
-      "bild": "/gallery/startseite-3.webp"
+      "bild": "/gallery/startseite-3.webp",
+      "fokus": "17% 50%"
     },
     {
       "bild": "/gallery/startseite-1.webp",
       "fokus": "85% 100%"
+    },
+    {
+      "bild": "/gallery/whatsapp-image-2026-11-10-at-17.28.24.jpeg"
     }
   ]
 }
