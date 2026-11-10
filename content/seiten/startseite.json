@@ -24,7 +24,8 @@
       "bild": "/gallery/startseite-3.webp"
     },
     {
-      "bild": "/gallery/startseite-1.webp"
+      "bild": "/gallery/startseite-1.webp",
+      "fokus": "85% 100%"
     }
   ]
 }
